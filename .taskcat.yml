@@ -1,5 +1,5 @@
 project:
-  name: quickstart-korea-imsm-p
+  name: quickstart-korea-isms-p
   regions:
   - ap-northeast-2
   s3_bucket: isms-configuration-243231781563
