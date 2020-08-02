@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  QSS3BucketName:
+    AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$
+    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
+      letters, uppercase letters, periods (.), and hyphens (-). It cannot start or
+      end with a hyphen (-). If you are unsure, do not change this value.
+    Default: aws-quickstart
+    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
+      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
+      It cannot start or end with a hyphen (-). If you are unsure, do not change this value.
+    Type: String
+  QSS3KeyPrefix:
+    AllowedPattern: ^[0-9a-zA-Z-/]*$
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slash (/). If you are unsure, do not change this value.
+    Default: quickstart-korea-isms-p/
+    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
+      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
+      forward slash (/). If you are unsure, do not change this value.
+    Type: String
+
+Resources:
+  
+
+  S3UploadBucket:
+    #DeletionPolicy: Retain
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub isms-conformance-delivery-${AWS::AccountId}
+      AccessControl: Private
+      # Block Public Access Policy
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      # Versioning
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  ConformanceServiceLinkedRole:
+    Type: AWS::IAM::ServiceLinkedRole
+    Properties: 
+      AWSServiceName: config-conforms.amazonaws.com
+      Description: my service linked role for config-conforms
+
+  S3UploadBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3UploadBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: EnforceHTTPSConnections
+            Action: s3:*
+            Effect: Deny
+            Principal: '*'
+            Resource:
+              !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::AccountId}/*
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+          - Sid: AWSConfigConformsBucketPermissionsCheck
+            Effect: Allow
+            Principal:
+              AWS:
+              - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
+            Action: s3:GetBucketAcl
+            Resource: !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::AccountId}
+          - Sid: AWSConfigConformsBucketDelivery
+            Effect: Allow
+            Principal:
+              AWS:
+              - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
+            Action: s3:PutObject
+            Resource: !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::AccountId}/AWSLogs/${AWS::AccountId}/Config/*
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: bucket-owner-full-control
+          - Sid: AWSConfigConformsBucketReadAccess
+            Effect: Allow
+            Principal:
+              AWS:
+              - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
+            Action: s3:GetObject
+            Resource: !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::AccountId}/AWSLogs/${AWS::AccountId}/Config/*
+
+  ISMSConformancePack:
+    Type: AWS::Config::ConformancePack
+    DependsOn: S3UploadBucketPolicy
+    Properties:
+      ConformancePackName: ISMS-ConformancePackName
+      DeliveryS3Bucket: !Sub isms-conformance-delivery-${AWS::AccountId}
+      TemplateS3Uri: !Sub s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/config-rules.template

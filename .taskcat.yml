@@ -1,0 +1,22 @@
+project:
+  name: quickstart-korea-imsm-p
+  regions:
+  - ap-northeast-2
+  s3_bucket: isms-configuration-243231781563
+  
+  
+tests:
+  default:
+    template: ./templates/master.template.yaml
+    regions:
+      - ap-northeast-2
+    parameters:
+      EC2KeyPairBastion: stage.seoul
+      EC2KeyPair: stage.seoul
+      AvailabilityZoneA: ap-northeast-2a
+      AvailabilityZoneB: ap-northeast-2c
+      DBPassword: Password12#
+      QSS3BucketName: isms-configuration-243231781563
+      QSS3KeyPrefix: quickstart-korea-isms-p/
+
+      
