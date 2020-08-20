@@ -575,9 +575,12 @@ Resources:
     Properties:
       VpcId: !Ref ProductionVPC
       TargetType: instance
-      Port: 443
-      Protocol: HTTPS
       Name: WebTGroup
+      Port: 80
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200,302,403
+      HealthCheckPath: /wordpress/wp-admin/install.php
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -771,7 +774,7 @@ Resources:
               content: !Sub |
                 #!/bin/bash -xe
                 secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
-                sed -i "s/password_here/$secret/g" wp-config.php
+                sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
           services:
             sysvinit:
               httpd:
@@ -802,6 +805,7 @@ Resources:
 
             sudo amazon-linux-extras install php7.2
             sudo amazon-linux-extras install httpd_modules
+            sudo yum install -y jq
             sudo yum install -y httpd mariadb-server
             sudo amazon-linux-extras install lamp-mariadb10.2-php7.2
             sleep 5
@@ -831,14 +835,24 @@ Resources:
 
             # Inject the security control matrix file location.
             sudo sed -i "s|{compliance-body-matrix}|https://cloudformationlctemplates.s3.amazonaws.com/$COMPLIANCE_MATRIX_FILENAME|g" $LANDING_PAGE
+
+            # Update db password.
+            secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
+            #cat $secret > /tmp/test
+            sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
+
+
   AppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       VpcId: !Ref ProductionVPC
       TargetType: instance
+      Name: AppTGroup
       Port: 80
       Protocol: HTTP
-      Name: AppTGroup
+      Matcher:
+        HttpCode: 200,302,403
+      HealthCheckPath: /wordpress/wp-admin/install.php
   AutoScalingGroupApp:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
