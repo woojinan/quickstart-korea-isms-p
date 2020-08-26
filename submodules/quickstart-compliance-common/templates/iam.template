@@ -27,7 +27,7 @@ Resources:
           - sts:AssumeRole
   rSysAdminProfile:
     Type: AWS::IAM::InstanceProfile
-    DependsOn: rSysAdminRole
+#      DependsOn: rSysAdminRole
     Properties:
       Path: /
       Roles:
@@ -89,7 +89,7 @@ Resources:
           - sts:AssumeRole
   rIAMAdminProfile:
     Type: AWS::IAM::InstanceProfile
-    DependsOn: rIAMAdminRole
+#    DependsOn: rIAMAdminRole
     Properties:
       Path: /
       Roles:
@@ -210,7 +210,7 @@ Resources:
           - sts:AssumeRole
   rReadOnlyAdminProfile:
     Type: AWS::IAM::InstanceProfile
-    DependsOn: rReadOnlyAdminRole
+#    DependsOn: rReadOnlyAdminRole
     Properties:
       Path: /
       Roles:

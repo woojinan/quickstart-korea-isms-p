@@ -15,11 +15,11 @@ Metadata:
     Description: Outputs ID of all deployed resources
   AWS::CloudFormation::Interface:
     ParameterGroups:
-    - Label:
-        default: Availability Zone selection
-      Parameters:
-      - RegionAZ1Name
-      - RegionAZ2Name
+#    - Label:
+#        default: Availability Zone selection
+#      Parameters:
+#      - RegionAZ1Name
+#      - RegionAZ2Name
     - Label:
         default: Network configuration (existing VPC)
       Parameters:
@@ -33,17 +33,17 @@ Metadata:
       - DBName
       - DBUser
       - DBPassword
-      - CentralLogBucket
+#      - CentralLogBucket
     - Label:
         default: AWS Quick Start configuration
       Parameters:
       - QSS3BucketName
       - QSS3KeyPrefix
     ParameterLabels:
-      RegionAZ1Name:
-        default: First Availability Zone for Aurora
-      RegionAZ2Name:
-        default: Second Availability Zone for Aurora
+#      RegionAZ1Name:
+#        default: First Availability Zone for Aurora
+#      RegionAZ2Name:
+#        default: Second Availability Zone for Aurora
       ProductionCIDR:
         default: CIDR for Aurora database
       ProductionVPC:
@@ -58,8 +58,8 @@ Metadata:
         default: Aurora database user
       DBPassword:
         default: Aurora database password
-      CentralLogBucket:
-        default: Centralized logging bucket
+#      CentralLogBucket:
+#        default: Centralized logging bucket
       QSS3BucketName:
         default: Quick Start S3 bucket name
       QSS3KeyPrefix:
@@ -79,12 +79,12 @@ Parameters:
   DBPrivateSubnetB:
     Description: The ID of the second private subnet in your Production VPC.
     Type: AWS::EC2::Subnet::Id
-  RegionAZ1Name:
-    Description: The name of the first Availability Zone where you will deploy the Aurora database cluster.
-    Type: AWS::EC2::AvailabilityZone::Name
-  RegionAZ2Name:
-    Description: The name of the second Availability Zone where you will deploy the Aurora database cluster.
-    Type: AWS::EC2::AvailabilityZone::Name
+#  RegionAZ1Name:
+#    Description: The name of the first Availability Zone where you will deploy the Aurora database cluster.
+#    Type: AWS::EC2::AvailabilityZone::Name
+#  RegionAZ2Name:
+#    Description: The name of the second Availability Zone where you will deploy the Aurora database cluster.
+#    Type: AWS::EC2::AvailabilityZone::Name
   DBName:
     Description: Name of the Aurora database.
     MaxLength: "63"
@@ -118,8 +118,8 @@ Parameters:
     Type: String
 Conditions:
   GovCloudCondition: !Or [!Equals [!Ref "AWS::Region", 'us-gov-west-1'], !Equals [!Ref "AWS::Region", 'us-gov-east-1']]
-  GovCloudEastCondition: !Equals [!Ref "AWS::Region", 'us-gov-east-1']
-  GovCloudWestCondition: !Equals [!Ref "AWS::Region", 'us-gov-west-1']
+#  GovCloudEastCondition: !Equals [!Ref "AWS::Region", 'us-gov-east-1']
+#  GovCloudWestCondition: !Equals [!Ref "AWS::Region", 'us-gov-west-1']
 Resources:
   DBParamGroup:
     Type: "AWS::RDS::DBClusterParameterGroup"
@@ -140,7 +140,7 @@ Resources:
     Properties:
       RetentionInDays: 365
   CloudWatchLogStreamS3:
-    DependsOn: CloudWatchLogGroupS3
+#    DependsOn: CloudWatchLogGroupS3
     Type: AWS::Logs::LogStream
     Properties:
       LogGroupName: !Ref CloudWatchLogGroupS3

@@ -565,8 +565,9 @@ Resources:
         - Endpoint: !Ref NotificationList
           Protocol: email
   EncryptionKey:
-    DeletionPolicy: Retain
     Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       KeyPolicy:
         Version: 2012-10-17
@@ -758,6 +759,7 @@ Resources:
         - [!Ref RDSSecurityGroup]
         - [!Ref CustomDBSecurityGroup]
     UpdateReplacePolicy: Snapshot
+    DeletionPolicy: Retain
   AuroraDBSubnetGroup:
     Properties:
       DBSubnetGroupDescription: "Subnets available for the Amazon Aurora database instance"
@@ -1065,7 +1067,7 @@ Resources:
   LambdaInvokePermission:
     Type: AWS::Lambda::Permission
     Condition: DBPasswordRotation
-    DependsOn: RDSRotationLambda
+#    DependsOn: RDSRotationLambda
     Properties:
       FunctionName: !GetAtt RDSRotationLambda.Arn
       Action: 'lambda:InvokeFunction'
