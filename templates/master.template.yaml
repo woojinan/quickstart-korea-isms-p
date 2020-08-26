@@ -294,8 +294,8 @@ Resources:
           !GetAtt
           - ProductionVpcTemplate
           - Outputs.rAppPrivateSubnetB
-        RegionAZ1Name: !Ref AvailabilityZoneA
-        RegionAZ2Name: !Ref AvailabilityZoneB
+#        RegionAZ1Name: !Ref AvailabilityZoneA
+#        RegionAZ2Name: !Ref AvailabilityZoneB
         DBName: examplewordpress
         DBUser: !Ref DBUsername
         DBPassword: !Ref DBPassword
@@ -324,12 +324,12 @@ Resources:
             ManagementCIDR: 10.10.0.0/16
             AvailabilityZoneA: !Ref AvailabilityZoneA
             AvailabilityZoneB: !Ref AvailabilityZoneB
-            QSS3BucketName: !Ref QSS3BucketName
-            QSS3KeyPrefix: !Ref QSS3KeyPrefix
+#            QSS3BucketName: !Ref QSS3BucketName
+#            QSS3KeyPrefix: !Ref QSS3KeyPrefix
             DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
             DBName: examplewordpress
             DBUser: !Ref DBUsername
-            DBPassword: !Ref DBPassword  
+#            DBPassword: !Ref DBPassword  
             SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret
 
 Outputs:
