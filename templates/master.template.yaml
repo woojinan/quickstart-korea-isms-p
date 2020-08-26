@@ -301,6 +301,19 @@ Resources:
         DBPassword: !Ref DBPassword
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Ref QSS3KeyPrefix  
+  KISMSTemplate:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        !Sub
+        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/aws-kisms-quickstart-cloudtrail_guardduty.template
+        - QSS3Region:
+            !If
+            - GovCloudCondition
+            - s3-us-gov-west-1
+            - s3
+      TimeoutInMinutes: 30
+
   ApplicationTemplate:
         Type: AWS::CloudFormation::Stack
         Properties:
@@ -324,8 +337,8 @@ Resources:
             ManagementCIDR: 10.10.0.0/16
             AvailabilityZoneA: !Ref AvailabilityZoneA
             AvailabilityZoneB: !Ref AvailabilityZoneB
-#            QSS3BucketName: !Ref QSS3BucketName
-#            QSS3KeyPrefix: !Ref QSS3KeyPrefix
+            QSS3BucketName: !Ref QSS3BucketName
+            QSS3KeyPrefix: !Ref QSS3KeyPrefix
             DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
             DBName: examplewordpress
             DBUser: !Ref DBUsername

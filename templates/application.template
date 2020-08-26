@@ -51,11 +51,11 @@ Metadata:
         - DBName
         - DBUser
 #        - DBPassword
-#    - Label:
-#        default: AWS Quick Start configuration
-#      Parameters:
-#      - QSS3BucketName
-#      - QSS3KeyPrefix
+    - Label:
+        default: AWS Quick Start configuration
+      Parameters:
+      - QSS3BucketName
+      - QSS3KeyPrefix
     ParameterLabels:
       ProductionCIDR:
         default: Production VPC CIDR
@@ -154,6 +154,10 @@ Parameters:
     Description: The ID of the second private subnet where the application servers will be deployed in the Production VPC.
     Type: AWS::EC2::Subnet::Id
     Default: subnet-04a8a3dede7bfd342
+  LandingPageSource:
+    Type: String
+    Default: { "IpProtocol" : "[tcp|udp|ip]", "FromPort" : "-", "ToPort" : "-", "CidrIp" : "-" }
+    
 #  QSS3BucketName:
 #    AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$
 #    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
@@ -822,8 +826,8 @@ Resources:
             ######################################################################
 
             # Download the landing page.
-            sudo wget https://cloudformationlctemplates.s3.amazonaws.com/landing.html -O $LANDING_PAGE
-
+            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}/landing.html $LANDING_PAGE
+       
             # Replace relative image links with links to the production S3 source.
             sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
 
@@ -968,7 +972,7 @@ Resources:
           if [[ $(echo "$cert_arn" | grep "non-production-testing-server-cert") != *"non-production-testing-server-cert"* ]]; then
             echo *** Beginnning ELB HTTPS configuration ***
             echo Generating private key...
-            openssl genrsa -out /tmp/my-private-key.pem 2048
+            openssl genrsa -aes128 -out /tmp/my-private-key.pem 4096
             echo Creating CSR
             openssl req -sha256 -new -key /tmp/my-private-key.pem -out /tmp/csr.pem -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
             echo Self-signing certificate...
