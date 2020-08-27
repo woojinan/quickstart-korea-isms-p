@@ -1,4 +1,4 @@
-WSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: 2010-09-09
 
 Description: 'The AWS CloudFormation template creates KMS encryption keys for CloudTrail and S3, an encrypted S3 bucket, and enables CloudTrail for the account'
 
@@ -6,14 +6,14 @@ Resources:
     # Enable CloudTrail
     CloudTrail:
       DependsOn:
-        - CloudTrailS3Bucket
+#        - CloudTrailS3Bucket
         - CloudTrailBucketPolicy
-        - cloudtrailKey
+#        - CloudTrailKey
       Type: AWS::CloudTrail::Trail
       Properties:
         S3BucketName: !Ref CloudTrailS3Bucket
         IsLogging: true
-        KMSKeyId: !GetAtt cloudtrailKey.Arn
+        KMSKeyId: !GetAtt CloudTrailKey.Arn
       
     # Enable GuardDuty
     GuardDuty:
@@ -23,7 +23,7 @@ Resources:
         FindingPublishingFrequency: FIFTEEN_MINUTES
 
     # Create KMS CloudTrail encryption key
-    cloudtrailKey:
+    CloudTrailKey:
       Type: AWS::KMS::Key
       Properties:
         KeyPolicy:
@@ -94,15 +94,15 @@ Resources:
                 StringLike:
                   'kms:EncryptionContext:aws:cloudtrail:arn': !Sub 'arn:aws:cloudtrail:*:${AWS::AccountId}:trail/*'
 
-    cloudtrailKeyAlias:
+    CloudTrailKeyAlias:
       Type: AWS::KMS::Alias
       Properties:
         AliasName: alias/cloudtrail
         TargetKeyId:
-          Ref: cloudtrailKey
+          Ref: CloudTrailKey
 
     # Create KMS CloudTrail S3 bucket encryption key
-    s3cloudtrailKey:
+    S3CloudTrailKey:
       Type: AWS::KMS::Key
       Properties:
         KeyPolicy:
@@ -127,30 +127,28 @@ Resources:
               Action: 'kms:GenerateDataKey*'
               Resource: '*'
 
-    s3cloudtrailKeyAlias:
+    S3CloudTrailKeyAlias:
       Type: AWS::KMS::Alias
       Properties:
         AliasName: alias/cloudtrails3
         TargetKeyId:
-          Ref: s3cloudtrailKey
+          Ref: S3CloudTrailKey
 
     # Create CloudTrail encrypted S3 bucket for storage
     CloudTrailS3Bucket:
       DependsOn:
-          - s3cloudtrailKey
-          - s3cloudtrailKeyAlias
+          - S3CloudTrailKey
       Type: AWS::S3::Bucket
       DeletionPolicy: Retain
+      UpdateReplacePolicy: Retain
       Properties:
         BucketEncryption:
           ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
-              KMSMasterKeyID: !Sub 'arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${s3cloudtrailKeyAlias}'
+              KMSMasterKeyID: !Sub 'arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${S3CloudTrailKeyAlias}'
               SSEAlgorithm: 'aws:kms'
 
     CloudTrailBucketPolicy:
-      DependsOn:
-          - CloudTrailS3Bucket
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket: !Ref CloudTrailS3Bucket
@@ -178,11 +176,11 @@ Outputs:
     CloudTrailKMSKeyAlias:
         Description: 'CloudTrail KMS Key Alias'
         Value:
-            Ref: 'cloudtrailKeyAlias'
+            Ref: 'CloudTrailKeyAlias'
     S3KMSKeyAlias:
         Description: 'S3 KMS Key Alias'
         Value:
-            Ref: 's3cloudtrailKeyAlias'
+            Ref: 'S3CloudTrailKeyAlias'
     CloudTrailS3Bucket:
         Description: 'Encrypted S3 Bucket for CloudTrail Logs'
         Value:
@@ -194,4 +192,4 @@ Outputs:
     CloudTrail:
         Description: 'CloudTrail'
         Value:
-            Ref: 'MyCloudTrail'
+            Ref: 'CloudTrail'

@@ -395,7 +395,7 @@ Resources:
             Action: s3:PutObject
             Resource:
               !Sub
-              - arn:${Partition}:s3:::${WebContentBucket}/*
+              - "arn:${Partition}:s3:::${WebContentBucket}/*"
               - Partition:
                   !If
                   - GovCloudCondition
@@ -822,7 +822,7 @@ Resources:
             ######################################################################
 
             # Download the landing page.
-            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}/landing.html $LANDING_PAGE
+            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}/submodules/landing.html $LANDING_PAGE
        
             # Replace relative image links with links to the production S3 source.
             sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
