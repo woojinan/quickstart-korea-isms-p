@@ -14,55 +14,55 @@ Parameters:
   AvailabilityZoneB:
     Description: The name of Availability Zone 2. This must be different from the name of the first Availability Zone.
     Type: AWS::EC2::AvailabilityZone::Name
-  MaxPasswordAge:
-    Type: 'Number'
-    Description: 'Maximum age for passwords, in number of days.'
-    Default: 90
-    ConstraintDescription: '(90-365 days)'
-    MinValue: 1
-    MaxValue: 90
-  MinPasswordLength:
-    Type: 'Number'
-    Description: 'Minimum password length.'
-    Default: 7
-    ConstraintDescription: '(8-128 characters)'
-    MinValue: 7
-    MaxValue: 128
-  PasswordHistory:
-    Type: 'Number'
-    Description: 'Number of previous passwords to remember.'
-    Default: 4
-    ConstraintDescription: '(1-24 passwords)'
-    MinValue: 4
-    MaxValue: 24
-  RequireLowercaseChars:
-    Type: 'String'
-    Description: 'Password requirement of at least one lowercase character.'
-    Default: 'True'
-    AllowedValues:
-      - 'True'
-      - 'False'
-  RequireNumbers:
-    Type: 'String'
-    Description: 'Password requirement of at least one number.'
-    Default: 'True'
-    AllowedValues:
-      - 'True'
-      - 'False'
-  RequireSymbols:
-    Type: 'String'
-    Description: 'Password requirement of at least one nonalphanumeric character.'
-    Default: 'True'
-    AllowedValues:
-      - 'True'
-      - 'False'
-  RequireUppercaseChars:
-    Type: 'String'
-    Description: 'Password requirement of at least one uppercase character.'
-    Default: 'True'
-    AllowedValues:
-      - 'True'
-      - 'False'
+#  MaxPasswordAge:
+#    Type: 'Number'
+#    Description: 'Maximum age for passwords, in number of days.'
+#    Default: 90
+#    ConstraintDescription: '(90-365 days)'
+#    MinValue: 1
+#    MaxValue: 90
+#  MinPasswordLength:
+#    Type: 'Number'
+#    Description: 'Minimum password length.'
+#    Default: 7
+#    ConstraintDescription: '(8-128 characters)'
+#    MinValue: 7
+#    MaxValue: 128
+#  PasswordHistory:
+#    Type: 'Number'
+#    Description: 'Number of previous passwords to remember.'
+#    Default: 4
+#    ConstraintDescription: '(1-24 passwords)'
+#    MinValue: 4
+#    MaxValue: 24
+#  RequireLowercaseChars:
+#    Type: 'String'
+#    Description: 'Password requirement of at least one lowercase character.'
+#    Default: 'True'
+#    AllowedValues:
+#      - 'True'
+#      - 'False'
+#  RequireNumbers:
+#    Type: 'String'
+#    Description: 'Password requirement of at least one number.'
+#    Default: 'True'
+#    AllowedValues:
+#      - 'True'
+#      - 'False'
+#  RequireSymbols:
+#    Type: 'String'
+#    Description: 'Password requirement of at least one nonalphanumeric character.'
+#    Default: 'True'
+#    AllowedValues:
+#      - 'True'
+#      - 'False'
+#  RequireUppercaseChars:
+#    Type: 'String'
+#    Description: 'Password requirement of at least one uppercase character.'
+#    Default: 'True'
+#    AllowedValues:
+#      - 'True'
+#      - 'False'
   VPCTenancy:
     Description: The tenancy attribute for the instances launched into the VPC. If unsure, leave as default.
     Type: String
@@ -107,42 +107,42 @@ Conditions:
     - !Ref VPCTenancy
     - dedicated
 Mappings:
-  CustomVariables:
-    vResourceEnvironmentTagKey:
-      Value: Environment
-    vResourceEnvironmentTagValue:
-      Value: development
-  Instances:
-    ap-northeast-1:
-      InstanceType: t3.small
-    ap-northeast-2:
-      InstanceType: t3.small
-    ap-south-1:
-      InstanceType: t3.small
-    ap-southeast-1:
-      InstanceType: t3.small
-    ap-southeast-2:
-      InstanceType: t3.small
-    ca-central-1:
-      InstanceType: t3.small
-    eu-central-1:
-      InstanceType: t3.small
-    eu-west-1:
-      InstanceType: t3.small
-    eu-west-2:
-      InstanceType: t3.small
-    sa-east-1:
-      InstanceType: t3.small
-    us-east-1:
-      InstanceType: t3.small
-    us-east-2:
-      InstanceType: t3.small
-    us-west-1:
-      InstanceType: t3.small
-    us-west-2:
-      InstanceType: t3.small
-      ConfigRules: 'true'
-      Glacier: 'true'
+#  CustomVariables:
+#    vResourceEnvironmentTagKey:
+#      Value: Environment
+#    vResourceEnvironmentTagValue:
+#      Value: development
+#  Instances:
+#    ap-northeast-1:
+#      InstanceType: t3.small
+#    ap-northeast-2:
+#      InstanceType: t3.small
+#    ap-south-1:
+#      InstanceType: t3.small
+#    ap-southeast-1:
+#      InstanceType: t3.small
+#    ap-southeast-2:
+#      InstanceType: t3.small
+#    ca-central-1:
+#      InstanceType: t3.small
+#    eu-central-1:
+#      InstanceType: t3.small
+#    eu-west-1:
+#      InstanceType: t3.small
+#    eu-west-2:
+#      InstanceType: t3.small
+#    sa-east-1:
+#      InstanceType: t3.small
+#    us-east-1:
+#      InstanceType: t3.small
+#    us-east-2:
+#      InstanceType: t3.small
+#    us-west-1:
+#      InstanceType: t3.small
+#    us-west-2:
+#      InstanceType: t3.small
+#      ConfigRules: 'true'
+#      Glacier: 'true'
   AWSAMIRegionMap:
     ap-northeast-1:
       AMZNLINUXHVM: ami-079e6fb1e856e80c1
@@ -271,7 +271,7 @@ Resources:
 
   DatabaseTemplate:
     Type: AWS::CloudFormation::Stack
-    DependsOn: ProductionVpcTemplate
+#    DependsOn: ProductionVpcTemplate
     Properties:
       TemplateURL:
         !Sub
@@ -294,13 +294,26 @@ Resources:
           !GetAtt
           - ProductionVpcTemplate
           - Outputs.rAppPrivateSubnetB
-        RegionAZ1Name: !Ref AvailabilityZoneA
-        RegionAZ2Name: !Ref AvailabilityZoneB
+#        RegionAZ1Name: !Ref AvailabilityZoneA
+#        RegionAZ2Name: !Ref AvailabilityZoneB
         DBName: examplewordpress
         DBUser: !Ref DBUsername
         DBPassword: !Ref DBPassword
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Ref QSS3KeyPrefix  
+  KISMSTemplate:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        !Sub
+        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/aws-kisms-quickstart-cloudtrail_guardduty.template
+        - QSS3Region:
+            !If
+            - GovCloudCondition
+            - s3-us-gov-west-1
+            - s3
+      TimeoutInMinutes: 30
+
   ApplicationTemplate:
         Type: AWS::CloudFormation::Stack
         Properties:
@@ -329,7 +342,7 @@ Resources:
             DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
             DBName: examplewordpress
             DBUser: !Ref DBUsername
-            DBPassword: !Ref DBPassword  
+#            DBPassword: !Ref DBPassword  
             SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret
 
 Outputs:

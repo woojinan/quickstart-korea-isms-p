@@ -93,7 +93,8 @@ Parameters:
   pProductionCIDR:
     Description: CIDR of Production VPC
     Type: String
-    Default: ''
+    Default: 10.100.0.0/16
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pRouteTableProdPrivate:
     Description: Route Table ID for Prod VPC Private
     Type: String
@@ -126,22 +127,27 @@ Parameters:
     Description: CIDR block for Management VPC
     Type: String
     Default: 10.10.0.0/16
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pManagementDMZSubnetACIDR:
     Description: CIDR block for Management AZ-1a subnet
     Type: String
     Default: 10.10.10.0/24
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pManagementDMZSubnetBCIDR:
     Description: CIDR block for Management AZ-1b subnet
     Type: String
     Default: 10.10.20.0/24
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pManagementPrivateSubnetACIDR:
     Description: CIDR block for Management AZ-1a subnet
     Type: String
     Default: 10.10.10.0/24
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pManagementPrivateSubnetBCIDR:
     Description: CIDR block for Management AZ-1b subnet
     Type: String
     Default: 10.10.20.0/24
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pVPCTenancy:
     Description: Instance tenancy behavior for this VPC
     Type: String
@@ -153,9 +159,10 @@ Parameters:
     Type: String
     Default: 0.0.0.0/0
     Description: The CIDR Allowed SSH access to the bastion host
+    AllowedPattern: '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$'
   pBastionAmi:
     Description: AMI to use for bastion host
-    Type: String
+    Type: AWS::EC2::Image::Id
     Default: ''
   pEC2KeyPair:
     Description: Name of existing EC2 key pair for production hosts
@@ -232,10 +239,10 @@ Conditions:
     - !Equals
       - !Ref pFlowLogGroup
       - ''
-  cManagementSubnetDefaultRoute:
-    !Equals
-    - true
-    - !Ref pManagementDMZSubnetPublicIP
+#  cManagementSubnetDefaultRoute:
+#    !Equals
+#    - true
+#    - !Ref pManagementDMZSubnetPublicIP
 Resources:
   rVPCManagement:
     Type: AWS::EC2::VPC
@@ -397,7 +404,7 @@ Resources:
       ImageId: !Ref pBastionAmi
       NetworkInterfaces:
       - NetworkInterfaceId: !Ref rENIProductionBastion
-        DeviceIndex: 0
+        DeviceIndex: "0"
       UserData: !Base64 |
         #!/bin/bash
         yum update -y
@@ -600,4 +607,3 @@ Outputs:
     Value: !Ref rEIPProdNAT
   rSecurityGroupSSHFromMgmt:
     Value: !Ref rSecurityGroupSSHFromMgmt
-...

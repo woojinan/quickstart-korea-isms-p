@@ -32,15 +32,15 @@ Metadata:
       - DMZSubnetB
       - AppPrivateSubnetA
       - AppPrivateSubnetB
-    - Label:
-        default: Logging configuration
-      Parameters:
-        - CentralLogBucket
-        - WAFLogging
-    - Label:
-        default: Amazon Elasticsearch configuration
-      Parameters:
-        - ESClusterARN
+#    - Label:
+#        default: Logging configuration
+#      Parameters:
+#        - CentralLogBucket
+#        - WAFLogging
+#    - Label:
+#        default: Amazon Elasticsearch configuration
+#      Parameters:
+#        - ESClusterARN
     - Label:
         default: Amazon EC2 configuration
       Parameters:
@@ -50,7 +50,7 @@ Metadata:
       Parameters:
         - DBName
         - DBUser
-        - DBPassword
+#        - DBPassword
     - Label:
         default: AWS Quick Start configuration
       Parameters:
@@ -73,44 +73,44 @@ Metadata:
         default: First Availability Zone for deployment
       AvailabilityZoneB:
         default: Second Availability Zone for deployment
-      ESClusterARN:
-        default: Amazon ES cluster
+#      ESClusterARN:
+#        default: Amazon ES cluster
       EC2KeyPair:
         default: Existing SSH key
       ManagementCIDR:
         default: Management VPC CIDR
-      CentralLogBucket:
-        default: Centralized logging bucket for AWS WAF logs
-      WAFlogging:
-        default: Log storage location
-      QSS3BucketName:
-        default: Quick Start S3 bucket name
-      QSS3KeyPrefix:
-        default: Quick Start S3 key prefix
+#      CentralLogBucket:
+#        default: Centralized logging bucket for AWS WAF logs
+#      WAFlogging:
+#        default: Log storage location
+#      QSS3BucketName:
+#        default: Quick Start S3 bucket name
+#      QSS3KeyPrefix:
+#        default: Quick Start S3 key prefix
       DBHost:
         default: Aurora database host
       DBName:
         default: Aurora database name
       DBUser:
         default: Aurora database user
-      DBPassword:
-        default: Aurora database password
+#      DBPassword:
+#        default: Aurora database password
 Parameters:
-  WAFlogging:
-    Type: String
-    Description: The storage location for AWS WAF logs. Choose Amazon Elasticsearch_S3 to have AWS WAF logs streamed to Amazon ES (current Region) and your central logging bucket.
-    AllowedValues:
-      - Amazon Elasticsearch_S3
-      - Amazon S3 Only
-    Default: Amazon S3 Only
-  ESClusterARN:
-    Type: String
-    Description: (If Amazon Elasticsearch_S3 is chosen for the WAFlogging parameter) The Amazon Resource Name (ARN) of the Amazon ES domain that Kinesis Data Firehose delivers data to. Cluster must be in same account and Region.
-    Default: ''
-  CentralLogBucket:
-    Type: String
-    Description: The S3 bucket to send AWS WAF logs to. This bucket should already exist and can be same bucket from the centralized logging template.
-    Default: ''
+#  WAFlogging:
+#    Type: String
+#    Description: The storage location for AWS WAF logs. Choose Amazon Elasticsearch_S3 to have AWS WAF logs streamed to Amazon ES (current Region) and your central logging bucket.
+#    AllowedValues:
+#      - Amazon Elasticsearch_S3
+#      - Amazon S3 Only
+#    Default: Amazon S3 Only
+#  ESClusterARN:
+#    Type: String
+#    Description: (If Amazon Elasticsearch_S3 is chosen for the WAFlogging parameter) The Amazon Resource Name (ARN) of the Amazon ES domain that Kinesis Data Firehose delivers data to. Cluster must be in same account and Region.
+#    Default: ''
+#  CentralLogBucket:
+#    Type: String
+#    Description: The S3 bucket to send AWS WAF logs to. This bucket should already exist and can be same bucket from the centralized logging template.
+#    Default: ''
   EC2KeyPair:
     Description: The SSH key pair in your account to use for all other EC2 instance
       logins.
@@ -184,10 +184,10 @@ Parameters:
     Description: Username of DB Instance
     Type: String
     Default: admin
-  DBPassword:
-    Description: Password of DB Instance
-    Type: String
-    NoEcho: True
+#  DBPassword:
+#    Description: Password of DB Instance
+#    Type: String
+#    NoEcho: True
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
@@ -241,39 +241,39 @@ Mappings:
     us-west-2:
       InstanceType: t3.small
       InstanceTypeDatabase: db.t3.small
-  AWSAMIRegionMap:
-    ap-northeast-1:
-      AMZNLINUXHVM: ami-079e6fb1e856e80c1
-    ap-northeast-2:
-      AMZNLINUXHVM: ami-0e4a253fb5f082688
-    ap-south-1:
-      AMZNLINUXHVM: ami-01e074f40dfb9999d
-    ap-southeast-1:
-      AMZNLINUXHVM: ami-0d9233e8ce73df7b2
-    ap-southeast-2:
-      AMZNLINUXHVM: ami-0c91f97cadcc8499e
-    ca-central-1:
-      AMZNLINUXHVM: ami-003a0ba7ea76b2785
-    eu-central-1:
-      AMZNLINUXHVM: ami-0ab838eeee7f316eb
-    eu-west-1:
-      AMZNLINUXHVM: ami-071f4ce599deff521
-    eu-west-2:
-      AMZNLINUXHVM: ami-0e49551fc78560451
-    sa-east-1:
-      AMZNLINUXHVM: ami-04b202bf877b5027b
-    us-east-1:
-      AMZNLINUXHVM: ami-09d069a04349dc3cb
-    us-east-2:
-      AMZNLINUXHVM: ami-0d542ef84ec55d71c
-    us-gov-west-1:
-      AMZNLINUXHVM: ami-e9a9d388
-    us-gov-east-1:
-      AMZNLINUXHVM: ami-2093423904
-    us-west-1:
-      AMZNLINUXHVM: ami-04bc3da8f14823e88
-    us-west-2:
-      AMZNLINUXHVM: ami-01460aa81365561fe
+#  AWSAMIRegionMap:
+#    ap-northeast-1:
+#      AMZNLINUXHVM: ami-079e6fb1e856e80c1
+#    ap-northeast-2:
+#      AMZNLINUXHVM: ami-0e4a253fb5f082688
+#    ap-south-1:
+#      AMZNLINUXHVM: ami-01e074f40dfb9999d
+#    ap-southeast-1:
+#      AMZNLINUXHVM: ami-0d9233e8ce73df7b2
+#    ap-southeast-2:
+#      AMZNLINUXHVM: ami-0c91f97cadcc8499e
+#    ca-central-1:
+#      AMZNLINUXHVM: ami-003a0ba7ea76b2785
+#    eu-central-1:
+#      AMZNLINUXHVM: ami-0ab838eeee7f316eb
+#    eu-west-1:
+#      AMZNLINUXHVM: ami-071f4ce599deff521
+#    eu-west-2:
+#      AMZNLINUXHVM: ami-0e49551fc78560451
+#    sa-east-1:
+#      AMZNLINUXHVM: ami-04b202bf877b5027b
+#    us-east-1:
+#      AMZNLINUXHVM: ami-09d069a04349dc3cb
+#    us-east-2:
+#      AMZNLINUXHVM: ami-0d542ef84ec55d71c
+#    us-gov-west-1:
+#      AMZNLINUXHVM: ami-e9a9d388
+#    us-gov-east-1:
+#      AMZNLINUXHVM: ami-2093423904
+#    us-west-1:
+#      AMZNLINUXHVM: ami-04bc3da8f14823e88
+#    us-west-2:
+#      AMZNLINUXHVM: ami-01460aa81365561fe
 Conditions:
   GovCloudCondition: !Or [!Equals [!Ref "AWS::Region", us-gov-west-1], !Equals [!Ref "AWS::Region", us-gov-east-1]]
 Resources:
@@ -395,7 +395,7 @@ Resources:
             Action: s3:PutObject
             Resource:
               !Sub
-              - arn:${Partition}:s3:::${WebContentBucket}/*
+              - "arn:${Partition}:s3:::${WebContentBucket}/*"
               - Partition:
                   !If
                   - GovCloudCondition
@@ -575,9 +575,12 @@ Resources:
     Properties:
       VpcId: !Ref ProductionVPC
       TargetType: instance
-      Port: 443
-      Protocol: HTTPS
       Name: WebTGroup
+      Port: 80
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200,302,403
+      HealthCheckPath: /wordpress/wp-admin/install.php
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -767,7 +770,7 @@ Resources:
               content: !Sub |
                 #!/bin/bash -xe
                 secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
-                sed -i "s/password_here/$secret/g" wp-config.php
+                sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
           services:
             sysvinit:
               httpd:
@@ -798,6 +801,7 @@ Resources:
 
             sudo amazon-linux-extras install php7.2
             sudo amazon-linux-extras install httpd_modules
+            sudo yum install -y jq
             sudo yum install -y httpd mariadb-server
             sudo amazon-linux-extras install lamp-mariadb10.2-php7.2
             sleep 5
@@ -814,8 +818,8 @@ Resources:
             ######################################################################
 
             # Download the landing page.
-            sudo wget https://cloudformationlctemplates.s3.amazonaws.com/landing.html -O $LANDING_PAGE
-
+            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}/submodules/landing.html $LANDING_PAGE
+       
             # Replace relative image links with links to the production S3 source.
             sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
 
@@ -827,14 +831,24 @@ Resources:
 
             # Inject the security control matrix file location.
             sudo sed -i "s|{compliance-body-matrix}|https://cloudformationlctemplates.s3.amazonaws.com/$COMPLIANCE_MATRIX_FILENAME|g" $LANDING_PAGE
+
+            # Update db password.
+            secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
+            #cat $secret > /tmp/test
+            sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
+
+
   AppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       VpcId: !Ref ProductionVPC
       TargetType: instance
+      Name: AppTGroup
       Port: 80
       Protocol: HTTP
-      Name: AppTGroup
+      Matcher:
+        HttpCode: 200,302,403
+      HealthCheckPath: /wordpress/wp-admin/install.php
   AutoScalingGroupApp:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -950,7 +964,7 @@ Resources:
           if [[ $(echo "$cert_arn" | grep "non-production-testing-server-cert") != *"non-production-testing-server-cert"* ]]; then
             echo *** Beginnning ELB HTTPS configuration ***
             echo Generating private key...
-            openssl genrsa -out /tmp/my-private-key.pem 2048
+            openssl genrsa -aes128 -out /tmp/my-private-key.pem 4096
             echo Creating CSR
             openssl req -sha256 -new -key /tmp/my-private-key.pem -out /tmp/csr.pem -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
             echo Self-signing certificate...
