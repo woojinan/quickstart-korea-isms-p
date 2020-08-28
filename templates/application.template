@@ -635,14 +635,10 @@ Resources:
                 Action:
                   - ec2:DescribeVolumes
                 Resource: "*"
-        - PolicyName: SecretAccess
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
               - Sid: getSecret
                 Effect: Allow
                 Action: secretsmanager:GetSecretValue
-                Resource: '*'
+                Resource: "*"
       ManagedPolicyArns:
        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
   AppInstanceProfile:
@@ -849,12 +845,12 @@ Resources:
         - !Ref AppPrivateSubnetA
         - !Ref AppPrivateSubnetB
       LaunchConfigurationName: !Ref AutoScalingConfigApp
-      MinSize: "1"
-      MaxSize: "1"
+      MinSize: "2"
+      MaxSize: "4"
       TargetGroupARNs:
         - !Ref AppTargetGroup
       HealthCheckType: ELB
-      HealthCheckGracePeriod: 3000
+      HealthCheckGracePeriod: 300
       Tags:
         - Key: Name
           Value: AppServer
