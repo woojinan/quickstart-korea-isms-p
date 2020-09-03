@@ -959,7 +959,7 @@ Resources:
         SecretStringTemplate: !Sub '{"username": "${DBMasterUsername}"}'
         GenerateStringKey: "password"
         PasswordLength: 16
-        ExcludeCharacters: "\"'@/\\"
+        ExcludeCharacters: "\"'@/\\&"
   SecretRDSInstanceAttachment:
     Condition: DBPasswordRotation
     Type: AWS::SecretsManager::SecretTargetAttachment

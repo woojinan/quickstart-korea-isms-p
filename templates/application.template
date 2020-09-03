@@ -96,21 +96,16 @@ Metadata:
 #      DBPassword:
 #        default: Aurora database password
 Parameters:
-#  WAFlogging:
-#    Type: String
-#    Description: The storage location for AWS WAF logs. Choose Amazon Elasticsearch_S3 to have AWS WAF logs streamed to Amazon ES (current Region) and your central logging bucket.
-#    AllowedValues:
-#      - Amazon Elasticsearch_S3
-#      - Amazon S3 Only
-#    Default: Amazon S3 Only
-#  ESClusterARN:
-#    Type: String
-#    Description: (If Amazon Elasticsearch_S3 is chosen for the WAFlogging parameter) The Amazon Resource Name (ARN) of the Amazon ES domain that Kinesis Data Firehose delivers data to. Cluster must be in same account and Region.
-#    Default: ''
-#  CentralLogBucket:
-#    Type: String
-#    Description: The S3 bucket to send AWS WAF logs to. This bucket should already exist and can be same bucket from the centralized logging template.
-#    Default: ''
+  ruleAction:
+    Type: String
+    Description: The type of action you want to iplement for the rules in this set. Valid options are COUNT or BLOCK.
+    AllowedValues:
+      - BLOCK
+      - COUNT
+    Default: COUNT 
+  pCentralLogBucket:
+    Type: String
+    Default: ''
   EC2KeyPair:
     Description: The SSH key pair in your account to use for all other EC2 instance
       logins.
@@ -276,6 +271,9 @@ Mappings:
 #      AMZNLINUXHVM: ami-01460aa81365561fe
 Conditions:
   GovCloudCondition: !Or [!Equals [!Ref "AWS::Region", us-gov-west-1], !Equals [!Ref "AWS::Region", us-gov-east-1]]
+  CentralLoggingCondition: !Not [!Equals [!Ref pCentralLogBucket, '']]
+  ActionCondition: !Equals [!Ref ruleAction, 'BLOCK']
+
 Resources:
   SecurityGroupWeb:
     Type: AWS::EC2::SecurityGroup
@@ -818,7 +816,7 @@ Resources:
             ######################################################################
 
             # Download the landing page.
-            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}/submodules/landing.html $LANDING_PAGE
+            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}submodules/landing.html $LANDING_PAGE
        
             # Replace relative image links with links to the production S3 source.
             sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
@@ -836,7 +834,6 @@ Resources:
             secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
             #cat $secret > /tmp/test
             sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
-
 
   AppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -999,6 +996,193 @@ Resources:
       Tags:
         - Key: Name
           Value: PostProcessor
+  CloudWatchLogGroupS3:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 365
+
+  CloudWatchLogStreamS3:
+    DependsOn: CloudWatchLogGroupS3
+    Type: AWS::Logs::LogStream
+    Properties:
+      LogGroupName: !Ref CloudWatchLogGroupS3
+      LogStreamName: !Sub AWS_WAF_S3_${AWS::Region}
+
+  StreamS3only:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Condition: CentralLoggingCondition
+    Properties:
+      DeliveryStreamName: aws-waf-logs-analytics
+      DeliveryStreamType: DirectPut
+      S3DestinationConfiguration:
+        BucketARN: !Sub arn:aws:s3:::${pCentralLogBucket}
+        BufferingHints:
+          IntervalInSeconds: 60
+          SizeInMBs: 120
+        CloudWatchLoggingOptions:
+          Enabled: true
+          LogGroupName: !Ref CloudWatchLogGroupS3
+          LogStreamName: !Ref CloudWatchLogStreamS3
+        CompressionFormat: UNCOMPRESSED
+        ErrorOutputPrefix: WAF_error
+        Prefix: !Sub AWS_WAF_S3_${AWS::Region}
+        RoleARN: !GetAtt rFirehoseRoleS3.Arn
+
+  rFirehoseRoleS3:
+    Type: AWS::IAM::Role
+    Condition: CentralLoggingCondition
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: 'Allow'
+          Principal:
+            Service: 'firehose.amazonaws.com'
+          Action: 'sts:AssumeRole'
+          Condition:
+            StringEquals:
+              sts:ExternalId: !Sub ${AWS::AccountId}
+      Path: /
+      Policies:
+        - PolicyName: Firehose_Role_S3
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: glue:GetTableVersions
+                Resource: "*"
+            #Statement:
+              - Effect: Allow
+                Action:
+                - s3:AbortMultipartUpload
+                - s3:GetBucketLocation
+                - s3:GetObject
+                - s3:ListBucket
+                - s3:PutObject
+                Resource:
+                - !Sub arn:aws:s3:::${pCentralLogBucket}
+                - !Sub arn:aws:s3:::${pCentralLogBucket}/*
+            #Statement:
+              - Effect: Allow
+                Action:
+                - lambda:InvokeFunction
+                - lambda:GetFunctionConfiguration
+                Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:%FIREHOSE_DEFAULT_FUNCTION%:%FIREHOSE_DEFAULT_VERSION%
+            #Statement:
+              - Effect: Allow
+                Action: logs:PutLogEvents
+                Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/kinesisfirehose/aws-waf-logs-${AWS::Region}-analytics:log-stream:*
+
+  ###
+  ## ADD WAFv2
+  rELBWebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: ELBWebACL
+      Scope: REGIONAL
+      Description: This is a Sample WebACL
+      DefaultAction:
+        Block: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: KISMSWebACLMetric
+      
+      Rules:
+
+        - Name: AWS-AWSManagedRulesAmazonIpReputationList
+          Priority: 0
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRAIRL
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+              ExcludedRules: [] 
+
+        - Name: AWS-AWSManagedRulesAdminProtectionRuleSet
+          Priority: 1
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRAPRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAdminProtectionRuleSet
+              ExcludedRules: [] 
+
+        - Name: AWS-AWSManagedRulesCommonRuleSet
+          Priority: 2
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRCRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+              ExcludedRules: [] 
+
+
+        - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 3
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRKBIRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+              ExcludedRules: []
+
+        - Name: AWS-AWSManagedRulesSQLiRuleSet
+          Priority: 4
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRSRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesSQLiRuleSet
+              ExcludedRules: [] 
+
+  rELBCLAssociation:
+    Type: 'AWS::WAFv2::WebACLAssociation'
+    Properties:
+      WebACLArn: !GetAtt 
+        - rELBWebACL
+        - Arn
+      ResourceArn: !Ref ELBWeb
 Outputs:
   LandingPageURL:
     Value: !Sub https://${ELBWeb.DNSName}/landing.html

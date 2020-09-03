@@ -14,55 +14,6 @@ Parameters:
   AvailabilityZoneB:
     Description: The name of Availability Zone 2. This must be different from the name of the first Availability Zone.
     Type: AWS::EC2::AvailabilityZone::Name
-#  MaxPasswordAge:
-#    Type: 'Number'
-#    Description: 'Maximum age for passwords, in number of days.'
-#    Default: 90
-#    ConstraintDescription: '(90-365 days)'
-#    MinValue: 1
-#    MaxValue: 90
-#  MinPasswordLength:
-#    Type: 'Number'
-#    Description: 'Minimum password length.'
-#    Default: 7
-#    ConstraintDescription: '(8-128 characters)'
-#    MinValue: 7
-#    MaxValue: 128
-#  PasswordHistory:
-#    Type: 'Number'
-#    Description: 'Number of previous passwords to remember.'
-#    Default: 4
-#    ConstraintDescription: '(1-24 passwords)'
-#    MinValue: 4
-#    MaxValue: 24
-#  RequireLowercaseChars:
-#    Type: 'String'
-#    Description: 'Password requirement of at least one lowercase character.'
-#    Default: 'True'
-#    AllowedValues:
-#      - 'True'
-#      - 'False'
-#  RequireNumbers:
-#    Type: 'String'
-#    Description: 'Password requirement of at least one number.'
-#    Default: 'True'
-#    AllowedValues:
-#      - 'True'
-#      - 'False'
-#  RequireSymbols:
-#    Type: 'String'
-#    Description: 'Password requirement of at least one nonalphanumeric character.'
-#    Default: 'True'
-#    AllowedValues:
-#      - 'True'
-#      - 'False'
-#  RequireUppercaseChars:
-#    Type: 'String'
-#    Description: 'Password requirement of at least one uppercase character.'
-#    Default: 'True'
-#    AllowedValues:
-#      - 'True'
-#      - 'False'
   VPCTenancy:
     Description: The tenancy attribute for the instances launched into the VPC. If unsure, leave as default.
     Type: String
@@ -217,7 +168,7 @@ Resources:
         pVPCTenancy: !Ref VPCTenancy
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-compliance-common/
-  
+          
   ManagementVpcTemplate:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -306,7 +257,7 @@ Resources:
     Properties:
       TemplateURL:
         !Sub
-        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/aws-kisms-quickstart-cloudtrail_guardduty.template
+        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/cloudtrail_guardduty.template
         - QSS3Region:
             !If
             - GovCloudCondition
