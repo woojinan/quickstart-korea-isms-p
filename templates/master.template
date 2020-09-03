@@ -128,18 +128,21 @@ Mappings:
     us-west-2:
       AMZNLINUXHVM: ami-01460aa81365561fe
 Resources:
-  IamTemplate:
+  SecBaselineTemplate:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:
         !Sub
-        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}submodules/quickstart-compliance-common/templates/iam.template
+        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/security_baseline.template
         - QSS3Region:
             !If
             - GovCloudCondition
             - s3-us-gov-west-1
             - s3
       TimeoutInMinutes: 20
+      Parameters:
+        QSS3BucketName: !Ref QSS3BucketName
+        QSS3KeyPrefix: !Ref QSS3KeyPrefix
 
   ProductionVpcTemplate:
     Type: AWS::CloudFormation::Stack
@@ -252,18 +255,6 @@ Resources:
         DBPassword: !Ref DBPassword
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Ref QSS3KeyPrefix  
-  KISMSTemplate:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL:
-        !Sub
-        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/cloudtrail_guardduty.template
-        - QSS3Region:
-            !If
-            - GovCloudCondition
-            - s3-us-gov-west-1
-            - s3
-      TimeoutInMinutes: 30
 
   ApplicationTemplate:
         Type: AWS::CloudFormation::Stack
@@ -295,16 +286,6 @@ Resources:
             DBUser: !Ref DBUsername
 #            DBPassword: !Ref DBPassword  
             SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret
-  ConformanceTemplate:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL:
-        !Sub
-         https://${QSS3BucketName}.s3.amazonaws.com/${QSS3KeyPrefix}templates/conformancepack.template
-      TimeoutInMinutes: 20
-      Parameters:
-        QSS3BucketName: !Ref QSS3BucketName
-        QSS3KeyPrefix: !Ref QSS3KeyPrefix
 
 Outputs:
   TemplateType:
