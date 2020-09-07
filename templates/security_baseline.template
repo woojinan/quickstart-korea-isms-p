@@ -2,17 +2,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides the base security, IAM, and access configuration for the AWS
   account (qs-1nb14cqc0)
-Metadata:
-  Stack:
-    Value: 1
-  VersionDate:
-    Value: 202009
-  Identifier:
-    Value: template-iam
-  Input:
-    Description: CloudTrail bucket name
-  Output:
-    Description: Outputs ID of all deployed resources
+
 Parameters:
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$
@@ -34,29 +24,11 @@ Parameters:
       forward slash (/). If you are unsure, do not change this value.
     Type: String
 Resources:
-  rSysAdminRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Action:
-          - sts:AssumeRole
-  rSysAdminProfile:
-    Type: AWS::IAM::InstanceProfile
-#      DependsOn: rSysAdminRole
-    Properties:
-      Path: /
-      Roles:
-      - !Ref rSysAdminRole
-  rSysAdmin:
+  SysAdminGroup:
     Type: AWS::IAM::Group
     Properties:
       Path: /
-  rSysAdminPolicy:
+  SysAdminPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       PolicyDocument:
@@ -88,33 +60,13 @@ Resources:
           - kms:Put*
           - kms:Update*
           Resource: '*'
-      Roles:
-      - !Ref rSysAdminRole
       Groups:
-      - !Ref rSysAdmin
-  rIAMAdminGroup:
+      - !Ref SysAdminGroup
+  IAMAdminGroup:
     Type: AWS::IAM::Group
     Properties:
       Path: /
-  rIAMAdminRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Action:
-          - sts:AssumeRole
-  rIAMAdminProfile:
-    Type: AWS::IAM::InstanceProfile
-#    DependsOn: rIAMAdminRole
-    Properties:
-      Path: /
-      Roles:
-      - !Ref rIAMAdminRole
-  rIAMAdminPolicy:
+  IAMAdminPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       PolicyDocument:
@@ -129,33 +81,13 @@ Resources:
         - Effect: Deny
           Action: aws-portal:*Billing
           Resource: '*'
-      Roles:
-      - !Ref rIAMAdminRole
       Groups:
-      - !Ref rIAMAdminGroup
-  rInstanceOpsGroup:
+      - !Ref IAMAdminGroup
+  InstanceOpsGroup:
     Type: AWS::IAM::Group
     Properties:
       Path: /
-  rInstanceOpsRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Action:
-          - sts:AssumeRole
-  rInstanceOpsProfile:
-    Type: AWS::IAM::InstanceProfile
-    DependsOn: rIAMAdminRole
-    Properties:
-      Path: /
-      Roles:
-      - !Ref rInstanceOpsRole
-  rInstanceOpsPolicy:
+  InstanceOpsPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       PolicyDocument:
@@ -209,35 +141,14 @@ Resources:
           - kms:Put*
           - kms:Update*
           Resource: '*'
-      Roles:
-      - !Ref rInstanceOpsRole
       Groups:
-      - !Ref rInstanceOpsGroup
-  rReadOnlyAdminGroup:
+      - !Ref InstanceOpsGroup
+  ReadOnlyAdminGroup:
     Type: AWS::IAM::Group
     Properties:
       Path: /
-  rReadOnlyAdminRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - ec2.amazonaws.com
-          Action:
-          - sts:AssumeRole
-  rReadOnlyAdminProfile:
-    Type: AWS::IAM::InstanceProfile
-#    DependsOn: rReadOnlyAdminRole
-    Properties:
-      Path: /
-      Roles:
-      - !Ref rReadOnlyAdminRole
-  rReadOnlyAdminPolicy:
+  ReadOnlyAdminPolicy:
     Type: AWS::IAM::ManagedPolicy
-    DependsOn: rReadOnlyAdminProfile
     Properties:
       PolicyDocument:
         Version: 2012-10-17
@@ -308,15 +219,13 @@ Resources:
         - Effect: Deny
           Action: aws-portal:*Billing
           Resource: '*'
-      Roles:
-      - !Ref rReadOnlyAdminRole
       Groups:
-      - !Ref rReadOnlyAdminGroup
-  rReadOnlyBillingGroup:
+      - !Ref ReadOnlyAdminGroup
+  ReadOnlyBillingGroup:
     Type: AWS::IAM::Group
     Properties:
       Path: /
-  rReadOnlyBillingPolicy:
+  ReadOnlyBillingPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       PolicyDocument:
@@ -329,7 +238,7 @@ Resources:
           Action: aws-portal:*Account
           Resource: '*'
       Groups:
-      - !Ref rReadOnlyBillingGroup
+      - !Ref ReadOnlyBillingGroup
 ## CloudTrail
 # Enable CloudTrail
   CloudTrail:
@@ -576,16 +485,16 @@ Resources:
   
    
 Outputs:
-  rSysAdmin:
-    Value: !Ref rSysAdmin
-  rIAMAdminGroup:
-    Value: !Ref rIAMAdminGroup
-  rInstanceOpsGroup:
-    Value: !Ref rInstanceOpsGroup
-  rReadOnlyBillingGroup:
-    Value: !Ref rReadOnlyBillingGroup
-  rReadOnlyAdminGroup:
-    Value: !Ref rReadOnlyAdminGroup
+  SysAdmin:
+    Value: !Ref SysAdminGroup
+  IAMAdminGroup:
+    Value: !Ref IAMAdminGroup
+  InstanceOpsGroup:
+    Value: !Ref InstanceOpsGroup
+  ReadOnlyBillingGroup:
+    Value: !Ref ReadOnlyBillingGroup
+  ReadOnlyAdminGroup:
+    Value: !Ref ReadOnlyAdminGroup
   CloudTrailKMSKeyAlias:
     Description: "CloudTrail KMS Key Alias"
     Value:

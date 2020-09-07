@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-   Conformance Pack template
+  Config Rules to check resource's compliance status
 Parameters:
   RequiredTagKey:
     Type: String

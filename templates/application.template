@@ -2,19 +2,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides nesting for required stacks to deploy a full sample web application
   with reverse proxy, ELBs, IAM, and other resources (for demonstration/POC/testing)
-  QS(0018)
 Metadata:
-  Stack:
-    Value: 3
-  VersionDate:
-    Value: 20190715
-  Identifier:
-    Value: template-application
-  Input:
-    Description: VPC, SubnetIDs, S3 bucket names, CIDR blocks, KeyNames, AMIs, DB
-      name and password
-  Output:
-    Description: Outputs ID of all deployed resources
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
@@ -684,8 +672,15 @@ Resources:
                   - /etc/cfn/cfn-hup.conf
                   - /etc/cfn/hooks.d/cfn-auto-reloader.conf
         install_wordpress:
+          packages:
+            yum:
+              jq: []
+              awslogs: []
+              httpd: []
+              php: []
+              php-mysql: []
           sources:
-            /var/www/html: https://wordpress.org/latest.tar.gz
+            /var/www/html: 'https://wordpress.org/wordpress-5.1.1.tar.gz'
           files:
             /var/www/html/wordpress/wp-config.php:
               content: !Sub |
@@ -764,11 +759,7 @@ Resources:
               mode: '000644'
               owner: root
               group: root
-            /tmp/update-wp-config:
-              content: !Sub |
-                #!/bin/bash -xe
-                secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
-                sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
+            
           services:
             sysvinit:
               httpd:
@@ -797,12 +788,12 @@ Resources:
 
             yum update -y
 
-            sudo amazon-linux-extras install php7.2
-            sudo amazon-linux-extras install httpd_modules
-            sudo yum install -y jq
-            sudo yum install -y httpd mariadb-server
-            sudo amazon-linux-extras install lamp-mariadb10.2-php7.2
-            sleep 5
+            #sudo amazon-linux-extras install php7.2
+            #sudo amazon-linux-extras install httpd_modules
+            #sudo yum install -y jq
+            #sudo yum install -y httpd mariadb-server
+            #sudo amazon-linux-extras install lamp-mariadb10.2-php7.2
+            #sleep 5
             
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigApp --configsets wordpress_install --region ${AWS::Region}
 
@@ -810,29 +801,30 @@ Resources:
             #     NOTE: UPDATE THESE VALUES ACCORDING TO THE COMPLIANCE BODY     #
             ######################################################################
             LANDING_PAGE="/var/www/html/landing.html"
-            COMPLIANCE_BODY_LABEL="PCI DSS"
-            COMPLIANCE_SURVEY_LINK="pci"
-            COMPLIANCE_MATRIX_FILENAME="PCI-DSS3.2.1-Security-Controls-Mapping.xlsx"
+            #COMPLIANCE_BODY_LABEL="PCI DSS"
+            #COMPLIANCE_SURVEY_LINK="pci"
+            #COMPLIANCE_MATRIX_FILENAME="PCI-DSS3.2.1-Security-Controls-Mapping.xlsx"
             ######################################################################
 
             # Download the landing page.
-            aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}submodules/landing.html $LANDING_PAGE
+            sudo aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/landing /var/www/html/landing --recursive
+            #sudo unzip /var/www/html/landing.zip 
+            #aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}submodules/landing/index.html $LANDING_PAGE
        
             # Replace relative image links with links to the production S3 source.
-            sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
+            #sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
 
             # Inject the landing page branding label.
-            sudo sed -i "s|{compliance-body}|$COMPLIANCE_BODY_LABEL|g" $LANDING_PAGE
+            #sudo sed -i "s|{compliance-body}|$COMPLIANCE_BODY_LABEL|g" $LANDING_PAGE
 
             # Inject the survey link parameter.
-            sudo sed -i "s|{compliance-body-survey-link}|$COMPLIANCE_SURVEY_LINK|g" $LANDING_PAGE
+            #sudo sed -i "s|{compliance-body-survey-link}|$COMPLIANCE_SURVEY_LINK|g" $LANDING_PAGE
 
             # Inject the security control matrix file location.
-            sudo sed -i "s|{compliance-body-matrix}|https://cloudformationlctemplates.s3.amazonaws.com/$COMPLIANCE_MATRIX_FILENAME|g" $LANDING_PAGE
+            #sudo sed -i "s|{compliance-body-matrix}|https://cloudformationlctemplates.s3.amazonaws.com/$COMPLIANCE_MATRIX_FILENAME|g" $LANDING_PAGE
 
             # Update db password.
             secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
-            #cat $secret > /tmp/test
             sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
 
   AppTargetGroup:
@@ -1082,7 +1074,7 @@ Resources:
       Scope: REGIONAL
       Description: This is a Sample WebACL
       DefaultAction:
-        Block: {}
+        Allow: {}
       VisibilityConfig:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
@@ -1185,7 +1177,7 @@ Resources:
       ResourceArn: !Ref ELBWeb
 Outputs:
   LandingPageURL:
-    Value: !Sub https://${ELBWeb.DNSName}/landing.html
+    Value: !Sub https://${ELBWeb.DNSName}/landing/index.html
     Description: Landing Page
   WebsiteURL:
     Value: !Sub https://${ELBWeb.DNSName}/wordpress/wp-admin/install.php
@@ -1196,9 +1188,6 @@ Outputs:
     Value: !Ref SecurityGroupApp
   WebLoadBalancer:
     Value: !Ref ELBWeb
-  SurveyLink:
-    Description: Please take a moment to complete the survey by clicking this link
-    Value: https://aws.au1.qualtrics.com/SE/?SID=SV_55sYYdtY1NhTTgN&qs=pci
   Help:
     Description: For assistance or questions regarding this quickstart please email
       compliance-accelerator@amazon.com

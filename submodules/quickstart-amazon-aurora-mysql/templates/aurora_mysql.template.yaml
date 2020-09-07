@@ -51,6 +51,7 @@ Metadata:
           default: Quick Start configuration
         Parameters:
           - QSS3BucketName
+          - QSS3BucketRegion
           - QSS3KeyPrefix
     ParameterLabels:
       DBName:
@@ -111,6 +112,8 @@ Metadata:
         default: Pause after time of inactivity
       QSS3BucketName:
         default: Quick Start S3 bucket name
+      QSS3BucketRegion:
+        default: Quick Start S3 bucket region
       QSS3KeyPrefix:
         default: Quick Start S3 key prefix
 
@@ -120,6 +123,10 @@ Parameters:
     ConstraintDescription: "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-)."
     Default: aws-quickstart
     Description: "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-)."
+    Type: String
+  QSS3BucketRegion:
+    Default: 'us-east-1'
+    Description: 'The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.'
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: "^[0-9a-zA-Z-/]*$"
@@ -135,10 +142,10 @@ Parameters:
     Description: "Specifies if the database instance is a multiple Availability Zone deployment. Not applicable for Aurora Serverless."
     Type: String
   DBAllocatedStorageEncrypted:
-    Default: true
+    Default: "true"
     AllowedValues:
-      - true
-      - false
+      - "true"
+      - "false"
     Description: Whether or not to encrypt the database.
     Type: String
   DBCWLogExports:
@@ -146,10 +153,10 @@ Parameters:
     Default: ''
     Description: "Specify comma delimited list of Database logs ( error, slowquery, audit ) to export to CloudWatch Logs."
   RotateDBPassword:
-    Default: false
+    Default: "false"
     AllowedValues:
-      - true
-      - false
+      - "true"
+      - "false"
     Description: Whether or not to rotate the database password on a schedule (every 89 days).
     Type: String
   DBAutoMinorVersionUpgrade:
@@ -468,6 +475,7 @@ Rules:
         AssertDescription: "Please provide 2 distinct private subnets"
 
 Conditions:
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
   DBPasswordRotation:
     !Equals
     - !Ref RotateDBPassword
@@ -565,9 +573,8 @@ Resources:
         - Endpoint: !Ref NotificationList
           Protocol: email
   EncryptionKey:
-    Type: AWS::KMS::Key
     DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    Type: AWS::KMS::Key
     Properties:
       KeyPolicy:
         Version: 2012-10-17
@@ -759,7 +766,6 @@ Resources:
         - [!Ref RDSSecurityGroup]
         - [!Ref CustomDBSecurityGroup]
     UpdateReplacePolicy: Snapshot
-    DeletionPolicy: Retain
   AuroraDBSubnetGroup:
     Properties:
       DBSubnetGroupDescription: "Subnets available for the Amazon Aurora database instance"
@@ -959,7 +965,7 @@ Resources:
         SecretStringTemplate: !Sub '{"username": "${DBMasterUsername}"}'
         GenerateStringKey: "password"
         PasswordLength: 16
-        ExcludeCharacters: "\"'@/\\&$"
+        ExcludeCharacters: "\"'@/\\"
   SecretRDSInstanceAttachment:
     Condition: DBPasswordRotation
     Type: AWS::SecretsManager::SecretTargetAttachment
@@ -1013,7 +1019,7 @@ Resources:
     Properties:
       ServiceToken: !GetAtt 'CopyZipsFunction.Arn'
       DestBucket: !Ref 'LambdaZipsBucket'
-      SourceBucket: !Ref 'QSS3BucketName'
+      SourceBucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
       Prefix: !Ref 'QSS3KeyPrefix'
       Objects:
         - functions/packages/SSMRotateLambda/lambda.zip
@@ -1067,7 +1073,7 @@ Resources:
   LambdaInvokePermission:
     Type: AWS::Lambda::Permission
     Condition: DBPasswordRotation
-#    DependsOn: RDSRotationLambda
+    DependsOn: RDSRotationLambda
     Properties:
       FunctionName: !GetAtt RDSRotationLambda.Arn
       Action: 'lambda:InvokeFunction'
@@ -1088,8 +1094,6 @@ Resources:
           import threading
           import boto3
           import cfnresponse
-
-
           def copy_objects(source_bucket, dest_bucket, prefix, objects):
               s3 = boto3.client('s3')
               for o in objects:
@@ -1103,26 +1107,19 @@ Resources:
                   print('key = %s' %key)
                   s3.copy_object(CopySource=copy_source, Bucket=dest_bucket,
                         Key=key)
-
-
           def delete_objects(bucket, prefix, objects):
               s3 = boto3.client('s3')
               objects = {'Objects': [{'Key': prefix + o} for o in objects]}
               s3.delete_objects(Bucket=bucket, Delete=objects)
-
-
           def timeout(event, context):
               logging.error('Execution is about to time out, sending failure response to CloudFormation')
               cfnresponse.send(event, context, cfnresponse.FAILED, {}, None)
-
-
           def handler(event, context):
               # make sure we send a failure to CloudFormation if the function
               # is going to timeout
               timer = threading.Timer((context.get_remaining_time_in_millis()
                         / 1000.00) - 0.5, timeout, args=[event, context])
               timer.start()
-
               print('Received event: %s' % json.dumps(event))
               status = cfnresponse.SUCCESS
               try:
@@ -1162,8 +1159,9 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:GetObject
-                Resource:
-                  - !Sub 'arn:aws:s3:::${QSS3BucketName}/${QSS3KeyPrefix}*'
+                Resource: !Sub
+                  - arn:${AWS::Partition}:s3:::${S3Bucket}/${QSS3KeyPrefix}*
+                  - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
               - Effect: Allow
                 Action:
                   - s3:PutObject
@@ -1179,6 +1177,7 @@ Outputs:
     Description: "Amazon Aurora Cluster/Writer endpoint"
     Value: !Sub ${AuroraDBCluster.Endpoint.Address}
   AuroraReaderEndpoint:
+    Condition: IsServerlessDisabled
     Description: "Amzon Aurora Reader Endpoint"
     Value:  !Sub ${AuroraDBCluster.ReadEndpoint.Address}
   AuroraClusterPort:
@@ -1198,3 +1197,4 @@ Outputs:
     Condition: UseDatabaseEncryption
     Description: "The alias of the KMS encryption key used for storage and Performance Insights data encryption"
     Value: !Ref EncryptionKeyAlias
+    
