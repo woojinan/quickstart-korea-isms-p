@@ -313,6 +313,8 @@ Resources:
         #CustomDBSecurityGroup: !Ref SecurityGroupRDS
         QSS3BucketName: 'aws-quickstart'
         QSS3KeyPrefix: 'quickstart-amazon-aurora-mysql/'
+        # QSS3BucketName: !Ref QSS3BucketName
+        # QSS3KeyPrefix: !Ref QSS3KeyPrefix
 
   ApplicationTemplate:
         Type: AWS::CloudFormation::Stack

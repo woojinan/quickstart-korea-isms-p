@@ -445,6 +445,7 @@ Resources:
             Path: "/#{path}"
             Query: "#{query}"
             StatusCode: "HTTP_301"
+    
   WebInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -566,7 +567,8 @@ Resources:
       Protocol: HTTP
       Matcher:
         HttpCode: 200,302,403
-      HealthCheckPath: /wordpress/wp-admin/install.php
+      #HealthCheckPath: /wordpress/wp-admin/install.php
+      HealthCheckPath: /landing/index.html
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -787,13 +789,6 @@ Resources:
             #!/bin/bash -x
 
             yum update -y
-
-            #sudo amazon-linux-extras install php7.2
-            #sudo amazon-linux-extras install httpd_modules
-            #sudo yum install -y jq
-            #sudo yum install -y httpd mariadb-server
-            #sudo amazon-linux-extras install lamp-mariadb10.2-php7.2
-            #sleep 5
             
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigApp --configsets wordpress_install --region ${AWS::Region}
 
@@ -801,32 +796,14 @@ Resources:
             #     NOTE: UPDATE THESE VALUES ACCORDING TO THE COMPLIANCE BODY     #
             ######################################################################
             LANDING_PAGE="/var/www/html/landing.html"
-            #COMPLIANCE_BODY_LABEL="PCI DSS"
-            #COMPLIANCE_SURVEY_LINK="pci"
-            #COMPLIANCE_MATRIX_FILENAME="PCI-DSS3.2.1-Security-Controls-Mapping.xlsx"
             ######################################################################
 
             # Download the landing page.
             sudo aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/landing /var/www/html/landing --recursive
-            #sudo unzip /var/www/html/landing.zip 
-            #aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}submodules/landing/index.html $LANDING_PAGE
-       
-            # Replace relative image links with links to the production S3 source.
-            #sudo sed -i 's|images|https://cloudformationlctemplates.s3.amazonaws.com/images|g' $LANDING_PAGE
-
-            # Inject the landing page branding label.
-            #sudo sed -i "s|{compliance-body}|$COMPLIANCE_BODY_LABEL|g" $LANDING_PAGE
-
-            # Inject the survey link parameter.
-            #sudo sed -i "s|{compliance-body-survey-link}|$COMPLIANCE_SURVEY_LINK|g" $LANDING_PAGE
-
-            # Inject the security control matrix file location.
-            #sudo sed -i "s|{compliance-body-matrix}|https://cloudformationlctemplates.s3.amazonaws.com/$COMPLIANCE_MATRIX_FILENAME|g" $LANDING_PAGE
-
+            
             # Update db password.
             secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
-            sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php
-
+            sed -i "s/password_here/$secret/g" /var/www/html/wordpress/wp-config.php 
   AppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
