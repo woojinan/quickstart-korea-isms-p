@@ -679,10 +679,12 @@ Resources:
               jq: []
               awslogs: []
               httpd: []
-              php: []
-              php-mysql: []
+              #php: []
+              #php-mysql: []
+              php-mbstring.x86_64: []
           sources:
             /var/www/html: 'https://wordpress.org/wordpress-5.1.1.tar.gz'
+            /usr/share/php/aws-php: 'https://docs.aws.amazon.com/aws-sdk-php/v3/download/aws.zip'
           files:
             /var/www/html/wordpress/wp-config.php:
               content: !Sub |
@@ -705,6 +707,60 @@ Resources:
                  *
                  * @package WordPress
                  */
+                
+                require 'aws-php/aws-autoloader.php';
+                 
+                use Aws\Credentials\AssumeRoleCredentialProvider;
+                use Aws\Credentials\InstanceProfileProvider;
+                use Aws\Credentials\CredentialProvider;
+                use Aws\SecretsManager\SecretsManagerClient;
+                use Aws\Exception\AwsException;
+                 
+                $provider = CredentialProvider::defaultProvider();
+                $profile = new InstanceProfileProvider();
+                $client = new SecretsManagerClient([
+                     'version' => '2017-10-17',
+                     'region' => '${AWS::Region}',
+                     'credentials' => $profile
+                 
+                ]);
+                 
+                $secretName = "${SecretKeyName}";
+                try {
+                    $result = $client->getSecretValue([
+                        'SecretId' => $secretName,
+                    ]);
+                    $secretObject = json_decode($result["SecretString"]);
+                    $password =  $secretObject->{'password'};
+
+                } catch (AwsException $e) {
+                    $error = $e->getAwsErrorCode();
+                    if ($error == 'DecryptionFailureException') {
+                        // Secrets Manager can't decrypt the protected secret text using the provided AWS KMS key.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InternalServiceErrorException') {
+                        // An error occurred on the server side.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InvalidParameterException') {
+                        // You provided an invalid value for a parameter.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InvalidRequestException') {
+                        // You provided a parameter value that is not valid for the current state of the resource.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'ResourceNotFoundException') {
+                        // We can't find the resource that you asked for.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                }
 
                 // ** MySQL settings - You can get this info from your web host ** //
                 /** The name of the database for WordPress */
@@ -714,7 +770,7 @@ Resources:
                 define( 'DB_USER', '${DBUser}' );
 
                 /** MySQL database password */
-                define( 'DB_PASSWORD', 'password_here' );
+                define( 'DB_PASSWORD', $password );
 
                 /** MySQL hostname */
                 define( 'DB_HOST', '${DBHost}' );
@@ -789,6 +845,8 @@ Resources:
             #!/bin/bash -x
 
             yum update -y
+            amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+            yum install -y php-mbstring.x86_64
             
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigApp --configsets wordpress_install --region ${AWS::Region}
 
