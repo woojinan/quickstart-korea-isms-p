@@ -70,6 +70,7 @@ Parameters:
     Description: User name for connecting to the database instance.
     Type: String
   DBPassword:
+    Default: 'Password012#'
     Description: Password for connecting to the database instance.
     Type: String
     NoEcho: True
