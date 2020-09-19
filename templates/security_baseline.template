@@ -42,7 +42,7 @@ Parameters:
 
   PublishToCloudWatchLogs:
     Type: String
-    Default: 'false'
+    Default: 'true'
     Description: Indicates whether notifications are published to CloudWatch Logs.
     AllowedValues:
       - 'true'
@@ -50,7 +50,7 @@ Parameters:
 
   CloudWatchLogsGroupName:
     Type: String
-    Default: 'CloudTrail/Landing-Zone-Logs'
+    Default: 'CloudTrail/K-ISMS-Logs'
     Description: CloudWatchLogs Group name.
 
   # TrailBucket:

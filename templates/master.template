@@ -69,11 +69,11 @@ Parameters:
     Default: 'admin'
     Description: User name for connecting to the database instance.
     Type: String
-  DBPassword:
-    Default: 'Password012#'
-    Description: Password for connecting to the database instance.
-    Type: String
-    NoEcho: True
+  # DBPassword:
+  #   Default: 'Password012#'
+  #   Description: Password for connecting to the database instance.
+  #   Type: String
+  #   NoEcho: True
   NotificationList:
     Type: String
     Default: 'db-ops@domain.com'
@@ -308,7 +308,7 @@ Resources:
            - Outputs.rVPCProduction
         DBName: examplewordpress
         DBMasterUsername: !Ref DBUsername
-        DBMasterUserPassword: !Ref DBPassword
+        DBMasterUserPassword: 'Password12#'
         RotateDBPassword: 'true'
         NotificationList: !Ref NotificationList
         #CustomDBSecurityGroup: !Ref SecurityGroupRDS

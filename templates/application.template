@@ -84,6 +84,18 @@ Metadata:
 #      DBPassword:
 #        default: Aurora database password
 Parameters:
+  # KinesisBufferIntervalSeconds: 
+  #   Default: 900
+  #   Description: The frequency of data delivery to Amazon S3 is determined by the Amazon S3 Buffer size and Buffer interval value that you configured for your delivery stream. Kinesis Data Firehose buffers incoming data before delivering it to Amazon S3. You can configure the values for Amazon S3 Buffer size (1-128 MB) or Buffer interval (60 – 900 seconds), and the condition satisfied first triggers data delivery to Amazon S3    
+  #   Type: Number
+  #   MinValue: 60
+  #   MaxValue: 900
+  # KinesisBufferSizeMB: 
+  #   Default: 3
+  #   Description: The frequency of data delivery to Amazon S3 is determined by the Amazon S3 Buffer size and Buffer interval value that you configured for your delivery stream. Kinesis Data Firehose buffers incoming data before delivering it to Amazon S3. You can configure the values for Amazon S3 Buffer size (1-128 MB) or Buffer interval (60 – 900 seconds), and the condition satisfied first triggers data delivery to Amazon S3    
+  #   Type: Number
+  #   MinValue: 1
+  #   MaxValue: 128
   ruleAction:
     Type: String
     Description: The type of action you want to iplement for the rules in this set. Valid options are COUNT or BLOCK.
@@ -91,9 +103,9 @@ Parameters:
       - BLOCK
       - COUNT
     Default: COUNT 
-  pCentralLogBucket:
-    Type: String
-    Default: ''
+  # pCentralLogBucket:
+  #   Type: String
+  #   Default: ''
   EC2KeyPair:
     Description: The SSH key pair in your account to use for all other EC2 instance
       logins.
@@ -259,7 +271,7 @@ Mappings:
 #      AMZNLINUXHVM: ami-01460aa81365561fe
 Conditions:
   GovCloudCondition: !Or [!Equals [!Ref "AWS::Region", us-gov-west-1], !Equals [!Ref "AWS::Region", us-gov-east-1]]
-  CentralLoggingCondition: !Not [!Equals [!Ref pCentralLogBucket, '']]
+  # CentralLoggingCondition: !Not [!Equals [!Ref pCentralLogBucket, '']]
   ActionCondition: !Equals [!Ref ruleAction, 'BLOCK']
 
 Resources:
@@ -589,6 +601,9 @@ Resources:
         - Key: Name
           Value: Proxy Server
           PropagateAtLaunch: true
+        - Key: Environment
+          Value: development
+          PropagateAtLaunch: true
   AutoScalingUpWeb:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -893,6 +908,9 @@ Resources:
         - Key: Name
           Value: AppServer
           PropagateAtLaunch: true
+        - Key: Environment
+          Value: development
+          PropagateAtLaunch: true
   AutoScalingDownApp:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -1023,82 +1041,96 @@ Resources:
       Tags:
         - Key: Name
           Value: PostProcessor
-  CloudWatchLogGroupS3:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      RetentionInDays: 365
 
-  CloudWatchLogStreamS3:
-    DependsOn: CloudWatchLogGroupS3
-    Type: AWS::Logs::LogStream
-    Properties:
-      LogGroupName: !Ref CloudWatchLogGroupS3
-      LogStreamName: !Sub AWS_WAF_S3_${AWS::Region}
+  # WAFLogs3Bucket:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     VersioningConfiguration:
+  #       Status: Enabled
+  # CloudWatchLogGroupS3:
+  #   Type: AWS::Logs::LogGroup
+  #   Properties:
+  #     RetentionInDays: 365
 
-  StreamS3only:
-    Type: AWS::KinesisFirehose::DeliveryStream
-    Condition: CentralLoggingCondition
-    Properties:
-      DeliveryStreamName: aws-waf-logs-analytics
-      DeliveryStreamType: DirectPut
-      S3DestinationConfiguration:
-        BucketARN: !Sub arn:aws:s3:::${pCentralLogBucket}
-        BufferingHints:
-          IntervalInSeconds: 60
-          SizeInMBs: 120
-        CloudWatchLoggingOptions:
-          Enabled: true
-          LogGroupName: !Ref CloudWatchLogGroupS3
-          LogStreamName: !Ref CloudWatchLogStreamS3
-        CompressionFormat: UNCOMPRESSED
-        ErrorOutputPrefix: WAF_error
-        Prefix: !Sub AWS_WAF_S3_${AWS::Region}
-        RoleARN: !GetAtt rFirehoseRoleS3.Arn
+  # CloudWatchLogStreamS3:
+  #   DependsOn: CloudWatchLogGroupS3
+  #   Type: AWS::Logs::LogStream
+  #   Properties:
+  #     LogGroupName: !Ref CloudWatchLogGroupS3
+  #     LogStreamName: !Sub AWS_WAF_S3_${AWS::Region}
 
-  rFirehoseRoleS3:
-    Type: AWS::IAM::Role
-    Condition: CentralLoggingCondition
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: 'Allow'
-          Principal:
-            Service: 'firehose.amazonaws.com'
-          Action: 'sts:AssumeRole'
-          Condition:
-            StringEquals:
-              sts:ExternalId: !Sub ${AWS::AccountId}
-      Path: /
-      Policies:
-        - PolicyName: Firehose_Role_S3
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: glue:GetTableVersions
-                Resource: "*"
-            #Statement:
-              - Effect: Allow
-                Action:
-                - s3:AbortMultipartUpload
-                - s3:GetBucketLocation
-                - s3:GetObject
-                - s3:ListBucket
-                - s3:PutObject
-                Resource:
-                - !Sub arn:aws:s3:::${pCentralLogBucket}
-                - !Sub arn:aws:s3:::${pCentralLogBucket}/*
-            #Statement:
-              - Effect: Allow
-                Action:
-                - lambda:InvokeFunction
-                - lambda:GetFunctionConfiguration
-                Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:%FIREHOSE_DEFAULT_FUNCTION%:%FIREHOSE_DEFAULT_VERSION%
-            #Statement:
-              - Effect: Allow
-                Action: logs:PutLogEvents
-                Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/kinesisfirehose/aws-waf-logs-${AWS::Region}-analytics:log-stream:*
+  # StreamS3only:
+  #   Type: AWS::KinesisFirehose::DeliveryStream
+  #   Condition: CentralLoggingCondition
+  #   Properties:
+  #     DeliveryStreamName: 
+  #       !Join
+  #           - ''
+  #           - - 'aws-waf-logs-'
+  #             - !Ref AWS::StackName
+  #     DeliveryStreamType: DirectPut
+  #     S3DestinationConfiguration:
+  #       BucketARN: 
+  #         !Join 
+  #         - ''
+  #         - - 'arn:aws:s3:::'
+  #           - !Ref WAFLogs3Bucket
+  #       BufferingHints:
+  #         IntervalInSeconds: 60
+  #         SizeInMBs: 120
+  #       CloudWatchLoggingOptions:
+  #         Enabled: true
+  #         LogGroupName: !Ref CloudWatchLogGroupS3
+  #         LogStreamName: !Ref CloudWatchLogStreamS3
+  #       CompressionFormat: UNCOMPRESSED
+  #       ErrorOutputPrefix: WAF_error
+  #       Prefix: !Sub AWS_WAF_S3_${AWS::Region}
+  #       RoleARN: !GetAtt rFirehoseRoleS3.Arn
+
+  # rFirehoseRoleS3:
+  #   Type: AWS::IAM::Role
+  #   Condition: CentralLoggingCondition
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: '2012-10-17'
+  #       Statement:
+  #       - Effect: 'Allow'
+  #         Principal:
+  #           Service: 'firehose.amazonaws.com'
+  #         Action: 'sts:AssumeRole'
+  #         Condition:
+  #           StringEquals:
+  #             sts:ExternalId: !Sub ${AWS::AccountId}
+  #     Path: /
+  #     Policies:
+  #       - PolicyName: Firehose_Role_S3
+  #         PolicyDocument:
+  #           Version: '2012-10-17'
+  #           Statement:
+  #             - Effect: Allow
+  #               Action: glue:GetTableVersions
+  #               Resource: "*"
+  #           #Statement:
+  #             - Effect: Allow
+  #               Action:
+  #               - s3:AbortMultipartUpload
+  #               - s3:GetBucketLocation
+  #               - s3:GetObject
+  #               - s3:ListBucket
+  #               - s3:PutObject
+  #               Resource:
+  #               - !Sub arn:aws:s3:::${WAFLogs3Bucket}
+  #               - !Sub arn:aws:s3:::${WAFLogs3Bucket}/*
+  #           #Statement:
+  #             - Effect: Allow
+  #               Action:
+  #               - lambda:InvokeFunction
+  #               - lambda:GetFunctionConfiguration
+  #               Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:%FIREHOSE_DEFAULT_FUNCTION%:%FIREHOSE_DEFAULT_VERSION%
+  #           #Statement:
+  #             - Effect: Allow
+  #               Action: logs:PutLogEvents
+  #               Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/kinesisfirehose/aws-waf-logs-${AWS::Region}-analytics:log-stream:*
 
   ###
   ## ADD WAFv2
@@ -1223,8 +1255,8 @@ Outputs:
     Value: !Ref SecurityGroupApp
   WebLoadBalancer:
     Value: !Ref ELBWeb
-  Help:
-    Description: For assistance or questions regarding this quickstart please email
-      compliance-accelerator@amazon.com
-    Value: ''
+  # Help:
+  #   Description: For assistance or questions regarding this quickstart please email
+  #     compliance-accelerator@amazon.com
+  #   Value: ''
 ...
