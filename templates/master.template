@@ -281,7 +281,24 @@ Resources:
 #         # QSS3KeyPrefix: !Ref QSS3KeyPrefix  
 #         QSS3BucketName: 'aws-quickstart'
 #         QSS3KeyPrefix: 'quickstart-amazon-aurora-mysql/'
-  
+  # SecurityGroupRDS:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properties:
+  #     GroupDescription: Port 3306 database for access
+  #     GroupName: RDS SecurityGroup
+  #     VpcId: 
+  #       !GetAtt
+  #          - ProductionVpcTemplate
+  #          - Outputs.rVPCProduction
+  #     SecurityGroupIngress:
+  #       - IpProtocol: tcp
+  #         FromPort: 3306
+  #         ToPort: 3306
+  #         CidrIp: 10.100.0.0/16
+  #     Tags:
+  #       - Key: Name
+  #         Value: sg-database-access
+
   DatabaseTemplate:
     Type: 'AWS::CloudFormation::Stack'
     Properties:
@@ -306,6 +323,8 @@ Resources:
           !GetAtt
            - ProductionVpcTemplate
            - Outputs.rVPCProduction
+        DBEngineVersion: 'Aurora-MySQL5.7.12'
+        DBAccessCIDR: 10.100.0.0/16
         DBName: examplewordpress
         DBMasterUsername: !Ref DBUsername
         DBMasterUserPassword: 'Password12#'
