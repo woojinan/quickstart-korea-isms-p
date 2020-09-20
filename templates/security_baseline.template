@@ -485,12 +485,12 @@ Resources:
             Action: "kms:GenerateDataKey*"
             Resource: "*"
 
-  S3CloudTrailKeyAlias:
-    Type: AWS::KMS::Alias
-    Properties:
-      AliasName: alias/cloudtrails3
-      TargetKeyId:
-        Ref: S3CloudTrailKey
+  # S3CloudTrailKeyAlias:
+  #   Type: AWS::KMS::Alias
+  #   Properties:
+  #     AliasName: alias/cloudtrails3
+  #     TargetKeyId:
+  #       Ref: S3CloudTrailKey
 
   # Create CloudTrail encrypted S3 bucket for storage
   CloudTrailS3Bucket:
@@ -499,13 +499,27 @@ Resources:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+    # Properties:
+    #   BucketEncryption:
+    #     ServerSideEncryptionConfiguration:
+    #       - ServerSideEncryptionByDefault:
+    #           KMSMasterKeyID: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${S3CloudTrailKeyAlias}"
+    #           SSEAlgorithm: "aws:kms"
     Properties:
+      AccessControl: Private
+      # Block Public Access Policy
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      # Versioning
+      VersioningConfiguration:
+        Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
-              KMSMasterKeyID: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${S3CloudTrailKeyAlias}"
-              SSEAlgorithm: "aws:kms"
-
+              SSEAlgorithm: AES256  
   CloudTrailBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -620,18 +634,18 @@ Outputs:
     Description: "CloudTrail KMS Key Alias"
     Value:
       Ref: "CloudTrailKeyAlias"
-  S3KMSKeyAlias:
-    Description: "S3 KMS Key Alias"
-    Value:
-      Ref: "S3CloudTrailKeyAlias"
+  # S3KMSKeyAlias:
+  #   Description: "S3 KMS Key Alias"
+  #   Value:
+  #     Ref: "S3CloudTrailKeyAlias"
   CloudTrailS3Bucket:
     Description: "Encrypted S3 Bucket for CloudTrail Logs"
     Value:
       Ref: "CloudTrailS3Bucket"
-  CloudTrailS3BucketPolicy:
-    Description: "S3 Bucket Policy for CloudTrail Logs"
-    Value:
-      Ref: "CloudTrailBucketPolicy"
+  # CloudTrailS3BucketPolicy:
+  #   Description: "S3 Bucket Policy for CloudTrail Logs"
+  #   Value:
+  #     Ref: "CloudTrailBucketPolicy"
   CloudTrail:
     Description: "CloudTrail"
     Value:
