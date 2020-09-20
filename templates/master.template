@@ -78,11 +78,6 @@ Parameters:
     Default: 'admin'
     Description: User name for connecting to the database instance.
     Type: String
-  # DBPassword:
-  #   Default: 'Password012#'
-  #   Description: Password for connecting to the database instance.
-  #   Type: String
-  #   NoEcho: True
   NotificationList:
     Type: String
     Default: 'db-ops@domain.com'
@@ -97,76 +92,7 @@ Conditions:
     !Equals
     - !Ref AWS::Region
     - us-gov-west-1
-#Mappings:
-#  CustomVariables:
-#    vResourceEnvironmentTagKey:
-#      Value: Environment
-#    vResourceEnvironmentTagValue:
-#      Value: development
-#  Instances:
-#    ap-northeast-1:
-#      InstanceType: t3.small
-#    ap-northeast-2:
-#      InstanceType: t3.small
-#    ap-south-1:
-#      InstanceType: t3.small
-#    ap-southeast-1:
-#      InstanceType: t3.small
-#    ap-southeast-2:
-#      InstanceType: t3.small
-#    ca-central-1:
-#      InstanceType: t3.small
-#    eu-central-1:
-#      InstanceType: t3.small
-#    eu-west-1:
-#      InstanceType: t3.small
-#    eu-west-2:
-#      InstanceType: t3.small
-#    sa-east-1:
-#      InstanceType: t3.small
-#    us-east-1:
-#      InstanceType: t3.small
-#    us-east-2:
-#      InstanceType: t3.small
-#    us-west-1:
-#      InstanceType: t3.small
-#    us-west-2:
-#      InstanceType: t3.small
-#      ConfigRules: 'true'
-#      Glacier: 'true'
-  # AWSAMIRegionMap:
-  #   ap-northeast-1:
-  #     AMZNLINUXHVM: ami-079e6fb1e856e80c1
-  #   ap-northeast-2:
-  #     AMZNLINUXHVM: ami-0e4a253fb5f082688
-  #   ap-south-1:
-  #     AMZNLINUXHVM: ami-01e074f40dfb9999d
-  #   ap-southeast-1:
-  #     AMZNLINUXHVM: ami-0d9233e8ce73df7b2
-  #   ap-southeast-2:
-  #     AMZNLINUXHVM: ami-0c91f97cadcc8499e
-  #   ca-central-1:
-  #     AMZNLINUXHVM: ami-003a0ba7ea76b2785
-  #   eu-central-1:
-  #     AMZNLINUXHVM: ami-0ab838eeee7f316eb
-  #   eu-west-1:
-  #     AMZNLINUXHVM: ami-071f4ce599deff521
-  #   eu-west-2:
-  #     AMZNLINUXHVM: ami-0e49551fc78560451
-  #   sa-east-1:
-  #     AMZNLINUXHVM: ami-04b202bf877b5027b
-  #   us-east-1:
-  #     AMZNLINUXHVM: ami-09d069a04349dc3cb
-  #   us-east-2:
-  #     AMZNLINUXHVM: ami-0d542ef84ec55d71c
-  #   us-gov-west-1:
-  #     AMZNLINUXHVM: ami-ffa61d9e
-  #   us-gov-east-1:
-  #     AMZNLINUXHVM: ami-slkdf
-  #   us-west-1:
-  #     AMZNLINUXHVM: ami-04bc3da8f14823e88
-  #   us-west-2:
-  #     AMZNLINUXHVM: ami-01460aa81365561fe
+
 Resources:
   SecBaselineTemplate:
     Type: AWS::CloudFormation::Stack
@@ -208,7 +134,6 @@ Resources:
         pAppPrivateSubnetBCIDR: 10.100.119.0/21
         pDBPrivateSubnetACIDR: 10.100.194.0/21
         pDBPrivateSubnetBCIDR: 10.100.212.0/21
-        #pVPCTenancy: !Ref VPCTenancy
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-compliance-common/
           
@@ -247,76 +172,19 @@ Resources:
         pManagementVPCName: Management VPC
         pEC2KeyPairBastion: !Ref EC2KeyPairBastion
         pEC2KeyPair: !Ref EC2KeyPair
-        #pVPCTenancy: !Ref VPCTenancy
         pBastionAmi: !Ref LatestAmiId
-          # !FindInMap
-          # - AWSAMIRegionMap
-          # - !Ref AWS::Region
-          # - AMZNLINUXHVM
         pRegionAZ1Name: !Ref AvailabilityZoneA
         pRegionAZ2Name: !Ref AvailabilityZoneB
         pBastionInstanceType: t3.small
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Sub ${QSS3KeyPrefix}submodules/quickstart-compliance-common/
 
-#   DatabaseTemplate:
-#     Type: AWS::CloudFormation::Stack
-# #    DependsOn: ProductionVpcTemplate
-#     Properties:
-#       TemplateURL:
-#         !Sub
-#         - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/database.template
-#         - QSS3Region:
-#             !If
-#             - GovCloudCondition
-#             - s3-us-gov-west-1
-#             - s3
-#       Parameters:
-#         ProductionVPC:
-#           !GetAtt
-#           - ProductionVpcTemplate
-#           - Outputs.rVPCProduction
-#         DBPrivateSubnetA:
-#           !GetAtt
-#           - ProductionVpcTemplate
-#           - Outputs.rAppPrivateSubnetA
-#         DBPrivateSubnetB:
-#           !GetAtt
-#           - ProductionVpcTemplate
-#           - Outputs.rAppPrivateSubnetB
-# #        RegionAZ1Name: !Ref AvailabilityZoneA
-# #        RegionAZ2Name: !Ref AvailabilityZoneB
-#         DBName: examplewordpress
-#         DBUser: !Ref DBUsername
-#         DBPassword: !Ref DBPassword
-#         # QSS3BucketName: !Ref QSS3BucketName
-#         # QSS3KeyPrefix: !Ref QSS3KeyPrefix  
-#         QSS3BucketName: 'aws-quickstart'
-#         QSS3KeyPrefix: 'quickstart-amazon-aurora-mysql/'
-  # SecurityGroupRDS:
-  #   Type: AWS::EC2::SecurityGroup
-  #   Properties:
-  #     GroupDescription: Port 3306 database for access
-  #     GroupName: RDS SecurityGroup
-  #     VpcId: 
-  #       !GetAtt
-  #          - ProductionVpcTemplate
-  #          - Outputs.rVPCProduction
-  #     SecurityGroupIngress:
-  #       - IpProtocol: tcp
-  #         FromPort: 3306
-  #         ToPort: 3306
-  #         CidrIp: 10.100.0.0/16
-  #     Tags:
-  #       - Key: Name
-  #         Value: sg-database-access
 
   DatabaseTemplate:
     Type: 'AWS::CloudFormation::Stack'
     Properties:
       TemplateURL: !Sub
         - https://aws-quickstart.${QSS3Region}.amazonaws.com/quickstart-amazon-aurora-mysql/templates/aurora_mysql.template.yaml
-        #- https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/aurora_mysql.template.yaml
         - QSS3Region:
             Fn::If:
               - GovCloudCondition
@@ -345,8 +213,6 @@ Resources:
         #CustomDBSecurityGroup: !Ref SecurityGroupRDS
         QSS3BucketName: 'aws-quickstart'
         QSS3KeyPrefix: 'quickstart-amazon-aurora-mysql/'
-        # QSS3BucketName: !Ref QSS3BucketName
-        # QSS3KeyPrefix: !Ref QSS3KeyPrefix
 
   ApplicationTemplate:
         Type: AWS::CloudFormation::Stack
@@ -376,8 +242,7 @@ Resources:
             QSS3KeyPrefix: !Ref QSS3KeyPrefix
             DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
             DBName: examplewordpress
-            DBUser: !Ref DBUsername
-#            DBPassword: !Ref DBPassword  
+            DBUser: !Ref DBUsername 
             SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret
 
 Outputs:

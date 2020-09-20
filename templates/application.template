@@ -2,100 +2,8 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides nesting for required stacks to deploy a full sample web application
   with reverse proxy, ELBs, IAM, and other resources (for demonstration/POC/testing)
-# Metadata:
-#   AWS::CloudFormation::Interface:
-#     ParameterGroups:
-#     - Label:
-#         default: Availability Zone selection
-#       Parameters:
-#       - AvailabilityZoneA
-#       - AvailabilityZoneB
-#     - Label:
-#         default: Network configuration
-#       Parameters:
-#       - ManagementCIDR
-#       - ProductionCIDR
-#       - ProductionVPC
-#       - DMZSubnetA
-#       - DMZSubnetB
-#       - AppPrivateSubnetA
-#       - AppPrivateSubnetB
-# #    - Label:
-# #        default: Logging configuration
-# #      Parameters:
-# #        - CentralLogBucket
-# #        - WAFLogging
-# #    - Label:
-# #        default: Amazon Elasticsearch configuration
-# #      Parameters:
-# #        - ESClusterARN
-#     - Label:
-#         default: Amazon EC2 configuration
-#       Parameters:
-#         - EC2KeyPair
-#     - Label:
-#         default: Database configuration
-#       Parameters:
-#         - DBName
-#         - DBUser
-# #        - DBPassword
-#     - Label:
-#         default: AWS Quick Start configuration
-#       Parameters:
-#       - QSS3BucketName
-#       - QSS3KeyPrefix
-#     ParameterLabels:
-#       ProductionCIDR:
-#         default: Production VPC CIDR
-#       ProductionVPC:
-#         default: Production VPC ID
-#       DMZSubnetA:
-#         default: First public subnet ID
-#       DMZSubnetB:
-#         default: Second public subnet ID
-#       AppPrivateSubnetA:
-#         default: First private subnet ID
-#       AppPrivateSubnetB:
-#         default: Second private subnet ID
-#       AvailabilityZoneA:
-#         default: First Availability Zone for deployment
-#       AvailabilityZoneB:
-#         default: Second Availability Zone for deployment
-# #      ESClusterARN:
-# #        default: Amazon ES cluster
-#       EC2KeyPair:
-#         default: Existing SSH key
-#       ManagementCIDR:
-#         default: Management VPC CIDR
-# #      CentralLogBucket:
-# #        default: Centralized logging bucket for AWS WAF logs
-# #      WAFlogging:
-# #        default: Log storage location
-# #      QSS3BucketName:
-# #        default: Quick Start S3 bucket name
-# #      QSS3KeyPrefix:
-# #        default: Quick Start S3 key prefix
-#       DBHost:
-#         default: Aurora database host
-#       DBName:
-#         default: Aurora database name
-#       DBUser:
-#         default: Aurora database user
-# #      DBPassword:
-# #        default: Aurora database password
+
 Parameters:
-  # KinesisBufferIntervalSeconds: 
-  #   Default: 900
-  #   Description: The frequency of data delivery to Amazon S3 is determined by the Amazon S3 Buffer size and Buffer interval value that you configured for your delivery stream. Kinesis Data Firehose buffers incoming data before delivering it to Amazon S3. You can configure the values for Amazon S3 Buffer size (1-128 MB) or Buffer interval (60 – 900 seconds), and the condition satisfied first triggers data delivery to Amazon S3    
-  #   Type: Number
-  #   MinValue: 60
-  #   MaxValue: 900
-  # KinesisBufferSizeMB: 
-  #   Default: 3
-  #   Description: The frequency of data delivery to Amazon S3 is determined by the Amazon S3 Buffer size and Buffer interval value that you configured for your delivery stream. Kinesis Data Firehose buffers incoming data before delivering it to Amazon S3. You can configure the values for Amazon S3 Buffer size (1-128 MB) or Buffer interval (60 – 900 seconds), and the condition satisfied first triggers data delivery to Amazon S3    
-  #   Type: Number
-  #   MinValue: 1
-  #   MaxValue: 128
   ruleAction:
     Type: String
     Description: The type of action you want to iplement for the rules in this set. Valid options are COUNT or BLOCK.
@@ -103,9 +11,6 @@ Parameters:
       - BLOCK
       - COUNT
     Default: COUNT 
-  # pCentralLogBucket:
-  #   Type: String
-  #   Default: ''
   EC2KeyPair:
     Description: The SSH key pair in your account to use for all other EC2 instance
       logins.
@@ -184,10 +89,6 @@ Parameters:
     Description: Username of DB Instance
     Type: String
     Default: admin
-#  DBPassword:
-#    Description: Password of DB Instance
-#    Type: String
-#    NoEcho: True
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
@@ -241,89 +142,8 @@ Mappings:
     us-west-2:
       InstanceType: t3.small
       InstanceTypeDatabase: db.t3.small
-#Mappings:
-  # Instances:
-  #   ap-northeast-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   ap-northeast-2:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   ap-south-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   ap-southeast-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   ap-southeast-2:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   ca-central-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   eu-central-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   eu-west-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   eu-west-2:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   sa-east-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.m3.large
-  #   us-east-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   us-east-2:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   us-gov-west-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.m3.large
-  #   us-west-1:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-  #   us-west-2:
-  #     InstanceType: t3.small
-  #     InstanceTypeDatabase: db.t3.small
-#  AWSAMIRegionMap:
-#    ap-northeast-1:
-#      AMZNLINUXHVM: ami-079e6fb1e856e80c1
-#    ap-northeast-2:
-#      AMZNLINUXHVM: ami-0e4a253fb5f082688
-#    ap-south-1:
-#      AMZNLINUXHVM: ami-01e074f40dfb9999d
-#    ap-southeast-1:
-#      AMZNLINUXHVM: ami-0d9233e8ce73df7b2
-#    ap-southeast-2:
-#      AMZNLINUXHVM: ami-0c91f97cadcc8499e
-#    ca-central-1:
-#      AMZNLINUXHVM: ami-003a0ba7ea76b2785
-#    eu-central-1:
-#      AMZNLINUXHVM: ami-0ab838eeee7f316eb
-#    eu-west-1:
-#      AMZNLINUXHVM: ami-071f4ce599deff521
-#    eu-west-2:
-#      AMZNLINUXHVM: ami-0e49551fc78560451
-#    sa-east-1:
-#      AMZNLINUXHVM: ami-04b202bf877b5027b
-#    us-east-1:
-#      AMZNLINUXHVM: ami-09d069a04349dc3cb
-#    us-east-2:
-#      AMZNLINUXHVM: ami-0d542ef84ec55d71c
-#    us-gov-west-1:
-#      AMZNLINUXHVM: ami-e9a9d388
-#    us-gov-east-1:
-#      AMZNLINUXHVM: ami-2093423904
-#    us-west-1:
-#      AMZNLINUXHVM: ami-04bc3da8f14823e88
-#    us-west-2:
-#      AMZNLINUXHVM: ami-01460aa81365561fe
+
 Conditions:
-  #GovCloudCondition: !Or [!Equals [!Ref "AWS::Region", us-gov-west-1], !Equals [!Ref "AWS::Region", us-gov-east-1]]
-  # CentralLoggingCondition: !Not [!Equals [!Ref pCentralLogBucket, '']]
   ActionCondition: !Equals [!Ref ruleAction, 'BLOCK']
 
 Resources:
@@ -407,57 +227,7 @@ Resources:
       Tags:
         - Key: Name
           Value: sg-app-server-elb-instances
-  # WebContentBucket:
-  #   Type: AWS::S3::Bucket
-  #   Properties:
-  #     AccessControl: Private
-  #     LifecycleConfiguration:
-  #       Rules:
-  #         - Id: Transition90daysRetain7yrs
-  #           Status: Enabled
-  #           ExpirationInDays: 2555
-  #           Transition:
-  #             TransitionInDays: 90
-  #             StorageClass: STANDARD_IA
-  #     VersioningConfiguration:
-  #       Status: Enabled
-  #   DeletionPolicy: Delete
-  # WebContentS3Policy:
-  #   Type: AWS::S3::BucketPolicy
-  #   Properties:
-  #     Bucket: !Ref WebContentBucket
-  #     PolicyDocument:
-  #       Statement:
-  #         - Sid: EnforceSecureTransport
-  #           Action: s3:*
-  #           Effect: Deny
-  #           Principal: '*'
-  #           Resource:
-  #             !Sub
-  #             - arn:${Partition}:s3:::${WebContentBucket}
-  #             - Partition:
-  #                 !If
-  #                 - GovCloudCondition
-  #                 - aws-us-gov
-  #                 - aws
-  #           Condition:
-  #             Bool:
-  #               aws:SecureTransport: 'false'
-  #         - Sid: EnforceEncryptionOnPut
-  #           Effect: Deny
-  #           Principal: '*'
-  #           Action: s3:PutObject
-  #           Resource:
-  #             !Sub
-  #             - "arn:${Partition}:s3:::${WebContentBucket}/*"
-  #             - Partition:
-  #                 !If
-  #                 - GovCloudCondition
-  #                 - aws-us-gov
-  #                 - aws
-  #           Condition:
-  #             StringNotEquals:
-  #               s3:x-amz-server-side-encryption: AES256
+  
   ELBApp:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -635,8 +405,8 @@ Resources:
       Protocol: HTTP
       Matcher:
         HttpCode: 200,302,403
-      #HealthCheckPath: /wordpress/wp-admin/install.php
-      HealthCheckPath: /landing/index.html
+      HealthCheckPath: /wordpress/wp-admin/install.php
+      #HealthCheckPath: /landing/index.html
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -981,7 +751,6 @@ Resources:
       AutoScalingGroupName: !Ref AutoScalingGroupApp
       Cooldown: "1"
       ScalingAdjustment: -1
-  
 
   PostProcInstanceRole:
     Type: AWS::IAM::Role
@@ -1098,97 +867,6 @@ Resources:
         - Key: Name
           Value: PostProcessor
 
-  # WAFLogs3Bucket:
-  #   Type: AWS::S3::Bucket
-  #   Properties:
-  #     VersioningConfiguration:
-  #       Status: Enabled
-  # CloudWatchLogGroupS3:
-  #   Type: AWS::Logs::LogGroup
-  #   Properties:
-  #     RetentionInDays: 365
-
-  # CloudWatchLogStreamS3:
-  #   DependsOn: CloudWatchLogGroupS3
-  #   Type: AWS::Logs::LogStream
-  #   Properties:
-  #     LogGroupName: !Ref CloudWatchLogGroupS3
-  #     LogStreamName: !Sub AWS_WAF_S3_${AWS::Region}
-
-  # StreamS3only:
-  #   Type: AWS::KinesisFirehose::DeliveryStream
-  #   Condition: CentralLoggingCondition
-  #   Properties:
-  #     DeliveryStreamName: 
-  #       !Join
-  #           - ''
-  #           - - 'aws-waf-logs-'
-  #             - !Ref AWS::StackName
-  #     DeliveryStreamType: DirectPut
-  #     S3DestinationConfiguration:
-  #       BucketARN: 
-  #         !Join 
-  #         - ''
-  #         - - 'arn:aws:s3:::'
-  #           - !Ref WAFLogs3Bucket
-  #       BufferingHints:
-  #         IntervalInSeconds: 60
-  #         SizeInMBs: 120
-  #       CloudWatchLoggingOptions:
-  #         Enabled: true
-  #         LogGroupName: !Ref CloudWatchLogGroupS3
-  #         LogStreamName: !Ref CloudWatchLogStreamS3
-  #       CompressionFormat: UNCOMPRESSED
-  #       ErrorOutputPrefix: WAF_error
-  #       Prefix: !Sub AWS_WAF_S3_${AWS::Region}
-  #       RoleARN: !GetAtt rFirehoseRoleS3.Arn
-
-  # rFirehoseRoleS3:
-  #   Type: AWS::IAM::Role
-  #   Condition: CentralLoggingCondition
-  #   Properties:
-  #     AssumeRolePolicyDocument:
-  #       Version: '2012-10-17'
-  #       Statement:
-  #       - Effect: 'Allow'
-  #         Principal:
-  #           Service: 'firehose.amazonaws.com'
-  #         Action: 'sts:AssumeRole'
-  #         Condition:
-  #           StringEquals:
-  #             sts:ExternalId: !Sub ${AWS::AccountId}
-  #     Path: /
-  #     Policies:
-  #       - PolicyName: Firehose_Role_S3
-  #         PolicyDocument:
-  #           Version: '2012-10-17'
-  #           Statement:
-  #             - Effect: Allow
-  #               Action: glue:GetTableVersions
-  #               Resource: "*"
-  #           #Statement:
-  #             - Effect: Allow
-  #               Action:
-  #               - s3:AbortMultipartUpload
-  #               - s3:GetBucketLocation
-  #               - s3:GetObject
-  #               - s3:ListBucket
-  #               - s3:PutObject
-  #               Resource:
-  #               - !Sub arn:aws:s3:::${WAFLogs3Bucket}
-  #               - !Sub arn:aws:s3:::${WAFLogs3Bucket}/*
-  #           #Statement:
-  #             - Effect: Allow
-  #               Action:
-  #               - lambda:InvokeFunction
-  #               - lambda:GetFunctionConfiguration
-  #               Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:%FIREHOSE_DEFAULT_FUNCTION%:%FIREHOSE_DEFAULT_VERSION%
-  #           #Statement:
-  #             - Effect: Allow
-  #               Action: logs:PutLogEvents
-  #               Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/kinesisfirehose/aws-waf-logs-${AWS::Region}-analytics:log-stream:*
-
-  ###
   ## ADD WAFv2
   rELBWebACL:
     Type: AWS::WAFv2::WebACL
@@ -1311,8 +989,4 @@ Outputs:
     Value: !Ref SecurityGroupApp
   WebLoadBalancer:
     Value: !Ref ELBWeb
-  # Help:
-  #   Description: For assistance or questions regarding this quickstart please email
-  #     compliance-accelerator@amazon.com
-  #   Value: ''
 ...

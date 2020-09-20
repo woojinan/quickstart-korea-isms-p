@@ -28,18 +28,6 @@ Parameters:
       - 'true'
       - 'false'
 
-  PublishToTopic:
-    Type: String
-    Default: 'false'
-    Description: Indicates whether notifications are published to SNS.
-    AllowedValues:
-      - 'true'
-      - 'false'
-
-  # SNSTopic:
-  #   Type: String
-  #   Description: Topic for your notifications.
-
   PublishToCloudWatchLogs:
     Type: String
     Default: 'true'
@@ -52,10 +40,6 @@ Parameters:
     Type: String
     Default: 'CloudTrail/K-ISMS-Logs'
     Description: CloudWatchLogs Group name.
-
-  # TrailBucket:
-  #   Type: String
-  #   Description: Bucket name for logs.
 
   LogsRetentionInDays:
     Description: 'Specifies the number of days you want to retain CloudTrail log events in the CloudWatch Logs.'
@@ -85,10 +69,6 @@ Parameters:
 Conditions:
   IsMultiRegion: !Equals
     - !Ref MultiRegion
-    - 'true'
-
-  IsPublishToTopic: !Equals
-    - !Ref PublishToTopic
     - 'true'
 
   IsPublishToCloudWatchLogs: !Equals
@@ -311,13 +291,10 @@ Resources:
           Resource: '*'
       Groups:
       - !Ref ReadOnlyBillingGroup
-## CloudTrail
-# Enable CloudTrail
+
   CloudTrail:
     DependsOn:
-      #        - CloudTrailS3Bucket
       - CloudTrailBucketPolicy
-    #        - CloudTrailKey
     Type: AWS::CloudTrail::Trail
     Properties:
       S3BucketName: !Ref CloudTrailS3Bucket
@@ -370,8 +347,6 @@ Resources:
              Effect: Allow
              Action: 'logs:PutLogEvents'
              Resource: !GetAtt 'TrailLogGroup.Arn'
-
-  
 
   # Enable GuardDuty
   GuardDuty:
@@ -459,31 +434,31 @@ Resources:
       TargetKeyId:
         Ref: CloudTrailKey
 
-  # Create KMS CloudTrail S3 bucket encryption key
-  S3CloudTrailKey:
-    Type: AWS::KMS::Key
-    Properties:
-      KeyPolicy:
-        Version: 2012-10-17
-        Id: k-isms-key-cloudtrails3
-        Statement:
-          - Sid: Enable IAM User Permissions
-            Effect: Allow
-            Principal:
-              AWS: !Join
-                - ""
-                - - "arn:aws:iam::"
-                  - !Ref "AWS::AccountId"
-                  - ":root"
-            Action: "kms:*"
-            Resource: "*"
-          - Sid: Allow VPC Flow Logs to use the key
-            Effect: Allow
-            Principal:
-              Service:
-                - delivery.logs.amazonaws.com
-            Action: "kms:GenerateDataKey*"
-            Resource: "*"
+  # # Create KMS CloudTrail S3 bucket encryption key
+  # S3CloudTrailKey:
+  #   Type: AWS::KMS::Key
+  #   Properties:
+  #     KeyPolicy:
+  #       Version: 2012-10-17
+  #       Id: k-isms-key-cloudtrails3
+  #       Statement:
+  #         - Sid: Enable IAM User Permissions
+  #           Effect: Allow
+  #           Principal:
+  #             AWS: !Join
+  #               - ""
+  #               - - "arn:aws:iam::"
+  #                 - !Ref "AWS::AccountId"
+  #                 - ":root"
+  #           Action: "kms:*"
+  #           Resource: "*"
+  #         - Sid: Allow VPC Flow Logs to use the key
+  #           Effect: Allow
+  #           Principal:
+  #             Service:
+  #               - delivery.logs.amazonaws.com
+  #           Action: "kms:GenerateDataKey*"
+  #           Resource: "*"
 
   # S3CloudTrailKeyAlias:
   #   Type: AWS::KMS::Alias
@@ -494,8 +469,8 @@ Resources:
 
   # Create CloudTrail encrypted S3 bucket for storage
   CloudTrailS3Bucket:
-    DependsOn:
-      - S3CloudTrailKey
+    # DependsOn:
+    #   - S3CloudTrailKey
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
