@@ -347,7 +347,7 @@ Resources:
                 #!/bin/bash
                 ## Nginx setup
                 sleep 5
-                sudo yum install nginx
+                sudo amazon-linux-extras install nginx1
                 echo 'Replace resolver placeholder with /etc/resolv.conf nameservers'
                 sudo sed -i "s/xxxxx/$(grep ^nameserver /etc/resolv.conf | sed 's/^nameserver//' | tr -d '\n')/" /tmp/nginx/default.conf
                 sudo cp /tmp/nginx/default.conf /etc/nginx/conf.d/default.conf
