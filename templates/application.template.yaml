@@ -2,7 +2,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides nesting for required stacks to deploy a full sample web application
   with reverse proxy, ELBs, IAM, and other resources (for demonstration/POC/testing)
-
 Parameters:
   ruleAction:
     Type: String
@@ -68,6 +67,10 @@ Parameters:
     Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
       can include numbers, lowercase letters, uppercase letters, and hyphens (-).
       It cannot start or end with a hyphen (-). If you are unsure, do not change this value.
+    Type: String
+  QSS3BucketRegion:
+    Default: us-east-1
+    Description: The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
@@ -142,10 +145,8 @@ Mappings:
     us-west-2:
       InstanceType: t3.small
       InstanceTypeDatabase: db.t3.small
-
 Conditions:
   ActionCondition: !Equals [!Ref ruleAction, 'BLOCK']
-
 Resources:
   SecurityGroupWeb:
     Type: AWS::EC2::SecurityGroup
@@ -227,7 +228,6 @@ Resources:
       Tags:
         - Key: Name
           Value: sg-app-server-elb-instances
-  
   ELBApp:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -283,7 +283,6 @@ Resources:
             Path: "/#{path}"
             Query: "#{query}"
             StatusCode: "HTTP_301"
-    
   WebInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -362,7 +361,6 @@ Resources:
                 ensureRunning: true
                 files:
                   - /etc/nginx/conf.d/default.conf
-
     Properties:
       AssociatePublicIpAddress: true
       ImageId: !Ref LatestAmiId
@@ -698,7 +696,7 @@ Resources:
             ######################################################################
 
             # Download the landing page.
-            sudo aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/landing /var/www/html/landing --recursive
+            sudo aws s3 cp --region=${AWS::Region} s3://${QSS3BucketName}/${QSS3KeyPrefix}landing /var/www/html/landing --recursive
             
             # Update db password.
             #secret="$(aws secretsmanager get-secret-value --secret-id ${SecretKeyName} --region ${AWS::Region} --query SecretString --output text |jq '.password' |sed -e 's/^\"//g' |sed -e 's/\"$//g')"
@@ -751,7 +749,6 @@ Resources:
       AutoScalingGroupName: !Ref AutoScalingGroupApp
       Cooldown: "1"
       ScalingAdjustment: -1
-
   PostProcInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -862,11 +859,9 @@ Resources:
           echo Self-destruct!
           aws ec2 terminate-instances --instance-ids $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
           echo *** ELB HTTPS configuration complete ***
-
       Tags:
         - Key: Name
           Value: PostProcessor
-
   ## ADD WAFv2
   rELBWebACL:
     Type: AWS::WAFv2::WebACL
@@ -880,9 +875,7 @@ Resources:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
         MetricName: KISMSWebACLMetric
-      
       Rules:
-
         - Name: AWS-AWSManagedRulesAmazonIpReputationList
           Priority: 0
           OverrideAction:
@@ -898,8 +891,7 @@ Resources:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesAmazonIpReputationList
-              ExcludedRules: [] 
-
+              ExcludedRules: []
         - Name: AWS-AWSManagedRulesAdminProtectionRuleSet
           Priority: 1
           OverrideAction:
@@ -915,8 +907,7 @@ Resources:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesAdminProtectionRuleSet
-              ExcludedRules: [] 
-
+              ExcludedRules: []
         - Name: AWS-AWSManagedRulesCommonRuleSet
           Priority: 2
           OverrideAction:
@@ -932,9 +923,7 @@ Resources:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesCommonRuleSet
-              ExcludedRules: [] 
-
-
+              ExcludedRules: []
         - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
           Priority: 3
           OverrideAction:
@@ -951,7 +940,6 @@ Resources:
               VendorName: AWS
               Name: AWSManagedRulesKnownBadInputsRuleSet
               ExcludedRules: []
-
         - Name: AWS-AWSManagedRulesSQLiRuleSet
           Priority: 4
           OverrideAction:
@@ -967,8 +955,7 @@ Resources:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesSQLiRuleSet
-              ExcludedRules: [] 
-
+              ExcludedRules: []
   rELBCLAssociation:
     Type: 'AWS::WAFv2::WebACLAssociation'
     Properties:

@@ -3,19 +3,21 @@ project:
   regions:
   - ap-northeast-2
 #  - ap-northeast-1
-  s3_bucket: ks-isms-configuration
-  
-  
+  s3_bucket: ''
 tests:
   default:
-    template: ./templates/master.template.yaml
+    template: templates/isms-entrypoint-new-vpc.template.yaml
     regions:
       - ap-northeast-2
+      - us-east-1
+      - us-west-2
     parameters:
-      EC2KeyPairBastion: stage.seoul
-      EC2KeyPair: stage.seoul
-      AvailabilityZoneA: ap-northeast-2a
-      AvailabilityZoneB: ap-northeast-2c
-      QSS3BucketName: ks-isms-configuration-nrt
+      EC2KeyPairBastion: override
+      EC2KeyPair: override
+      AvailabilityZoneA: $[taskcat_getsingleaz_1]
+      AvailabilityZoneB: $[taskcat_getsingleaz_2]
+      QSS3BucketName: $[taskcat_autobucket]
+      QSS3BucketRegion: $[taskcat_current_region]
       QSS3KeyPrefix: quickstart-korea-isms-p/
-      DBPassword: Password12#$
+      DBPassword: P!$[taskcat_genpass_12A]
+      CloudWatchLogsGroupName: $[taskcat_random-string]
