@@ -831,7 +831,7 @@ Resources:
           if [[ $(echo "$cert_arn" | grep "non-production-testing-server-cert") != *"non-production-testing-server-cert"* ]]; then
             echo *** Beginnning ELB HTTPS configuration ***
             echo Generating private key...
-            openssl genrsa -aes128 -out /tmp/my-private-key.pem 4096
+            openssl genrsa -out /tmp/my-private-key.pem 4096
             echo Creating CSR
             openssl req -sha256 -new -key /tmp/my-private-key.pem -out /tmp/csr.pem -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
             echo Self-signing certificate...
