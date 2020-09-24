@@ -203,11 +203,12 @@ Resources:
           !GetAtt
            - ProductionVpcTemplate
            - Outputs.rVPCProduction
-        DBEngineVersion: 'Aurora-MySQL5.7.12'
+        DBEngineVersion: 'Aurora-MySQL5.7-2.04.6'
         DBAccessCIDR: 10.100.0.0/16
         DBName: examplewordpress
         DBMasterUsername: !Ref DBUsername
         DBMasterUserPassword: 'Password12#'
+        DBAutoMinorVersionUpgrade: 'true'
         RotateDBPassword: 'true'
         NotificationList: !Ref NotificationList
         #CustomDBSecurityGroup: !Ref SecurityGroupRDS

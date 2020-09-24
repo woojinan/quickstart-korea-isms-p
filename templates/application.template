@@ -762,7 +762,7 @@ Resources:
             Principal:
               Service:
                 - ec2.amazonaws.com
-                - waf-regional.amazonaws.com
+                #- waf-regional.amazonaws.com
             Action:
               - sts:AssumeRole
       Path: /
@@ -788,13 +788,13 @@ Resources:
                 Action:
                   - ec2:TerminateInstances
                 Resource: "*"
-              - Sid: WAFListACL
-                Effect: Allow
-                Action:
-                  - waf-regional:ListWebACLs
-                  - waf-regional:ListLoggingConfigurations
-                  - waf-regional:PutLoggingConfiguration
-                Resource: "*"
+              # - Sid: WAFListACL
+              #   Effect: Allow
+              #   Action:
+              #     - waf-regional:ListWebACLs
+              #     - waf-regional:ListLoggingConfigurations
+              #     - waf-regional:PutLoggingConfiguration
+              #   Resource: "*"
   PostProcInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
@@ -822,7 +822,7 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           set -x
-          exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
+          exec > >( tee /var/log/user-data.log|logger -t user-data ) 2>&1
           echo Configure the region, necessary especially for GovCloud
           aws configure set region ${AWS::Region}
 
