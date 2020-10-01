@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: >-
-  Config Rules to check resource's compliance status
+Description: Config Rules to check resource's compliance status (qs-1r6f0fdcm)
 Parameters:
   RequiredTagKey:
     Type: String

@@ -1,7 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Provides the base security, IAM, and access configuration for the AWS
-  account (qs-1nb14cqc0)
+Description: Provides the base security, IAM, and access configuration for the AWS account (qs-1r6f0fdc6)
 Parameters:
   EnableLogFileValidation:
     Type: String

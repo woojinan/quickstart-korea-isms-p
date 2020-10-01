@@ -1,5 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
+Description: Provides nesting for required stacks to deploy a baseline architecure to support Korean ISMS-P compliance. (qs-1r6f0fd9j)
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
