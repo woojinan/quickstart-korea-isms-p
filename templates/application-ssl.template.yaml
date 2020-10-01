@@ -24,23 +24,23 @@ Metadata:
     - Label:
         default: Network (existing VPC config)
       Parameters:
-      - pProductionCIDR
-      - pManagementCIDR
-      - pProductionVPC
-      - pDMZSubnetA
-      - pDMZSubnetB
-      - pAppPrivateSubnetA
-      - pAppPrivateSubnetB
+      - ProductionCIDR
+      - ManagementCIDR
+      - ProductionVPC
+      - DMZSubnetA
+      - DMZSubnetB
+      - AppPrivateSubnetA
+      - AppPrivateSubnetB
     - Label:
         default: Application Configuration
       Parameters:
-      - pWebInstanceType
-      - pWebServerAMI
-      - pAppInstanceType
-      - pAppAmi
-      - pEC2KeyPair
-      - pEnvironment
-      - pSupportsGlacier
+      - WebInstanceType
+      - WebServerAMI
+      - AppInstanceType
+      - AppAmi
+      - EC2KeyPair
+      - Environment
+      - SupportsGlacier
     - Label:
         default: Logging configuration
       Parameters:
@@ -53,10 +53,10 @@ Metadata:
     - Label:
         default: Database Configuration
       Parameters:
-      - pDBHost
-      - pDBName
-      - pDBUser
-      - pDBPassword
+      - DBHost
+      - DBName
+      - DBUser
+      - DBPassword
     - Label:
         default: AWS Quick Start Configuration
       Parameters:
@@ -68,33 +68,33 @@ Metadata:
         default: ID of first availability zone
       AvailabilityZoneB:
         default: ID of second availability zone
-      pProductionCIDR:
+      ProductionCIDR:
         default: CIDR block of production VPC
-      pManagementCIDR:
+      ManagementCIDR:
         default: CIDR block of management VPC
-      pProductionVPC:
+      ProductionVPC:
         default: Production VPC ID
-      pDMZSubnetA:
+      DMZSubnetA:
         default: First production DMZ subnet
-      pDMZSubnetB:
+      DMZSubnetB:
         default: Second production DMZ subnet
-      pAppPrivateSubnetA:
+      AppPrivateSubnetA:
         default: First production application subnet
-      pAppPrivateSubnetB:
+      AppPrivateSubnetB:
         default: Second production application subnet
-      pWebInstanceType:
+      WebInstanceType:
         default: Web instance type
-      pWebServerAMI:
+      WebServerAMI:
         default: Web server SSM AMI parameter
-      pAppInstanceType:
+      AppInstanceType:
         default: Application instance type
-      pAppAmi:
+      AppAmi:
         default: Application server SSM AMI parameter
-      pEC2KeyPair:
+      EC2KeyPair:
         default: EC2 key pair
-      pEnvironment:
+      Environment:
         default: Environment type
-      pSupportsGlacier:
+      SupportsGlacier:
         default: Supports glacier
       CentralLogBucket:
         default: Central S3 logging bucket
@@ -102,13 +102,13 @@ Metadata:
 #        default: WAF logging
 #      ESClusterARN:
 #        default: ElasticSearch cluster ARN
-      pDBHost:
+      DBHost:
         default: Database host
-      pDBName:
+      DBName:
         default: Database name
-      pDBUser:
+      DBUser:
         default: Database user
-      pDBPassword:
+      DBPassword:
         default: Database password
       QSS3BucketName:
         default: Quick Start S3 bucket name
@@ -132,37 +132,37 @@ Parameters:
 #    Type: String
 #    Description: (If Amazon Elasticsearch_S3 is chosen for the WAFlogging parameter) The Amazon Resource Name (ARN) of the Amazon ES domain that Kinesis Data Firehose delivers data to. Cluster must be in same account and Region.
 #    Default: ''
-  pEC2KeyPair:
+  EC2KeyPair:
     Description: Key Name for Instance
     Type: AWS::EC2::KeyPair::KeyName
-  pProductionCIDR:
+  ProductionCIDR:
     Description: Production VPC CIDR
     Type: String
     Default: 10.100.0.0/16
-  pManagementCIDR:
+  ManagementCIDR:
     Description: Management VPC CIDR
     Type: String
     Default: 10.10.0.0/16
-  pProductionVPC:
+  ProductionVPC:
     Description: Production VPC
     Type: AWS::EC2::VPC::Id
-  pDMZSubnetA:
+  DMZSubnetA:
     Description: DMZ Subnet A
     Type: AWS::EC2::Subnet::Id
-  pDMZSubnetB:
+  DMZSubnetB:
     Description: DMZ Subnet B
     Type: AWS::EC2::Subnet::Id
-  pAppPrivateSubnetA:
+  AppPrivateSubnetA:
     Description: WebApp Subnet A
     Type: AWS::EC2::Subnet::Id
-  pAppPrivateSubnetB:
+  AppPrivateSubnetB:
     Description: WebApp Subnet A
     Type: AWS::EC2::Subnet::Id
-  pWebInstanceType:
+  WebInstanceType:
     Description: Instance type for the webservers
     Type: String
     Default: m4.large
-  pAppInstanceType:
+  AppInstanceType:
     Description: Instance type for the app webservers
     Type: String
     Default: m4.large
@@ -172,31 +172,31 @@ Parameters:
   AvailabilityZoneB:
     Description: rDBPrivateSubnetB
     Type: AWS::EC2::AvailabilityZone::Name
-  pWebServerAMI:
+  WebServerAMI:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-  pAppAmi:
+  AppAmi:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-  pDBHost:
+  DBHost:
     Description: Amazon RDS MySQL endpoint
     Type: String
-  pDBName:
+  DBName:
     Description: Name of RDS Database
     Type: String
     Default: examplewordpress
-  pDBUser:
+  DBUser:
     Description: Username of DB Instance
     Type: String
     Default: admin
-  pDBPassword:
+  DBPassword:
     Description: DB Secret Key Name
     Type: String
-  pEnvironment:
+  Environment:
     Description: Environment type (development, test, or production)
     Type: String
     Default: development
-  pSupportsGlacier:
+  SupportsGlacier:
     Description: Determines whether this region supports Glacier (passed in from main
       template)
     Type: String
@@ -260,25 +260,25 @@ Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
   SupportsGlacier:
     !Equals
-    - !Ref pSupportsGlacier
+    - !Ref SupportsGlacier
     - 'true'
 Resources:
-  rS3ELBAccessLogs:
+  S3ELBAccessLogs:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
       AccessControl: Private
-  rS3AccessLogsPolicy:
+  S3AccessLogsPolicy:
     Type: AWS::S3::BucketPolicy
     DeletionPolicy: Retain
     Properties:
-      Bucket: !Ref rS3ELBAccessLogs
+      Bucket: !Ref S3ELBAccessLogs
       PolicyDocument:
         Version: 2008-10-17
         Statement:
         - Sid: ELBAccessLogs20130930
           Effect: Allow
-          Resource: !Sub arn:${AWS::Partition}:s3:::${rS3ELBAccessLogs}/Logs/AWSLogs/${AWS::AccountId}/*
+          Resource: !Sub arn:${AWS::Partition}:s3:::${S3ELBAccessLogs}/Logs/AWSLogs/${AWS::AccountId}/*
           Principal:
             AWS:
               !FindInMap
@@ -287,11 +287,11 @@ Resources:
               - ELB
           Action:
           - s3:PutObject
-  rSecurityGroupWeb:
+  SecurityGroupWeb:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for Reverse Proxy in DMZ
-      VpcId: !Ref pProductionVPC
+      VpcId: !Ref ProductionVPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 443
@@ -310,25 +310,25 @@ Resources:
       - Key: Name
         Value: sg-reverse-proxy-dmz
       - Key: Environment
-        Value: !Ref pEnvironment
-  rSecurityGroupWebInstance:
+        Value: !Ref Environment
+  SecurityGroupWebInstance:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for Reverse Proxy Instances in DMZ
-      VpcId: !Ref pProductionVPC
+      VpcId: !Ref ProductionVPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 443
         ToPort: 443
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       - IpProtocol: tcp
         FromPort: 80
         ToPort: 80
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       - IpProtocol: tcp
         FromPort: 22
         ToPort: 22
-        CidrIp: !Ref pManagementCIDR
+        CidrIp: !Ref ManagementCIDR
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: 80
@@ -341,22 +341,22 @@ Resources:
       - IpProtocol: udp
         FromPort: 123
         ToPort: 123
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       Tags:
       - Key: Name
         Value: sg-reverse-proxy-dmz-instances
       - Key: Environment
-        Value: !Ref pEnvironment
-  rSecurityGroupApp:
+        Value: !Ref Environment
+  SecurityGroupApp:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for Appservers ELB
-      VpcId: !Ref pProductionVPC
+      VpcId: !Ref ProductionVPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 443
         ToPort: 443
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: 443
@@ -370,25 +370,25 @@ Resources:
       - Key: Name
         Value: sg-app-server-elb
       - Key: Environment
-        Value: !Ref pEnvironment
-  rSecurityGroupAppInstance:
+        Value: !Ref Environment
+  SecurityGroupAppInstance:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for Appserver Instances
-      VpcId: !Ref pProductionVPC
+      VpcId: !Ref ProductionVPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 443
         ToPort: 443
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       - IpProtocol: tcp
         FromPort: 80
         ToPort: 80
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       - IpProtocol: tcp
         FromPort: 22
         ToPort: 22
-        CidrIp: !Ref pManagementCIDR
+        CidrIp: !Ref ManagementCIDR
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: 80
@@ -401,32 +401,32 @@ Resources:
       - IpProtocol: udp
         FromPort: 123
         ToPort: 123
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       - IpProtocol: tcp
         FromPort: 3306
         ToPort: 3306
-        CidrIp: !Ref pProductionCIDR
+        CidrIp: !Ref ProductionCIDR
       Tags:
       - Key: Name
         Value: sg-app-server-elb-instances
       - Key: Environment
-        Value: !Ref pEnvironment
-  rSecurityGroupRDS:
+        Value: !Ref Environment
+  SecurityGroupRDS:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Port 3306 database for access
-      VpcId: !Ref pProductionVPC
+      VpcId: !Ref ProductionVPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 3306
         ToPort: 3306
-        SourceSecurityGroupId: !Ref rSecurityGroupAppInstance
+        SourceSecurityGroupId: !Ref SecurityGroupAppInstance
       Tags:
       - Key: Name
         Value: sg-database-access
       - Key: Environment
-        Value: !Ref pEnvironment
-  rWebContentBucket:
+        Value: !Ref Environment
+  WebContentBucket:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: Private
@@ -445,18 +445,18 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
     DeletionPolicy: Delete
-  rWebContentS3Policy:
+  WebContentS3Policy:
     Type: AWS::S3::BucketPolicy
-    DependsOn: rWebContentBucket
+    DependsOn: WebContentBucket
     Properties:
-      Bucket: !Ref rWebContentBucket
+      Bucket: !Ref WebContentBucket
       PolicyDocument:
         Statement:
         - Sid: EnforceSecureTransport
           Action: s3:*
           Effect: Deny
           Principal: '*'
-          Resource: !Sub arn:${AWS::Partition}:s3:::${rWebContentBucket}
+          Resource: !Sub arn:${AWS::Partition}:s3:::${WebContentBucket}
           Condition:
             Bool:
               aws:SecureTransport: 'false'
@@ -464,20 +464,20 @@ Resources:
           Effect: Deny
           Principal: '*'
           Action: s3:PutObject
-          Resource: !Sub arn:${AWS::Partition}:s3:::${rWebContentBucket}/*
+          Resource: !Sub arn:${AWS::Partition}:s3:::${WebContentBucket}/*
           Condition:
             StringNotEquals:
               s3:x-amz-server-side-encryption: AES256
-  rELBApp:
+  ELBApp:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     DependsOn:
-    - rS3ELBAccessLogs
-    - rSecurityGroupApp
-    - rS3AccessLogsPolicy
+    - S3ELBAccessLogs
+    - SecurityGroupApp
+    - S3AccessLogsPolicy
     Properties:
       Subnets:
-      - !Ref pAppPrivateSubnetA
-      - !Ref pAppPrivateSubnetB
+      - !Ref AppPrivateSubnetA
+      - !Ref AppPrivateSubnetB
       HealthCheck:
         HealthyThreshold: "2"
         Interval: "15"
@@ -485,12 +485,12 @@ Resources:
         Timeout: "5"
         UnhealthyThreshold: "3"
       AccessLoggingPolicy:
-        S3BucketName: !Ref rS3ELBAccessLogs
+        S3BucketName: !Ref S3ELBAccessLogs
         S3BucketPrefix: Logs
         Enabled: true
         EmitInterval: 60
       SecurityGroups:
-      - !Ref rSecurityGroupApp
+      - !Ref SecurityGroupApp
       Listeners:
       - InstancePort: "80"
         LoadBalancerPort: "80"
@@ -505,17 +505,17 @@ Resources:
       - Key: Name
         Value: ProxyELB
       - Key: Environment
-        Value: !Ref pEnvironment
-  rELBWeb:
+        Value: !Ref Environment
+  ELBWeb:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     DependsOn:
-    - rS3ELBAccessLogs
-    - rSecurityGroupWeb
-    - rS3AccessLogsPolicy
+    - S3ELBAccessLogs
+    - SecurityGroupWeb
+    - S3AccessLogsPolicy
     Properties:
       Subnets:
-      - !Ref pDMZSubnetA
-      - !Ref pDMZSubnetB
+      - !Ref DMZSubnetA
+      - !Ref DMZSubnetB
       HealthCheck:
         HealthyThreshold: "2"
         Interval: "30"
@@ -523,12 +523,12 @@ Resources:
         Timeout: "5"
         UnhealthyThreshold: "5"
       AccessLoggingPolicy:
-        S3BucketName: !Ref rS3ELBAccessLogs
+        S3BucketName: !Ref S3ELBAccessLogs
         S3BucketPrefix: Logs
         Enabled: true
         EmitInterval: 60
       SecurityGroups:
-      - !Ref rSecurityGroupWeb
+      - !Ref SecurityGroupWeb
       Listeners:
       - InstancePort: "80"
         LoadBalancerPort: "80"
@@ -542,13 +542,13 @@ Resources:
       - Key: Name
         Value: Proxy ELB
       - Key: Environment
-        Value: !Ref pEnvironment
-  rS3AssetsBucket:
+        Value: !Ref Environment
+  S3AssetsBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
       AccessControl: Private
-  rPreProcInstanceRole:
+  PreProcInstanceRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -570,29 +570,29 @@ Resources:
             Effect: Allow
             Action:
             - s3:PutObject
-            Resource: !Sub arn:${AWS::Partition}:s3:::${rS3AssetsBucket}/*
+            Resource: !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}/*
           - Sid: SelfDestruct
             Effect: Allow
             Action:
             - ec2:TerminateInstances
             Resource:
             - '*'
-  rPreProcInstanceProfile:
+  PreProcInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-      - !Ref rPreProcInstanceRole
-  rPreProcInstance:
+      - !Ref PreProcInstanceRole
+  PreProcInstance:
     Type: AWS::EC2::Instance
     Properties:
-      KeyName: !Ref pEC2KeyPair
-      ImageId: !Ref pWebServerAMI
-      InstanceType: !Ref pAppInstanceType
-      IamInstanceProfile: !Ref rPreProcInstanceProfile
-      SubnetId: !Ref pAppPrivateSubnetA
+      KeyName: !Ref EC2KeyPair
+      ImageId: !Ref WebServerAMI
+      InstanceType: !Ref AppInstanceType
+      IamInstanceProfile: !Ref PreProcInstanceProfile
+      SubnetId: !Ref AppPrivateSubnetA
       SecurityGroupIds:
-      - !Ref rSecurityGroupAppInstance
+      - !Ref SecurityGroupAppInstance
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
@@ -607,13 +607,13 @@ Resources:
           sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/common.key -out /tmp/common.crt -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
 
           echo Uploading key to assets bucket...
-          aws s3api put-object --bucket ${rS3AssetsBucket} --key ssl/common.key --body /tmp/common.key
+          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.key --body /tmp/common.key
 
           echo Uploading cert to assets bucket...
-          aws s3api put-object --bucket ${rS3AssetsBucket} --key ssl/common.crt --body /tmp/common.crt
+          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.crt --body /tmp/common.crt
 
           echo Signal for success
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource rPreProcInstance --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PreProcInstance --region ${AWS::Region}
 
           echo Sleeping for 2 minutes to allow CloudFormation to catch up
           sleep 120
@@ -626,7 +626,7 @@ Resources:
     CreationPolicy:
       ResourceSignal:
         Timeout: PT10M
-  rWebInstanceRole:
+  WebInstanceRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -651,8 +651,8 @@ Resources:
             - s3:List*
             - s3:Head*
             Resource:
-            - !Sub arn:${AWS::Partition}:s3:::${rS3AssetsBucket}/*
-            - !Sub arn:${AWS::Partition}:s3:::${rS3AssetsBucket}
+            - !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}/*
+            - !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}
           - Sid: DescribeVolumes
             Effect: Allow
             Action:
@@ -668,18 +668,18 @@ Resources:
               - arn:${AWS::Partition}:s3:::${S3Bucket}/${QSS3KeyPrefix}*
               - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
             Effect: Allow
-  rWebInstanceProfile:
+  WebInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-      - !Ref rWebInstanceRole
-  rAutoScalingConfigWeb:
+      - !Ref WebInstanceRole
+  AutoScalingConfigWeb:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
-    - rELBApp
-    - rAutoScalingGroupApp
-    - rPreProcInstance
+    - ELBApp
+    - AutoScalingGroupApp
+    - PreProcInstance
     Metadata:
       AWS::CloudFormation::Init:
         config:
@@ -709,7 +709,7 @@ Resources:
                     listen [::]:443 ssl http2 default_server;
                     location / {
                         resolver xxxxx;
-                        set $elb 'https://${rELBApp.DNSName}';
+                        set $elb 'https://${ELBApp.DNSName}';
                         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                         proxy_set_header Host $http_host;
                         proxy_redirect off;
@@ -746,18 +746,18 @@ Resources:
                 - /etc/nginx/conf.d/default.conf
     Properties:
       AssociatePublicIpAddress: true
-      ImageId: !Ref pWebServerAMI
-      IamInstanceProfile: !Ref rWebInstanceProfile
-      InstanceType: !Ref pWebInstanceType
+      ImageId: !Ref WebServerAMI
+      IamInstanceProfile: !Ref WebInstanceProfile
+      InstanceType: !Ref WebInstanceType
       BlockDeviceMappings:
       - DeviceName: /dev/sdh
         Ebs:
           VolumeSize: 50
           VolumeType: gp2
           Encrypted: true
-      KeyName: !Ref pEC2KeyPair
+      KeyName: !Ref EC2KeyPair
       SecurityGroups:
-      - !Ref rSecurityGroupWebInstance
+      - !Ref SecurityGroupWebInstance
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -767,8 +767,8 @@ Resources:
           yum -y install mod_ssl
 
           aws configure set default.s3.signature_version s3v4
-          aws s3 cp s3://${rS3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
-          aws s3 cp s3://${rS3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}        
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}        
           
           EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
 
@@ -799,7 +799,7 @@ Resources:
           # Persist the volume in /etc/fstab so it gets mounted again
           echo '/dev/xvdh /data ext4 defaults,nofail 0 2' >> /etc/fstab
 
-          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource rAutoScalingConfigWeb --region ${AWS::Region}
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigWeb --region ${AWS::Region}
 
           ## Nginx setup
           sleep 5
@@ -808,21 +808,21 @@ Resources:
           sed -i '/default_server;/d' /etc/nginx/nginx.conf
           sleep 10
           service nginx restart
-  rAutoScalingGroupWeb:
+  AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
-    DependsOn: rAutoScalingConfigWeb
+    DependsOn: AutoScalingConfigWeb
     Properties:
       AvailabilityZones:
       - !Ref AvailabilityZoneA
       - !Ref AvailabilityZoneB
       VPCZoneIdentifier:
-      - !Ref pDMZSubnetA
-      - !Ref pDMZSubnetB
-      LaunchConfigurationName: !Ref rAutoScalingConfigWeb
+      - !Ref DMZSubnetA
+      - !Ref DMZSubnetB
+      LaunchConfigurationName: !Ref AutoScalingConfigWeb
       MinSize: "2"
       MaxSize: "4"
       LoadBalancerNames:
-      - !Ref rELBWeb
+      - !Ref ELBWeb
       HealthCheckType: ELB
       HealthCheckGracePeriod: 300
       Tags:
@@ -830,23 +830,23 @@ Resources:
         Value: Proxy Server
         PropagateAtLaunch: true
       - Key: Environment
-        Value: !Ref pEnvironment
+        Value: !Ref Environment
         PropagateAtLaunch: true
-  rAutoScalingUpWeb:
+  AutoScalingUpWeb:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
       AdjustmentType: ChangeInCapacity
-      AutoScalingGroupName: !Ref rAutoScalingGroupWeb
+      AutoScalingGroupName: !Ref AutoScalingGroupWeb
       Cooldown: "500"
       ScalingAdjustment: 1
-  rAutoScalingDownWeb:
+  AutoScalingDownWeb:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
       AdjustmentType: ChangeInCapacity
-      AutoScalingGroupName: !Ref rAutoScalingGroupWeb
+      AutoScalingGroupName: !Ref AutoScalingGroupWeb
       Cooldown: "500"
       ScalingAdjustment: -1
-  rCWAlarmHighCPUWeb:
+  CWAlarmHighCPUWeb:
     Type: AWS::CloudWatch::Alarm
     Properties:
       EvaluationPeriods: 1
@@ -856,16 +856,16 @@ Resources:
         is down
       Period: 60
       AlarmActions:
-      - !Ref rAutoScalingUpWeb
+      - !Ref AutoScalingUpWeb
       Namespace: AWS/EC2
       Dimensions:
       - Name: AutoScalingGroupName
-        Value: !Ref rAutoScalingGroupWeb
+        Value: !Ref AutoScalingGroupWeb
       ComparisonOperator: GreaterThanThreshold
       MetricName: CPUUtilization
-  rCWAlarmLowCPUWeb:
+  CWAlarmLowCPUWeb:
     Type: AWS::CloudWatch::Alarm
-    DependsOn: rAutoScalingGroupWeb
+    DependsOn: AutoScalingGroupWeb
     Properties:
       EvaluationPeriods: 1
       Statistic: Average
@@ -873,14 +873,14 @@ Resources:
       AlarmDescription: Alarm if CPU too low, remove a web server
       Period: 60
       AlarmActions:
-      - !Ref rAutoScalingDownWeb
+      - !Ref AutoScalingDownWeb
       Namespace: AWS/EC2
       Dimensions:
       - Name: AutoScalingGroupName
-        Value: !Ref rAutoScalingGroupWeb
+        Value: !Ref AutoScalingGroupWeb
       ComparisonOperator: LessThanThreshold
       MetricName: CPUUtilization
-  rAppInstanceRole:
+  AppInstanceRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -905,8 +905,8 @@ Resources:
             - s3:List*
             - s3:Head*
             Resource:
-            - !Sub arn:${AWS::Partition}:s3:::${rS3AssetsBucket}/*
-            - !Sub arn:${AWS::Partition}:s3:::${rS3AssetsBucket}
+            - !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}/*
+            - !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}
             - !Sub
               - arn:${AWS::Partition}:s3:::${S3Bucket}
               - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
@@ -932,16 +932,16 @@ Resources:
                 - arn:${AWS::Partition}:s3:::${S3Bucket}/${QSS3KeyPrefix}*
                 - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
             Effect: Allow
-  rAppInstanceProfile:
+  AppInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-        - Ref: 'rAppInstanceRole'
-  rAutoScalingConfigApp:
+        - Ref: 'AppInstanceRole'
+  AutoScalingConfigApp:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
-    - rPreProcInstance
+    - PreProcInstance
     Metadata:
       AWS::CloudFormation::Init:
         configSets:
@@ -962,8 +962,8 @@ Resources:
               content: !Sub |
                 [cfn-auto-reloader-hook]
                 triggers=post.update
-                path=Resources.rAutoScalingConfigApp.Metadata.AWS::CloudFormation::Init
-                action=/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource rAutoScalingGroupApp --configsets wordpress_install --region ${AWS::Region}
+                path=Resources.AutoScalingConfigApp.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingGroupApp --configsets wordpress_install --region ${AWS::Region}
               mode: '000400'
               owner: root
               group: root
@@ -1022,16 +1022,16 @@ Resources:
                 
                 // ** MySQL settings - You can get this info from your web host ** //
                 /** The name of the database for WordPress */
-                define( 'DB_NAME', '${pDBName}' );
+                define( 'DB_NAME', '${DBName}' );
 
                 /** MySQL database username */
-                define( 'DB_USER', '${pDBUser}' );
+                define( 'DB_USER', '${DBUser}' );
 
                 /** MySQL database password */
-                define( 'DB_PASSWORD', '${pDBPassword}' );
+                define( 'DB_PASSWORD', '${DBPassword}' );
 
                 /** MySQL hostname */
-                define( 'DB_HOST', '${pDBHost}' );
+                define( 'DB_HOST', '${DBHost}' );
 
                 /** Database Charset to use in creating database tables. */
                 define( 'DB_CHARSET', 'utf8' );
@@ -1082,18 +1082,18 @@ Resources:
                 enabled: true
                 ensureRunning: true
     Properties:
-      ImageId: !Ref pAppAmi
-      IamInstanceProfile: !Ref rAppInstanceProfile
-      InstanceType: !Ref pAppInstanceType
+      ImageId: !Ref AppAmi
+      IamInstanceProfile: !Ref AppInstanceProfile
+      InstanceType: !Ref AppInstanceType
       BlockDeviceMappings:
       - DeviceName: /dev/sdh
         Ebs:
           VolumeSize: 50
           VolumeType: gp2
           Encrypted: true
-      KeyName: !Ref pEC2KeyPair
+      KeyName: !Ref EC2KeyPair
       SecurityGroups:
-      - !Ref rSecurityGroupAppInstance
+      - !Ref SecurityGroupAppInstance
       UserData:
         Fn::Base64:
           !Sub
@@ -1104,8 +1104,8 @@ Resources:
             yum -y install mod_ssl
 
             aws configure set default.s3.signature_version s3v4
-            aws s3 cp s3://${rS3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
-            aws s3 cp s3://${rS3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}
+            aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
+            aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}
 
             EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
 
@@ -1136,7 +1136,7 @@ Resources:
             # Persist the volume in /etc/fstab so it gets mounted again
             echo '/dev/xvdh /data ext4 defaults,nofail 0 2' >> /etc/fstab
 
-            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource rAutoScalingConfigApp --configsets wordpress_install --region ${AWS::Region}
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigApp --configsets wordpress_install --region ${AWS::Region}
 
             cp /tmp/httpd/ssl.conf /etc/httpd/conf.d/ssl.conf
             service httpd restart
@@ -1145,48 +1145,29 @@ Resources:
             #     NOTE: UPDATE THESE VALUES ACCORDING TO THE COMPLIANCE BODY     #
             ######################################################################
             LANDING_PAGE="/var/www/html/landing.html"
-            IMAGES-FLD="/var/www/html/images"
-            COMPLIANCE_BODY_LABEL="ISMS-P"
-            COMPLIANCE_SURVEY_LINK="ISMS-P"
-            COMPLIANCE_MATRIX_FILENAME="PCI-DSS3.2-Security-Controls-Mapping.xlsx"
             ######################################################################
 
             # Download the landing page.
             sudo aws s3 cp --region=${AWS::Region} s3://${QSS3BucketName}/${QSS3KeyPrefix}landing /var/www/html/landing --recursive
 
-            # Replace relative image links with links to the production S3 source.
-            #sudo aws s3 cp --region=${S3Region} s3://${S3Bucket}/${QSS3KeyPrefix}assets/landing/images/ /var/www/html/images/ --recursive
-            #sudo /usr/bin/unzip /var/www/html/images.zip -d /var/www/html/
-            #sudo sed -i 's|images|/var/www/html/images|g' $LANDING_PAGE
-
-            # Inject the landing page branding label.
-            #sudo sed -i "s|{compliance-body}|$COMPLIANCE_BODY_LABEL|g" $LANDING_PAGE
-
-            # Inject the survey link parameter.
-            #sudo sed -i "s|{compliance-body-survey-link}|$COMPLIANCE_SURVEY_LINK|g" $LANDING_PAGE
-
-            # Inject the security control matrix file location.
-            #aws s3 cp --region=${S3Region} s3://${S3Bucket}/${QSS3KeyPrefix}assets/$COMPLIANCE_MATRIX_FILENAME /var/www/html/$COMPLIANCE_MATRIX_FILENAME
-            #sudo sed -i "s|{compliance-body-matrix}|$COMPLIANCE_MATRIX_FILENAME|g" $LANDING_PAGE
-
-            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource rAutoScalingGroupApp --region ${AWS::Region}
+            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AutoScalingGroupApp --region ${AWS::Region}
           - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
             S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
-  rAutoScalingGroupApp:
+  AutoScalingGroupApp:
     Type: AWS::AutoScaling::AutoScalingGroup
-    DependsOn: rAutoScalingConfigApp
+    DependsOn: AutoScalingConfigApp
     Properties:
       AvailabilityZones:
       - !Ref AvailabilityZoneA
       - !Ref AvailabilityZoneB
       VPCZoneIdentifier:
-      - !Ref pAppPrivateSubnetA
-      - !Ref pAppPrivateSubnetB
-      LaunchConfigurationName: !Ref rAutoScalingConfigApp
+      - !Ref AppPrivateSubnetA
+      - !Ref AppPrivateSubnetB
+      LaunchConfigurationName: !Ref AutoScalingConfigApp
       MinSize: "2"
       MaxSize: "4"
       LoadBalancerNames:
-      - !Ref rELBApp
+      - !Ref ELBApp
       HealthCheckType: ELB
       HealthCheckGracePeriod: 300
       Tags:
@@ -1194,27 +1175,27 @@ Resources:
         Value: AppServer
         PropagateAtLaunch: true
       - Key: Environment
-        Value: !Ref pEnvironment
+        Value: !Ref Environment
         PropagateAtLaunch: true
     CreationPolicy:
       ResourceSignal:
         Count: 1
         Timeout: PT15M
-  rAutoScalingDownApp:
+  AutoScalingDownApp:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
       AdjustmentType: ChangeInCapacity
-      AutoScalingGroupName: !Ref rAutoScalingGroupApp
+      AutoScalingGroupName: !Ref AutoScalingGroupApp
       Cooldown: "1"
       ScalingAdjustment: 1
-  rAutoScalingUpApp:
+  AutoScalingUpApp:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
       AdjustmentType: ChangeInCapacity
-      AutoScalingGroupName: !Ref rAutoScalingGroupApp
+      AutoScalingGroupName: !Ref AutoScalingGroupApp
       Cooldown: "1"
       ScalingAdjustment: -1
-  rCWAlarmHighCPUApp:
+  CWAlarmHighCPUApp:
     Type: AWS::CloudWatch::Alarm
     Properties:
       EvaluationPeriods: 1
@@ -1224,14 +1205,14 @@ Resources:
         is down
       Period: 60
       AlarmActions:
-      - !Ref rAutoScalingDownApp
+      - !Ref AutoScalingDownApp
       Namespace: AWS/EC2
       Dimensions:
       - Name: AutoScalingGroupName
-        Value: !Ref rAutoScalingGroupApp
+        Value: !Ref AutoScalingGroupApp
       ComparisonOperator: GreaterThanThreshold
       MetricName: CPUUtilization
-  rCWAlarmLowCPUApp:
+  CWAlarmLowCPUApp:
     Type: AWS::CloudWatch::Alarm
     Properties:
       EvaluationPeriods: 1
@@ -1240,14 +1221,14 @@ Resources:
       AlarmDescription: Alarm if CPU too low, remove an app server
       Period: 60
       AlarmActions:
-      - !Ref rAutoScalingUpApp
+      - !Ref AutoScalingUpApp
       Namespace: AWS/EC2
       Dimensions:
       - Name: AutoScalingGroupName
-        Value: !Ref rAutoScalingGroupApp
+        Value: !Ref AutoScalingGroupApp
       ComparisonOperator: LessThanThreshold
       MetricName: CPUUtilization
-  rPostProcInstanceRole:
+  PostProcInstanceRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -1284,24 +1265,24 @@ Resources:
             - ec2:TerminateInstances
             Resource:
             - '*'
-  rPostProcInstanceProfile:
+  PostProcInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-      - !Ref rPostProcInstanceRole
-  rPostProcInstance:
+      - !Ref PostProcInstanceRole
+  PostProcInstance:
     Type: AWS::EC2::Instance
     DependsOn:
-    - rAutoScalingGroupApp
-    - rAutoScalingGroupWeb
+    - AutoScalingGroupApp
+    - AutoScalingGroupWeb
     Properties:
-      ImageId: !Ref pWebServerAMI
-      InstanceType: !Ref pAppInstanceType
-      IamInstanceProfile: !Ref rPostProcInstanceProfile
-      SubnetId: !Ref pAppPrivateSubnetA
+      ImageId: !Ref WebServerAMI
+      InstanceType: !Ref AppInstanceType
+      IamInstanceProfile: !Ref PostProcInstanceProfile
+      SubnetId: !Ref AppPrivateSubnetA
       SecurityGroupIds:
-      - !Ref rSecurityGroupAppInstance
+      - !Ref SecurityGroupAppInstance
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
@@ -1327,23 +1308,23 @@ Resources:
 #            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
 #      TimeoutInMinutes: 20
 #      Parameters:
-#        pELBWeb: !Ref rELBWeb
+#        pELBWeb: !Ref ELBWeb
 #        pESClusterARN: !Ref ESClusterARN
 #        pCentralLogBucket: !Ref CentralLogBucket
 #        pWAFLogging: !Ref WAFlogging
 Outputs:
   LandingPageURL:
-    Value: !Sub https://${rELBWeb.DNSName}/landing/index.html
+    Value: !Sub https://${ELBWeb.DNSName}/landing/index.html
     Description: Landing Page
   WebsiteURL:
-    Value: !Sub https://${rELBWeb.DNSName}/wordpress/wp-admin/install.php
+    Value: !Sub https://${ELBWeb.DNSName}/wordpress/wp-admin/install.php
     Description: WordPress Website (demonstration purposes only)
-  rSecurityGroupWeb:
-    Value: !Ref rSecurityGroupWeb
-  rSecurityGroupApp:
-    Value: !Ref rSecurityGroupApp
-  rSecurityGroupRDS:
-    Value: !Ref rSecurityGroupRDS
+  SecurityGroupWeb:
+    Value: !Ref SecurityGroupWeb
+  SecurityGroupApp:
+    Value: !Ref SecurityGroupApp
+  SecurityGroupRDS:
+    Value: !Ref SecurityGroupRDS
   SurveyLink:
     Value: https://aws.au1.qualtrics.com/SE/?SID=SV_55sYYdtY1NhTTgN&qs=hipaa
     Description: Please take a moment to complete the survey by clicking this link

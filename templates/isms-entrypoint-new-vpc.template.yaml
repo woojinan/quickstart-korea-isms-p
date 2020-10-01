@@ -243,21 +243,21 @@ Resources:
       Parameters:
         AvailabilityZoneA: !Ref AvailabilityZoneA
         AvailabilityZoneB: !Ref AvailabilityZoneB
-        pEC2KeyPair: !Ref EC2KeyPair
-        pProductionCIDR: 10.100.0.0/16
-        pManagementCIDR: 10.10.0.0/16
-        pProductionVPC: !GetAtt ProductionVpcTemplate.Outputs.rVPCProduction
-        pDMZSubnetA: !GetAtt ProductionVpcTemplate.Outputs.rDMZSubnetA
-        pDMZSubnetB: !GetAtt ProductionVpcTemplate.Outputs.rDMZSubnetB
-        pAppPrivateSubnetA: !GetAtt ProductionVpcTemplate.Outputs.rAppPrivateSubnetA
-        pAppPrivateSubnetB: !GetAtt ProductionVpcTemplate.Outputs.rAppPrivateSubnetB
+        EC2KeyPair: !Ref EC2KeyPair
+        ProductionCIDR: 10.100.0.0/16
+        ManagementCIDR: 10.10.0.0/16
+        ProductionVPC: !GetAtt ProductionVpcTemplate.Outputs.rVPCProduction
+        DMZSubnetA: !GetAtt ProductionVpcTemplate.Outputs.rDMZSubnetA
+        DMZSubnetB: !GetAtt ProductionVpcTemplate.Outputs.rDMZSubnetB
+        AppPrivateSubnetA: !GetAtt ProductionVpcTemplate.Outputs.rAppPrivateSubnetA
+        AppPrivateSubnetB: !GetAtt ProductionVpcTemplate.Outputs.rAppPrivateSubnetB
         QSS3BucketName: !Ref QSS3BucketName
         QSS3BucketRegion: !Ref QSS3BucketRegion
         QSS3KeyPrefix: !Ref QSS3KeyPrefix
-        pDBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
-        pDBName: examplewordpress
-        pDBUser: !Ref DBUsername
-        pDBPassword: !Ref DBPassword
+        DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
+        DBName: examplewordpress
+        DBUser: !Ref DBUsername
+        DBPassword: !Ref DBPassword
 Outputs:
   TemplateType:
       Value: Standard Multi-Tier Web Application
