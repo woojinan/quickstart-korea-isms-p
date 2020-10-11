@@ -1,8 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Provides the base security, IAM, and access configuration for the AWS
-  account (qs-1nb14cqc0)
-
+Description: Provides the base security, IAM, and access configuration for the AWS account (qs-1r6f0fdc6)
 Parameters:
   EnableLogFileValidation:
     Type: String
@@ -11,7 +9,6 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
-
   IncludeGlobalEvents:
     Type: String
     Default: 'true'
@@ -19,7 +16,6 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
-
   MultiRegion:
     Type: String
     Default: 'false'
@@ -27,7 +23,6 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
-
   PublishToCloudWatchLogs:
     Type: String
     Default: 'true'
@@ -35,18 +30,15 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
-
   CloudWatchLogsGroupName:
     Type: String
     Default: 'CloudTrail/K-ISMS-Logs'
     Description: CloudWatchLogs Group name.
-
   LogsRetentionInDays:
     Description: 'Specifies the number of days you want to retain CloudTrail log events in the CloudWatch Logs.'
     Type: Number
     Default: 14
     AllowedValues: [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653]
-
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$
     ConstraintDescription: Quick Start bucket name can include numbers, lowercase
@@ -57,6 +49,10 @@ Parameters:
       can include numbers, lowercase letters, uppercase letters, and hyphens (-).
       It cannot start or end with a hyphen (-). If you are unsure, do not change this value.
     Type: String
+  QSS3BucketRegion:
+    Default: 'us-east-1'
+    Description: AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.
+    Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
     ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
@@ -66,15 +62,20 @@ Parameters:
       can include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/). If you are unsure, do not change this value.
     Type: String
+  EnableGuardDuty:
+    Type: String
+    Default: disable
+    AllowedValues: [ enable, disable ]
+    Description: If you do not currently have Guard Duty enabled in your account.
 Conditions:
   IsMultiRegion: !Equals
     - !Ref MultiRegion
     - 'true'
-
   IsPublishToCloudWatchLogs: !Equals
     - !Ref PublishToCloudWatchLogs
     - 'true'
-
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
+  GuardDutyEnabled: !Equals [!Ref EnableGuardDuty, 'enabled']
 Resources:
   SysAdminGroup:
     Type: AWS::IAM::Group
@@ -350,6 +351,7 @@ Resources:
 
   # Enable GuardDuty
   GuardDuty:
+    Condition: GuardDutyEnabled
     Type: "AWS::GuardDuty::Detector"
     Properties:
       Enable: true
@@ -522,7 +524,10 @@ Resources:
     DeletionPolicy: Retain
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub isms-conformance-delivery-${AWS::Region}-${AWS::AccountId}
+      BucketName:
+        !Sub
+          - 'isms-conformance-delivery-${AWS::Region}-${X}'
+          - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
       AccessControl: Private
       # Block Public Access Policy
       PublicAccessBlockConfiguration:
@@ -556,7 +561,9 @@ Resources:
             Effect: Deny
             Principal: '*'
             Resource:
-              !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${AWS::AccountId}/*
+              !Sub
+                - arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${X}/*
+                - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
             Condition:
               Bool:
                 aws:SecureTransport: false
@@ -566,14 +573,20 @@ Resources:
               AWS:
               - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
             Action: s3:GetBucketAcl
-            Resource: !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${AWS::AccountId}
+            Resource:
+              !Sub
+                - arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${X}
+                - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
           - Sid: AWSConfigConformsBucketDelivery
             Effect: Allow
             Principal:
               AWS:
               - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
             Action: s3:PutObject
-            Resource: !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${AWS::AccountId}/AWSLogs/${AWS::AccountId}/Config/*
+            Resource:
+              !Sub
+                - arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${X}/AWSLogs/${AWS::AccountId}/Config/*
+                - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
             Condition:
               StringEquals:
                 s3:x-amz-acl: bucket-owner-full-control
@@ -583,16 +596,18 @@ Resources:
               AWS:
               - !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config-conforms.amazonaws.com/AWSServiceRoleForConfigConforms
             Action: s3:GetObject
-            Resource: !Sub arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${AWS::AccountId}/AWSLogs/${AWS::AccountId}/Config/*
+            Resource:
+              !Sub
+                - arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${X}/AWSLogs/${AWS::AccountId}/Config/*
+                - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
 
   ISMSConformancePack:
     Type: AWS::Config::ConformancePack
     DependsOn: S3UploadBucketPolicy
     Properties:
       ConformancePackName: ISMS-ConformancePackName
-      DeliveryS3Bucket: !Sub isms-conformance-delivery-${AWS::Region}-${AWS::AccountId}
-      TemplateS3Uri: !Sub s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/config-rules.template
-  
+      DeliveryS3Bucket: !Ref S3UploadBucket
+      TemplateS3Uri: !Sub s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/config-rules.template.yaml
    
 Outputs:
   SysAdmin:
