@@ -497,6 +497,16 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256  
+      LifecycleConfiguration:
+        Rules:
+        - Id: GlacierRule
+          Prefix: glacier
+          Status: Enabled
+          ExpirationInDays: '365'
+          Transitions:
+            - TransitionInDays: '180'
+              StorageClass: GLACIER
+              
   CloudTrailBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
