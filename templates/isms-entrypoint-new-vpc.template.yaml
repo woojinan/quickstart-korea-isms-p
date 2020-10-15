@@ -226,6 +226,7 @@ Resources:
         DBMasterUsername: !Ref DBUsername
         DBMasterUserPassword: !Ref DBPassword
         RotateDBPassword: 'false'
+        DBAutoMinorVersionUpgrade: 'true'
         NotificationList: !Ref NotificationList
         #CustomDBSecurityGroup: !Ref SecurityGroupRDS
         QSS3BucketName: aws-quickstart
