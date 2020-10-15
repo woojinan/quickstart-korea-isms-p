@@ -8,12 +8,15 @@ tests:
   default:
     template: templates/isms-entrypoint-new-vpc.template.yaml
     regions:
-      - ap-northeast-2
-      - us-east-1
-      - us-west-2
+#      - ap-northeast-2
+#      - us-east-1
+#      - us-west-2
+      - ap-southeast-1
+    s3_regional_buckets: true
     parameters:
-      EC2KeyPairBastion: override
-      EC2KeyPair: override
+      EC2KeyPairBastion: isms_key
+      EC2KeyPair: isms_key
+
       AvailabilityZoneA: $[taskcat_getsingleaz_1]
       AvailabilityZoneB: $[taskcat_getsingleaz_2]
       QSS3BucketName: $[taskcat_autobucket]
