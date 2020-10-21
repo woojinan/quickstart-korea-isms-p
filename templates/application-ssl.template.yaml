@@ -224,6 +224,9 @@ Parameters:
       can include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/).
     Type: String
+  SecretKeyName:
+    Description: DB Secret Key Name
+    Type: String
 Mappings:
   elbMap:
     ap-northeast-1:
@@ -980,15 +983,17 @@ Resources:
                 - /etc/cfn/cfn-hup.conf
                 - /etc/cfn/hooks.d/cfn-auto-reloader.conf
         install_wordpress:
-          commands:
-            0_enable_mariadb:
-              command: amazon-linux-extras enable lamp-mariadb10.2-php7.2
-            1_yum_clean:
-              command: yum clean metadata
-            2_php_install:
-             command: yum install -y php-cli php-pdo php-fpm php-json php-mysqlnd mariadb
+          packages:
+            yum:
+              jq: []
+              awslogs: []
+              httpd: []
+              #php: []
+              #php-mysql: []
+              php-mbstring.x86_64: []
           sources:
-            /var/www/html: https://wordpress.org/latest.tar.gz
+            /var/www/html: 'https://wordpress.org/wordpress-5.1.1.tar.gz'
+            /usr/share/php/aws-php: 'https://docs.aws.amazon.com/aws-sdk-php/v3/download/aws.zip'
           files:
             /tmp/httpd/ssl.conf:
               content: |
@@ -1016,6 +1021,7 @@ Resources:
                  * This file contains the following configurations:
                  *
                  * * MySQL settings
+                 * * Secret keys
                  * * Database table prefix
                  * * ABSPATH
                  *
@@ -1023,7 +1029,61 @@ Resources:
                  *
                  * @package WordPress
                  */
-                
+
+                require 'aws-php/aws-autoloader.php';
+                 
+                use Aws\Credentials\AssumeRoleCredentialProvider;
+                use Aws\Credentials\InstanceProfileProvider;
+                use Aws\Credentials\CredentialProvider;
+                use Aws\SecretsManager\SecretsManagerClient;
+                use Aws\Exception\AwsException;
+                 
+                $provider = CredentialProvider::defaultProvider();
+                $profile = new InstanceProfileProvider();
+                $client = new SecretsManagerClient([
+                     'version' => '2017-10-17',
+                     'region' => '${AWS::Region}',
+                     'credentials' => $profile
+                 
+                ]);
+                 
+                $secretName = "${SecretKeyName}";
+                try {
+                    $result = $client->getSecretValue([
+                        'SecretId' => $secretName,
+                    ]);
+                    $secretObject = json_decode($result["SecretString"]);
+                    $password =  $secretObject->{'password'};
+
+                } catch (AwsException $e) {
+                    $error = $e->getAwsErrorCode();
+                    if ($error == 'DecryptionFailureException') {
+                        // Secrets Manager can't decrypt the protected secret text using the provided AWS KMS key.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InternalServiceErrorException') {
+                        // An error occurred on the server side.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InvalidParameterException') {
+                        // You provided an invalid value for a parameter.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InvalidRequestException') {
+                        // You provided a parameter value that is not valid for the current state of the resource.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'ResourceNotFoundException') {
+                        // We can't find the resource that you asked for.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                }
+
                 // ** MySQL settings - You can get this info from your web host ** //
                 /** The name of the database for WordPress */
                 define( 'DB_NAME', '${DBName}' );
@@ -1105,7 +1165,8 @@ Resources:
             #!/bin/bash -x
 
             yum update -y
-            yum -y install mod_ssl
+            amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+            yum -y install php-mbstring.x86_64 mod_ssl
 
             aws configure set default.s3.signature_version s3v4
             aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
