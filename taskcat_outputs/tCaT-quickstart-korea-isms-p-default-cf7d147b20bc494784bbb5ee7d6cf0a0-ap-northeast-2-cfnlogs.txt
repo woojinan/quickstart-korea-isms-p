@@ -1,0 +1,783 @@
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                      ResourceStatusReason
+--------------------------------  ------------------  --------------------------  ---------------------------------------------------------------------  ---------------------------
+2020-08-18 09:15:42.299000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0
+2020-08-18 09:15:40.250000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  ApplicationTemplate
+2020-08-18 09:10:25.785000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ApplicationTemplate                                                    Resource creation Initiated
+2020-08-18 09:10:24.666000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ApplicationTemplate
+2020-08-18 09:10:21.493000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  DatabaseTemplate
+2020-08-18 08:46:07.072000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  ManagementVpcTemplate
+2020-08-18 08:43:03.182000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ManagementVpcTemplate                                                  Resource creation Initiated
+2020-08-18 08:43:02.595000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  DatabaseTemplate                                                       Resource creation Initiated
+2020-08-18 08:43:01.652000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ManagementVpcTemplate
+2020-08-18 08:43:01.623000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  DatabaseTemplate
+2020-08-18 08:42:58.319000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  ProductionVpcTemplate
+2020-08-18 08:42:57.811000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  IamTemplate
+2020-08-18 08:39:54.913000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate                                                  Resource creation Initiated
+2020-08-18 08:39:54.132000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  IamTemplate                                                            Resource creation Initiated
+2020-08-18 08:39:53.626000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate
+2020-08-18 08:39:53.434000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  IamTemplate
+2020-08-18 08:39:49.442000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6-ProductionVpcTemplate-KVBQQ0OH0CQQ
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                           LogicalResourceId                                                                                    ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------  ---------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 08:42:53.144000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack             tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6-ProductionVpcTemplate-KVBQQ0OH0CQQ
+2020-08-18 08:42:50.439000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteProdPrivateNatGatewayB
+2020-08-18 08:42:35.109000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdPrivateNatGatewayB                                                                         Resource creation Initiated
+2020-08-18 08:42:34.669000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdPrivateNatGatewayB
+2020-08-18 08:42:34.075000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteProdPrivateNatGatewayA
+2020-08-18 08:42:31.865000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   rNATGatewaySubnetB
+2020-08-18 08:42:18.708000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdPrivateNatGatewayA                                                                         Resource creation Initiated
+2020-08-18 08:42:18.188000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdPrivateNatGatewayA
+2020-08-18 08:42:14.393000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   rNATGatewaySubnetA
+2020-08-18 08:40:57.044000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocProdDMZA
+2020-08-18 08:40:56.881000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDMZPubSubnetA
+2020-08-18 08:40:56.866000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rAppPrivateSubnetAssociationA
+2020-08-18 08:40:56.808000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocProdDMZB
+2020-08-18 08:40:56.564000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDMZPubSubnetB
+2020-08-18 08:40:56.368000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocAppPrivSubnetB
+2020-08-18 08:40:56.300000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rAppPrivateSubnetAssociationB
+2020-08-18 08:40:56.134000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteProdIGW
+2020-08-18 08:40:56.074000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocAppPrivSubnetA
+2020-08-18 08:40:56.057000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDBPrivSubnetA
+2020-08-18 08:40:56.040000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocDBPrivateB
+2020-08-18 08:40:55.976000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocDBPrivateA
+2020-08-18 08:40:55.669000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDBPrivSubnetB
+2020-08-18 08:40:41.991000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowHTTPfromProd
+2020-08-18 08:40:41.983000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowBastionSSHAccessPublic
+2020-08-18 08:40:41.812000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   rNATGatewaySubnetA                                                                                   Resource creation Initiated
+2020-08-18 08:40:41.751000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocProdDMZA                                                                                  Resource creation Initiated
+2020-08-18 08:40:41.694000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllReturnTCP
+2020-08-18 08:40:41.683000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowEgressReturnTCP
+2020-08-18 08:40:41.624000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowALLEgressPublic
+2020-08-18 08:40:41.561000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rAppPrivateSubnetAssociationA                                                                        Resource creation Initiated
+2020-08-18 08:40:41.556000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDMZPubSubnetA                                                                              Resource creation Initiated
+2020-08-18 08:40:41.487000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocProdDMZB                                                                                  Resource creation Initiated
+2020-08-18 08:40:41.379000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowHTTPSPublic
+2020-08-18 08:40:41.337000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   rNATGatewaySubnetA
+2020-08-18 08:40:41.319000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   rNATGatewaySubnetB                                                                                   Resource creation Initiated
+2020-08-18 08:40:41.257000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowBastionSSHAccessPrivate
+2020-08-18 08:40:41.255000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowReturnTCPPriv
+2020-08-18 08:40:41.233000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDMZPubSubnetB                                                                              Resource creation Initiated
+2020-08-18 08:40:41.071000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocAppPrivSubnetB                                                                             Resource creation Initiated
+2020-08-18 08:40:41.021000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDMZPubSubnetA
+2020-08-18 08:40:40.967000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocProdDMZA
+2020-08-18 08:40:40.950000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rAppPrivateSubnetAssociationB                                                                        Resource creation Initiated
+2020-08-18 08:40:40.946000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllTCPInternal
+2020-08-18 08:40:40.844000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllTCPInternalEgress
+2020-08-18 08:40:40.826000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdIGW                                                                                        Resource creation Initiated
+2020-08-18 08:40:40.775000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   rNATGatewaySubnetB
+2020-08-18 08:40:40.741000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowALLfromPrivEgress
+2020-08-18 08:40:40.712000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDBPrivSubnetA                                                                              Resource creation Initiated
+2020-08-18 08:40:40.709000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocAppPrivSubnetA                                                                             Resource creation Initiated
+2020-08-18 08:40:40.708000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocProdDMZB
+2020-08-18 08:40:40.698000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rAppPrivateSubnetAssociationA
+2020-08-18 08:40:40.684000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocDBPrivateB                                                                                Resource creation Initiated
+2020-08-18 08:40:40.642000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocDBPrivateA                                                                                Resource creation Initiated
+2020-08-18 08:40:40.628000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDMZPubSubnetB
+2020-08-18 08:40:40.588000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocAppPrivSubnetB
+2020-08-18 08:40:40.456000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAclEntry              rNACLRuleAllowMgmtAccessSSHtoPrivate
+2020-08-18 08:40:40.356000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdIGW
+2020-08-18 08:40:40.338000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDBPrivSubnetB                                                                              Resource creation Initiated
+2020-08-18 08:40:40.193000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDBPrivSubnetA
+2020-08-18 08:40:40.180000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rAppPrivateSubnetAssociationB
+2020-08-18 08:40:40.169000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocAppPrivSubnetA
+2020-08-18 08:40:39.987000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocDBPrivateB
+2020-08-18 08:40:39.976000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocDBPrivateA
+2020-08-18 08:40:39.797000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetNetworkAclAssociation  rNACLAssocDBPrivSubnetB
+2020-08-18 08:40:37.777000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rDMZSubnetA
+2020-08-18 08:40:37.420000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rDMZSubnetB
+2020-08-18 08:40:37.234000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rAppPrivateSubnetB
+2020-08-18 08:40:37.213000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rAppPrivateSubnetA
+2020-08-18 08:40:37.010000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rDBPrivateSubnetA
+2020-08-18 08:40:36.960000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rDBPrivateSubnetB
+2020-08-18 08:40:36.938000+00:00  CREATE_COMPLETE     AWS::EC2::VPCGatewayAttachment         rGWAttachmentProdIGW
+2020-08-18 08:40:26.801000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                rSecurityGroupVpcNat
+2020-08-18 08:40:26.666000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowBastionSSHAccessPublic                                                                 Resource creation Initiated
+2020-08-18 08:40:26.649000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowHTTPfromProd                                                                           Resource creation Initiated
+2020-08-18 08:40:26.579000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                rSecurityGroupSSHFromProd
+2020-08-18 08:40:26.579000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                rSecurityGroupMgmtBastion
+2020-08-18 08:40:26.390000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllReturnTCP                                                                           Resource creation Initiated
+2020-08-18 08:40:26.385000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowEgressReturnTCP                                                                        Resource creation Initiated
+2020-08-18 08:40:26.302000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowALLEgressPublic                                                                        Resource creation Initiated
+2020-08-18 08:40:26.040000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowHTTPSPublic                                                                            Resource creation Initiated
+2020-08-18 08:40:25.981000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowHTTPfromProd
+2020-08-18 08:40:25.974000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowBastionSSHAccessPrivate                                                                Resource creation Initiated
+2020-08-18 08:40:25.961000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowBastionSSHAccessPublic
+2020-08-18 08:40:25.930000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowReturnTCPPriv                                                                          Resource creation Initiated
+2020-08-18 08:40:25.752000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowEgressReturnTCP
+2020-08-18 08:40:25.719000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupVpcNat                                                                                 Resource creation Initiated
+2020-08-18 08:40:25.698000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllReturnTCP
+2020-08-18 08:40:25.693000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowALLEgressPublic
+2020-08-18 08:40:25.679000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupSSHFromProd                                                                            Resource creation Initiated
+2020-08-18 08:40:25.632000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupMgmtBastion                                                                            Resource creation Initiated
+2020-08-18 08:40:25.630000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllTCPInternal                                                                         Resource creation Initiated
+2020-08-18 08:40:25.524000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllTCPInternalEgress                                                                   Resource creation Initiated
+2020-08-18 08:40:25.425000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowALLfromPrivEgress                                                                      Resource creation Initiated
+2020-08-18 08:40:25.411000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowHTTPSPublic
+2020-08-18 08:40:25.356000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowBastionSSHAccessPrivate
+2020-08-18 08:40:25.187000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowReturnTCPPriv
+2020-08-18 08:40:25.164000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowMgmtAccessSSHtoPrivate                                                                 Resource creation Initiated
+2020-08-18 08:40:25.011000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllTCPInternal
+2020-08-18 08:40:24.761000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowALLfromPrivEgress
+2020-08-18 08:40:24.757000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowAllTCPInternalEgress
+2020-08-18 08:40:24.579000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAclEntry              rNACLRuleAllowMgmtAccessSSHtoPrivate
+2020-08-18 08:40:22.476000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAcl                   rNACLPublic
+2020-08-18 08:40:22.436000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   rRouteTableProdPrivateA
+2020-08-18 08:40:22.188000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   rRouteTableMain
+2020-08-18 08:40:22.008000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   rRouteTableProdPrivateB
+2020-08-18 08:40:21.843000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDMZSubnetA                                                                                          Resource creation Initiated
+2020-08-18 08:40:21.769000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkAcl                   rNACLPrivate
+2020-08-18 08:40:21.622000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         rGWAttachmentProdIGW                                                                                 Resource creation Initiated
+2020-08-18 08:40:21.596000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAcl                   rNACLPublic                                                                                          Resource creation Initiated
+2020-08-18 08:40:21.560000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableProdPrivateA                                                                              Resource creation Initiated
+2020-08-18 08:40:21.484000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDMZSubnetB                                                                                          Resource creation Initiated
+2020-08-18 08:40:21.451000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDMZSubnetA
+2020-08-18 08:40:21.275000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableMain                                                                                      Resource creation Initiated
+2020-08-18 08:40:21.271000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rAppPrivateSubnetB                                                                                   Resource creation Initiated
+2020-08-18 08:40:21.257000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rAppPrivateSubnetA                                                                                   Resource creation Initiated
+2020-08-18 08:40:21.203000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         rGWAttachmentProdIGW
+2020-08-18 08:40:21.199000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAcl                   rNACLPublic
+2020-08-18 08:40:21.141000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupSSHFromProd
+2020-08-18 08:40:21.126000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableProdPrivateA
+2020-08-18 08:40:21.086000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupVpcNat
+2020-08-18 08:40:21.056000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDMZSubnetB
+2020-08-18 08:40:21.018000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableProdPrivateB                                                                              Resource creation Initiated
+2020-08-18 08:40:21.008000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDBPrivateSubnetA                                                                                    Resource creation Initiated
+2020-08-18 08:40:21.003000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAcl                   rNACLPrivate                                                                                         Resource creation Initiated
+2020-08-18 08:40:20.983000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDBPrivateSubnetB                                                                                    Resource creation Initiated
+2020-08-18 08:40:20.877000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableMain
+2020-08-18 08:40:20.818000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupMgmtBastion
+2020-08-18 08:40:20.776000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rAppPrivateSubnetA
+2020-08-18 08:40:20.749000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rAppPrivateSubnetB
+2020-08-18 08:40:20.713000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableProdPrivateB
+2020-08-18 08:40:20.675000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkAcl                   rNACLPrivate
+2020-08-18 08:40:20.603000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDBPrivateSubnetA
+2020-08-18 08:40:20.515000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rDBPrivateSubnetB
+2020-08-18 08:40:17.405000+00:00  CREATE_COMPLETE     AWS::EC2::VPC                          rVPCProduction
+2020-08-18 08:40:17.058000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          rEIPProdNatB
+2020-08-18 08:40:16.774000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          rEIPProdNatA
+2020-08-18 08:40:16.492000+00:00  CREATE_COMPLETE     AWS::EC2::InternetGateway              rIGWProd
+2020-08-18 08:40:01.084000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdNatB                                                                                         Resource creation Initiated
+2020-08-18 08:40:00.924000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          rVPCProduction                                                                                       Resource creation Initiated
+2020-08-18 08:40:00.822000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdNatA                                                                                         Resource creation Initiated
+2020-08-18 08:40:00.598000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              rIGWProd                                                                                             Resource creation Initiated
+2020-08-18 08:40:00.493000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          rVPCProduction
+2020-08-18 08:40:00.428000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdNatB
+2020-08-18 08:40:00.403000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdNatA
+2020-08-18 08:40:00.276000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              rIGWProd
+2020-08-18 08:39:54.440000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack             tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6-ProductionVpcTemplate-KVBQQ0OH0CQQ  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-IamTemplate-PFWO3YCZEF4H
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                                               ResourceStatusReason
+--------------------------------  ------------------  --------------------------  ----------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 08:42:42.848000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-IamTemplate-PFWO3YCZEF4H
+2020-08-18 08:42:41.439000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rReadOnlyAdminPolicy
+2020-08-18 08:42:23.686000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rReadOnlyAdminPolicy                                                                            Resource creation Initiated
+2020-08-18 08:42:22.396000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rReadOnlyAdminPolicy
+2020-08-18 08:42:20.615000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile   rReadOnlyAdminProfile
+2020-08-18 08:42:19.439000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile   rSysAdminProfile
+2020-08-18 08:42:19.433000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile   rInstanceOpsProfile
+2020-08-18 08:42:18.639000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile   rIAMAdminProfile
+2020-08-18 08:40:55.303000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rSysAdminPolicy
+2020-08-18 08:40:53.844000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rIAMAdminPolicy
+2020-08-18 08:40:53.342000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rInstanceOpsPolicy
+2020-08-18 08:40:52.883000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rReadOnlyBillingPolicy
+2020-08-18 08:40:36.805000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rSysAdminPolicy                                                                                 Resource creation Initiated
+2020-08-18 08:40:35.515000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rSysAdminPolicy
+2020-08-18 08:40:35.385000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rIAMAdminPolicy                                                                                 Resource creation Initiated
+2020-08-18 08:40:35.089000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rReadOnlyBillingPolicy                                                                          Resource creation Initiated
+2020-08-18 08:40:35.051000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rInstanceOpsPolicy                                                                              Resource creation Initiated
+2020-08-18 08:40:34.942000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rIAMAdminPolicy
+2020-08-18 08:40:34.569000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rInstanceOpsPolicy
+2020-08-18 08:40:34.563000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rReadOnlyBillingPolicy
+2020-08-18 08:40:33.854000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rSysAdmin
+2020-08-18 08:40:33.831000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rReadOnlyAdminGroup
+2020-08-18 08:40:33.225000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rIAMAdminGroup
+2020-08-18 08:40:32.941000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rReadOnlyBillingGroup
+2020-08-18 08:40:32.772000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rInstanceOpsGroup
+2020-08-18 08:40:19.082000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rReadOnlyAdminProfile                                                                           Resource creation Initiated
+2020-08-18 08:40:18.637000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rSysAdminProfile                                                                                Resource creation Initiated
+2020-08-18 08:40:18.585000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rInstanceOpsProfile                                                                             Resource creation Initiated
+2020-08-18 08:40:18.141000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rInstanceOpsProfile
+2020-08-18 08:40:17.966000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rIAMAdminProfile                                                                                Resource creation Initiated
+2020-08-18 08:40:17.839000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rReadOnlyAdminProfile
+2020-08-18 08:40:17.371000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rIAMAdminProfile
+2020-08-18 08:40:17.346000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rSysAdminProfile
+2020-08-18 08:40:16.137000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rReadOnlyAdminRole
+2020-08-18 08:40:15.812000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rInstanceOpsRole
+2020-08-18 08:40:15.602000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rIAMAdminRole
+2020-08-18 08:40:15.577000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rSysAdminRole
+2020-08-18 08:39:58.509000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rSysAdmin                                                                                       Resource creation Initiated
+2020-08-18 08:39:58.441000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyAdminGroup                                                                             Resource creation Initiated
+2020-08-18 08:39:58.100000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rReadOnlyAdminRole                                                                              Resource creation Initiated
+2020-08-18 08:39:57.897000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rIAMAdminGroup                                                                                  Resource creation Initiated
+2020-08-18 08:39:57.807000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rInstanceOpsRole                                                                                Resource creation Initiated
+2020-08-18 08:39:57.626000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rSysAdminRole                                                                                   Resource creation Initiated
+2020-08-18 08:39:57.617000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rIAMAdminRole                                                                                   Resource creation Initiated
+2020-08-18 08:39:57.549000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyBillingGroup                                                                           Resource creation Initiated
+2020-08-18 08:39:57.412000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rInstanceOpsGroup                                                                               Resource creation Initiated
+2020-08-18 08:39:57.262000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rInstanceOpsRole
+2020-08-18 08:39:57.259000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rSysAdmin
+2020-08-18 08:39:57.187000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyAdminGroup
+2020-08-18 08:39:57.152000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rIAMAdminGroup
+2020-08-18 08:39:57.117000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rIAMAdminRole
+2020-08-18 08:39:57.102000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyBillingGroup
+2020-08-18 08:39:57.069000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rSysAdminRole
+2020-08-18 08:39:57.035000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rReadOnlyAdminRole
+2020-08-18 08:39:56.959000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rInstanceOpsGroup
+2020-08-18 08:39:53.967000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-IamTemplate-PFWO3YCZEF4H  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6-ManagementVpcTemplate-P03RRS0PWTQ9
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                           LogicalResourceId                                                                                    ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------  ---------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 08:45:46.136000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack             tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6-ManagementVpcTemplate-P03RRS0PWTQ9
+2020-08-18 08:45:44.031000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteMgmtNGW
+2020-08-18 08:45:28.728000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtNGW                                                                                        Resource creation Initiated
+2020-08-18 08:45:28.232000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtNGW
+2020-08-18 08:45:24.874000+00:00  CREATE_COMPLETE     AWS::EC2::NatGateway                   rNATGateway
+2020-08-18 08:45:04.225000+00:00  CREATE_COMPLETE     AWS::EC2::EIPAssociation               AssociaterEIPProdBastion
+2020-08-18 08:44:48.514000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIPAssociation               AssociaterEIPProdBastion                                                                             Resource creation Initiated
+2020-08-18 08:44:47.867000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIPAssociation               AssociaterEIPProdBastion
+2020-08-18 08:44:44.480000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                     rMgmtBastionInstance
+2020-08-18 08:44:26.595000+00:00  CREATE_COMPLETE     AWS::EC2::EIPAssociation               AssociaterEIPManagementNAT
+2020-08-18 08:44:20.548000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteMgmtProdPrivate
+2020-08-18 08:44:20.478000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteProdMgmtPublic
+2020-08-18 08:44:20.424000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteProdMgmt
+2020-08-18 08:44:20.160000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteMgmtProdDMZ
+2020-08-18 08:44:12.547000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                     rMgmtBastionInstance                                                                                 Resource creation Initiated
+2020-08-18 08:44:11.304000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIPAssociation               AssociaterEIPManagementNAT                                                                           Resource creation Initiated
+2020-08-18 08:44:11.043000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                     rMgmtBastionInstance
+2020-08-18 08:44:10.613000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIPAssociation               AssociaterEIPManagementNAT
+2020-08-18 08:44:08.391000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkInterface             rENIProductionBastion
+2020-08-18 08:44:07.293000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtDMZA
+2020-08-18 08:44:07.279000+00:00  CREATE_COMPLETE     AWS::EC2::NetworkInterface             rManagementNATInstanceInterface
+2020-08-18 08:44:07.138000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtDMZB
+2020-08-18 08:44:05.248000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtProdPrivate                                                                                Resource creation Initiated
+2020-08-18 08:44:05.176000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdMgmtPublic                                                                                 Resource creation Initiated
+2020-08-18 08:44:05.097000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdMgmt                                                                                       Resource creation Initiated
+2020-08-18 08:44:04.810000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtProdDMZ                                                                                    Resource creation Initiated
+2020-08-18 08:44:04.801000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtPrivB
+2020-08-18 08:44:04.788000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtProdPrivate
+2020-08-18 08:44:04.666000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdMgmtPublic
+2020-08-18 08:44:04.635000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteProdMgmt
+2020-08-18 08:44:04.539000+00:00  CREATE_COMPLETE     AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtPrivA
+2020-08-18 08:44:04.321000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtProdDMZ
+2020-08-18 08:44:03.759000+00:00  CREATE_COMPLETE     AWS::EC2::Route                        rRouteMgmtIGW
+2020-08-18 08:44:00.969000+00:00  CREATE_COMPLETE     AWS::EC2::VPCPeeringConnection         rPeeringConnectionProduction
+2020-08-18 08:43:52.248000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   rNATGateway                                                                                          Resource creation Initiated
+2020-08-18 08:43:52.247000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkInterface             rENIProductionBastion                                                                                Resource creation Initiated
+2020-08-18 08:43:51.874000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtDMZA                                                                                  Resource creation Initiated
+2020-08-18 08:43:51.819000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtDMZB                                                                                  Resource creation Initiated
+2020-08-18 08:43:51.781000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NatGateway                   rNATGateway
+2020-08-18 08:43:51.585000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkInterface             rENIProductionBastion
+2020-08-18 08:43:51.327000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkInterface             rManagementNATInstanceInterface                                                                      Resource creation Initiated
+2020-08-18 08:43:51.095000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtDMZB
+2020-08-18 08:43:51.088000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtDMZA
+2020-08-18 08:43:50.869000+00:00  CREATE_IN_PROGRESS  AWS::EC2::NetworkInterface             rManagementNATInstanceInterface
+2020-08-18 08:43:49.473000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtPrivB                                                                                 Resource creation Initiated
+2020-08-18 08:43:49.194000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtPrivA                                                                                 Resource creation Initiated
+2020-08-18 08:43:48.832000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtPrivB
+2020-08-18 08:43:48.427000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SubnetRouteTableAssociation  rRouteAssocMgmtPrivA
+2020-08-18 08:43:48.387000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtIGW                                                                                        Resource creation Initiated
+2020-08-18 08:43:48.025000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rManagementDMZSubnetB
+2020-08-18 08:43:47.988000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rManagementDMZSubnetA
+2020-08-18 08:43:47.879000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Route                        rRouteMgmtIGW
+2020-08-18 08:43:45.583000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rManagementPrivateSubnetB
+2020-08-18 08:43:45.365000+00:00  CREATE_COMPLETE     AWS::EC2::Subnet                       rManagementPrivateSubnetA
+2020-08-18 08:43:44.553000+00:00  CREATE_COMPLETE     AWS::EC2::VPCGatewayAttachment         rGWAttachmentMgmtIGW
+2020-08-18 08:43:37.360000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                rSecurityGroupBastion
+2020-08-18 08:43:36.011000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupBastion                                                                                Resource creation Initiated
+2020-08-18 08:43:35.017000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                rSecurityGroupVpcNat
+2020-08-18 08:43:34.502000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                rSecurityGroupSSHFromMgmt
+2020-08-18 08:43:34.047000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupVpcNat                                                                                 Resource creation Initiated
+2020-08-18 08:43:33.528000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupSSHFromMgmt                                                                            Resource creation Initiated
+2020-08-18 08:43:33.306000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   rRouteTableMgmtDMZ
+2020-08-18 08:43:32.416000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableMgmtDMZ                                                                                   Resource creation Initiated
+2020-08-18 08:43:32.050000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableMgmtDMZ
+2020-08-18 08:43:31.913000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementDMZSubnetB                                                                                Resource creation Initiated
+2020-08-18 08:43:31.635000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementDMZSubnetA                                                                                Resource creation Initiated
+2020-08-18 08:43:31.339000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementDMZSubnetB
+2020-08-18 08:43:31.330000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupBastion
+2020-08-18 08:43:31.216000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementDMZSubnetA
+2020-08-18 08:43:30.143000+00:00  CREATE_COMPLETE     AWS::EC2::RouteTable                   rRouteTableMgmtPrivate
+2020-08-18 08:43:29.961000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCPeeringConnection         rPeeringConnectionProduction                                                                         Resource creation Initiated
+2020-08-18 08:43:29.517000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementPrivateSubnetB                                                                            Resource creation Initiated
+2020-08-18 08:43:29.456000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupVpcNat
+2020-08-18 08:43:29.427000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementPrivateSubnetA                                                                            Resource creation Initiated
+2020-08-18 08:43:29.277000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableMgmtPrivate                                                                               Resource creation Initiated
+2020-08-18 08:43:29.240000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         rGWAttachmentMgmtIGW                                                                                 Resource creation Initiated
+2020-08-18 08:43:29.075000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementPrivateSubnetB
+2020-08-18 08:43:29.043000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCPeeringConnection         rPeeringConnectionProduction
+2020-08-18 08:43:28.997000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Subnet                       rManagementPrivateSubnetA
+2020-08-18 08:43:28.934000+00:00  CREATE_IN_PROGRESS  AWS::EC2::RouteTable                   rRouteTableMgmtPrivate
+2020-08-18 08:43:28.860000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPCGatewayAttachment         rGWAttachmentMgmtIGW
+2020-08-18 08:43:28.806000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                rSecurityGroupSSHFromMgmt
+2020-08-18 08:43:25.866000+00:00  CREATE_COMPLETE     AWS::EC2::VPC                          rVPCManagement
+2020-08-18 08:43:25.604000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          rEIPManagementNAT
+2020-08-18 08:43:25.364000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          rEIPProdNAT
+2020-08-18 08:43:24.965000+00:00  CREATE_COMPLETE     AWS::EC2::InternetGateway              rIGWManagement
+2020-08-18 08:43:24.693000+00:00  CREATE_COMPLETE     AWS::EC2::EIP                          rEIPProdBastion
+2020-08-18 08:43:09.594000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPManagementNAT                                                                                    Resource creation Initiated
+2020-08-18 08:43:09.454000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdNAT                                                                                          Resource creation Initiated
+2020-08-18 08:43:09.323000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          rVPCManagement                                                                                       Resource creation Initiated
+2020-08-18 08:43:09.173000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPManagementNAT
+2020-08-18 08:43:09.017000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              rIGWManagement                                                                                       Resource creation Initiated
+2020-08-18 08:43:08.943000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdNAT
+2020-08-18 08:43:08.892000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC                          rVPCManagement
+2020-08-18 08:43:08.788000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdBastion                                                                                      Resource creation Initiated
+2020-08-18 08:43:08.669000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway              rIGWManagement
+2020-08-18 08:43:08.382000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP                          rEIPProdBastion
+2020-08-18 08:43:02.660000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack             tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6-ManagementVpcTemplate-P03RRS0PWTQ9  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-DatabaseTemplate-1HMYWCMTQ9KON
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                       LogicalResourceId                                                                                     ResourceStatusReason
+--------------------------------  ------------------  ---------------------------------  ----------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 09:07:58.164000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack         tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-DatabaseTemplate-1HMYWCMTQ9KON
+2020-08-18 09:07:56.267000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack         AuroraStack
+2020-08-18 08:48:07.737000+00:00  CREATE_COMPLETE     AWS::RDS::DBClusterParameterGroup  DBParamGroup
+2020-08-18 08:44:08.757000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack         CopyZipsTemplate
+2020-08-18 08:43:20.123000+00:00  CREATE_COMPLETE     AWS::Logs::LogStream               CloudWatchLogStreamS3
+2020-08-18 08:43:15.724000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack         AuroraStack                                                                                           Resource creation Initiated
+2020-08-18 08:43:14.371000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack         AuroraStack
+2020-08-18 08:43:12.526000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup            SecurityGroupRDS
+2020-08-18 08:43:11.498000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup            SecurityGroupRDS                                                                                      Resource creation Initiated
+2020-08-18 08:43:09.770000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogStream               CloudWatchLogStreamS3                                                                                 Resource creation Initiated
+2020-08-18 08:43:09.271000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogStream               CloudWatchLogStreamS3
+2020-08-18 08:43:07.394000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBClusterParameterGroup  DBParamGroup                                                                                          Resource creation Initiated
+2020-08-18 08:43:07.361000+00:00  CREATE_COMPLETE     AWS::Logs::LogGroup                CloudWatchLogGroupS3
+2020-08-18 08:43:07.337000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack         CopyZipsTemplate                                                                                      Resource creation Initiated
+2020-08-18 08:43:07.248000+00:00  CREATE_COMPLETE     AWS::Logs::LogGroup                CloudWatchLogGroupS3audit
+2020-08-18 08:43:06.909000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                CloudWatchLogGroupS3                                                                                  Resource creation Initiated
+2020-08-18 08:43:06.854000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                CloudWatchLogGroupS3audit                                                                             Resource creation Initiated
+2020-08-18 08:43:06.741000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBClusterParameterGroup  DBParamGroup
+2020-08-18 08:43:06.675000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                CloudWatchLogGroupS3
+2020-08-18 08:43:06.639000+00:00  CREATE_IN_PROGRESS  AWS::Logs::LogGroup                CloudWatchLogGroupS3audit
+2020-08-18 08:43:06.621000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup            SecurityGroupRDS
+2020-08-18 08:43:06.579000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack         CopyZipsTemplate
+2020-08-18 08:43:02.338000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack         tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-DatabaseTemplate-1HMYWCMTQ9KON  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-Data-AuroraStack-D3R1ZZOZD4MQ
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                                 LogicalResourceId                                                                                    ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------------  ---------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 09:06:28.963000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack                   tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-Data-AuroraStack-D3R1ZZOZD4MQ
+2020-08-18 09:06:26.091000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeableMemoryAlarm2
+2020-08-18 09:06:25.768000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm2                                                                                 Resource creation Initiated
+2020-08-18 09:06:25.416000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm2
+2020-08-18 09:06:25.368000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm2
+2020-08-18 09:06:25.057000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm2                                                                               Resource creation Initiated
+2020-08-18 09:06:25.053000+00:00  CREATE_COMPLETE     AWS::RDS::EventSubscription                  DatabaseInstanceEventSubscription
+2020-08-18 09:06:25.019000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       CPUUtilizationAlarm2
+2020-08-18 09:06:24.729000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm2                                                                                 Resource creation Initiated
+2020-08-18 09:06:24.705000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm2
+2020-08-18 09:06:24.625000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseInstanceEventSubscription                                                                    Resource creation Initiated
+2020-08-18 09:06:24.386000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm2
+2020-08-18 09:06:24.239000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseInstanceEventSubscription
+2020-08-18 09:06:20.960000+00:00  CREATE_COMPLETE     AWS::RDS::DBInstance                         AuroraDB2
+2020-08-18 08:58:15.680000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm1
+2020-08-18 08:58:15.603000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeableMemoryAlarm1
+2020-08-18 08:58:15.416000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm1                                                                               Resource creation Initiated
+2020-08-18 08:58:15.338000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       CPUUtilizationAlarm1
+2020-08-18 08:58:15.327000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm1                                                                                 Resource creation Initiated
+2020-08-18 08:58:15.097000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm1
+2020-08-18 08:58:15.038000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm1                                                                                 Resource creation Initiated
+2020-08-18 08:58:15+00:00         CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm1
+2020-08-18 08:58:14.712000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm1
+2020-08-18 08:58:11.423000+00:00  CREATE_COMPLETE     AWS::RDS::DBInstance                         AuroraDB1
+2020-08-18 08:49:41.666000+00:00  CREATE_COMPLETE     AWS::SecretsManager::RotationSchedule        RDSSecretRotationSchedule
+2020-08-18 08:49:41.536000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::RotationSchedule        RDSSecretRotationSchedule                                                                            Resource creation Initiated
+2020-08-18 08:49:40.090000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::RotationSchedule        RDSSecretRotationSchedule
+2020-08-18 08:49:37.241000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB2                                                                                            Resource creation Initiated
+2020-08-18 08:49:36.585000+00:00  CREATE_COMPLETE     AWS::SecretsManager::SecretTargetAttachment  SecretRDSInstanceAttachment
+2020-08-18 08:49:36.585000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB1                                                                                            Resource creation Initiated
+2020-08-18 08:49:36.434000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::SecretTargetAttachment  SecretRDSInstanceAttachment                                                                          Resource creation Initiated
+2020-08-18 08:49:35.702000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB2
+2020-08-18 08:49:35.680000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB1
+2020-08-18 08:49:35.498000+00:00  CREATE_COMPLETE     AWS::RDS::EventSubscription                  DatabaseClusterEventSubscription
+2020-08-18 08:49:35.078000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseClusterEventSubscription                                                                     Resource creation Initiated
+2020-08-18 08:49:34.820000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::SecretTargetAttachment  SecretRDSInstanceAttachment
+2020-08-18 08:49:34.740000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseClusterEventSubscription
+2020-08-18 08:49:31.418000+00:00  CREATE_COMPLETE     AWS::RDS::DBCluster                          AuroraDBCluster
+2020-08-18 08:48:29.891000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBCluster                          AuroraDBCluster                                                                                      Resource creation Initiated
+2020-08-18 08:48:28.130000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBCluster                          AuroraDBCluster
+2020-08-18 08:48:24.233000+00:00  CREATE_COMPLETE     AWS::RDS::DBClusterParameterGroup            RDSDBClusterParameterGroup
+2020-08-18 08:46:46.346000+00:00  CREATE_COMPLETE     AWS::Lambda::Permission                      LambdaInvokePermission
+2020-08-18 08:46:36.157000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Permission                      LambdaInvokePermission                                                                               Resource creation Initiated
+2020-08-18 08:46:35.892000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Permission                      LambdaInvokePermission
+2020-08-18 08:46:32.285000+00:00  CREATE_COMPLETE     AWS::Lambda::Function                        RDSRotationLambda
+2020-08-18 08:45:29.101000+00:00  CREATE_COMPLETE     AWS::KMS::Alias                              EncryptionKeyAlias
+2020-08-18 08:45:28.794000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Alias                              EncryptionKeyAlias                                                                                   Resource creation Initiated
+2020-08-18 08:44:29.129000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        RDSRotationLambda                                                                                    Resource creation Initiated
+2020-08-18 08:44:28.357000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Alias                              EncryptionKeyAlias
+2020-08-18 08:44:28.016000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        RDSRotationLambda
+2020-08-18 08:44:24.618000+00:00  CREATE_COMPLETE     AWS::KMS::Key                                EncryptionKey
+2020-08-18 08:44:23.969000+00:00  CREATE_COMPLETE     Custom::CopyZips                             CopyZips
+2020-08-18 08:44:23.701000+00:00  CREATE_IN_PROGRESS  Custom::CopyZips                             CopyZips                                                                                             Resource creation Initiated
+2020-08-18 08:44:18.883000+00:00  CREATE_IN_PROGRESS  Custom::CopyZips                             CopyZips
+2020-08-18 08:44:15.250000+00:00  CREATE_COMPLETE     AWS::Lambda::Function                        CopyZipsFunction
+2020-08-18 08:44:14.770000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        CopyZipsFunction                                                                                     Resource creation Initiated
+2020-08-18 08:44:14.436000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        CopyZipsFunction
+2020-08-18 08:44:10.250000+00:00  CREATE_COMPLETE     AWS::IAM::Role                               CopyZipsRole
+2020-08-18 08:43:50.701000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               CopyZipsRole                                                                                         Resource creation Initiated
+2020-08-18 08:43:49.533000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               CopyZipsRole
+2020-08-18 08:43:46.456000+00:00  CREATE_COMPLETE     AWS::S3::Bucket                              LambdaZipsBucket
+2020-08-18 08:43:44.570000+00:00  CREATE_COMPLETE     AWS::IAM::Role                               LambdaExecutionRole
+2020-08-18 08:43:41.800000+00:00  CREATE_COMPLETE     AWS::IAM::Role                               MonitoringIAMRole
+2020-08-18 08:43:35.002000+00:00  CREATE_COMPLETE     AWS::SNS::Topic                              DBSNSTopic
+2020-08-18 08:43:26.314000+00:00  CREATE_COMPLETE     AWS::RDS::DBParameterGroup                   DBParamGroup
+2020-08-18 08:43:25.255000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                              LambdaZipsBucket                                                                                     Resource creation Initiated
+2020-08-18 08:43:25.037000+00:00  CREATE_COMPLETE     AWS::RDS::DBSubnetGroup                      AuroraDBSubnetGroup
+2020-08-18 08:43:24.718000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret                  RDSInstanceRotationSecret
+2020-08-18 08:43:24.582000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret                  RDSInstanceRotationSecret                                                                            Resource creation Initiated
+2020-08-18 08:43:24.483000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               LambdaExecutionRole                                                                                  Resource creation Initiated
+2020-08-18 08:43:24.183000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBSubnetGroup                      AuroraDBSubnetGroup                                                                                  Resource creation Initiated
+2020-08-18 08:43:24.075000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                              LambdaZipsBucket
+2020-08-18 08:43:24.021000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                                EncryptionKey                                                                                        Resource creation Initiated
+2020-08-18 08:43:23.867000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBClusterParameterGroup            RDSDBClusterParameterGroup                                                                           Resource creation Initiated
+2020-08-18 08:43:23.799000+00:00  CREATE_IN_PROGRESS  AWS::SNS::Topic                              DBSNSTopic                                                                                           Resource creation Initiated
+2020-08-18 08:43:23.753000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBParameterGroup                   DBParamGroup                                                                                         Resource creation Initiated
+2020-08-18 08:43:23.637000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                                EncryptionKey
+2020-08-18 08:43:23.553000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBSubnetGroup                      AuroraDBSubnetGroup
+2020-08-18 08:43:23.538000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               MonitoringIAMRole                                                                                    Resource creation Initiated
+2020-08-18 08:43:23.484000+00:00  CREATE_IN_PROGRESS  AWS::SNS::Topic                              DBSNSTopic
+2020-08-18 08:43:23.388000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               LambdaExecutionRole
+2020-08-18 08:43:23.235000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret                  RDSInstanceRotationSecret
+2020-08-18 08:43:23.079000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               MonitoringIAMRole
+2020-08-18 08:43:23.024000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBParameterGroup                   DBParamGroup
+2020-08-18 08:43:22.812000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBClusterParameterGroup            RDSDBClusterParameterGroup
+2020-08-18 08:43:15.224000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack                   tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-Data-AuroraStack-D3R1ZZOZD4MQ  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-CopyZipsTemplate-13Q1BOSMGWR5M
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                         LogicalResourceId                                                                                     ResourceStatusReason
+--------------------------------  ------------------  -----------------------------------  ----------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 08:44:06.180000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack           tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-CopyZipsTemplate-13Q1BOSMGWR5M
+2020-08-18 08:44:04.675000+00:00  CREATE_COMPLETE     AWS::CloudFormation::CustomResource  CopyZips
+2020-08-18 08:44:04.404000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::CustomResource  CopyZips                                                                                              Resource creation Initiated
+2020-08-18 08:44:00.621000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::CustomResource  CopyZips
+2020-08-18 08:43:58.751000+00:00  CREATE_COMPLETE     AWS::Lambda::Function                CopyZipsFunction
+2020-08-18 08:43:58.227000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                CopyZipsFunction                                                                                      Resource creation Initiated
+2020-08-18 08:43:57.865000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                CopyZipsFunction
+2020-08-18 08:43:54.977000+00:00  CREATE_COMPLETE     AWS::IAM::Role                       CopyRole
+2020-08-18 08:43:35.659000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       CopyRole                                                                                              Resource creation Initiated
+2020-08-18 08:43:34.543000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       CopyRole
+2020-08-18 08:43:32.981000+00:00  CREATE_COMPLETE     AWS::S3::Bucket                      LambdaZipsBucket
+2020-08-18 08:43:11.842000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                      LambdaZipsBucket                                                                                      Resource creation Initiated
+2020-08-18 08:43:10.634000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                      LambdaZipsBucket
+2020-08-18 08:43:07.170000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack           tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-CopyZipsTemplate-13Q1BOSMGWR5M  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf-ApplicationTemplate-13KB8OX88V7FA
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                               LogicalResourceId                                                                                     ResourceStatusReason
+--------------------------------  ------------------  -----------------------------------------  ----------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 09:15:28.758000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack                 tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf-ApplicationTemplate-13KB8OX88V7FA
+2020-08-18 09:15:25.898000+00:00  CREATE_COMPLETE     AWS::EC2::Instance                         PostProcInstance
+2020-08-18 09:15:10.180000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                         PostProcInstance                                                                                      Resource creation Initiated
+2020-08-18 09:15:09.057000+00:00  CREATE_COMPLETE     AWS::AutoScaling::ScalingPolicy            AutoScalingUpWeb
+2020-08-18 09:15:09.010000+00:00  CREATE_COMPLETE     AWS::AutoScaling::ScalingPolicy            AutoScalingDownWeb
+2020-08-18 09:15:08.951000+00:00  CREATE_IN_PROGRESS  AWS::EC2::Instance                         PostProcInstance
+2020-08-18 09:15:08.742000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingDownWeb                                                                                    Resource creation Initiated
+2020-08-18 09:15:08.724000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingUpWeb                                                                                      Resource creation Initiated
+2020-08-18 09:15:08.373000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingUpWeb
+2020-08-18 09:15:08.179000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingDownWeb
+2020-08-18 09:15:04.748000+00:00  CREATE_COMPLETE     AWS::AutoScaling::AutoScalingGroup         AutoScalingGroupWeb
+2020-08-18 09:14:12.255000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup         AutoScalingGroupWeb                                                                                   Resource creation Initiated
+2020-08-18 09:14:11.593000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup         AutoScalingGroupWeb
+2020-08-18 09:14:08.466000+00:00  CREATE_COMPLETE     AWS::AutoScaling::LaunchConfiguration      AutoScalingConfigWeb
+2020-08-18 09:14:08.159000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::LaunchConfiguration      AutoScalingConfigWeb                                                                                  Resource creation Initiated
+2020-08-18 09:14:07.663000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::LaunchConfiguration      AutoScalingConfigWeb
+2020-08-18 09:14:07.247000+00:00  CREATE_COMPLETE     AWS::AutoScaling::ScalingPolicy            AutoScalingUpApp
+2020-08-18 09:14:06.967000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingUpApp                                                                                      Resource creation Initiated
+2020-08-18 09:14:06.812000+00:00  CREATE_COMPLETE     AWS::AutoScaling::ScalingPolicy            AutoScalingDownApp
+2020-08-18 09:14:06.638000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingUpApp
+2020-08-18 09:14:06.539000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingDownApp                                                                                    Resource creation Initiated
+2020-08-18 09:14:06.167000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::ScalingPolicy            AutoScalingDownApp
+2020-08-18 09:14:03.092000+00:00  CREATE_COMPLETE     AWS::AutoScaling::AutoScalingGroup         AutoScalingGroupApp
+2020-08-18 09:13:17.316000+00:00  CREATE_COMPLETE     AWS::ElasticLoadBalancingV2::Listener      ELBappHTTPlistener
+2020-08-18 09:13:16.786000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::Listener      ELBappHTTPlistener                                                                                    Resource creation Initiated
+2020-08-18 09:13:16.534000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::Listener      ELBappHTTPlistener
+2020-08-18 09:13:13.639000+00:00  CREATE_COMPLETE     AWS::ElasticLoadBalancingV2::LoadBalancer  ELBApp
+2020-08-18 09:13:10.709000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup         AutoScalingGroupApp                                                                                   Resource creation Initiated
+2020-08-18 09:13:10.116000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::AutoScalingGroup         AutoScalingGroupApp
+2020-08-18 09:13:06.598000+00:00  CREATE_COMPLETE     AWS::AutoScaling::LaunchConfiguration      AutoScalingConfigApp
+2020-08-18 09:13:06.223000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::LaunchConfiguration      AutoScalingConfigApp                                                                                  Resource creation Initiated
+2020-08-18 09:13:05.739000+00:00  CREATE_IN_PROGRESS  AWS::AutoScaling::LaunchConfiguration      AutoScalingConfigApp
+2020-08-18 09:13:01.828000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile                  AppInstanceProfile
+2020-08-18 09:12:59.583000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile                  PostProcInstanceProfile
+2020-08-18 09:12:59.565000+00:00  CREATE_COMPLETE     AWS::IAM::InstanceProfile                  WebInstanceProfile
+2020-08-18 09:12:46.968000+00:00  CREATE_COMPLETE     AWS::ElasticLoadBalancingV2::Listener      ELBwebHTTPlistener
+2020-08-18 09:12:46.483000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::Listener      ELBwebHTTPlistener                                                                                    Resource creation Initiated
+2020-08-18 09:12:46.222000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::Listener      ELBwebHTTPlistener
+2020-08-18 09:12:43.204000+00:00  CREATE_COMPLETE     AWS::ElasticLoadBalancingV2::LoadBalancer  ELBWeb
+2020-08-18 09:11:01.290000+00:00  CREATE_COMPLETE     AWS::S3::BucketPolicy                      WebContentS3Policy
+2020-08-18 09:11:01.127000+00:00  CREATE_IN_PROGRESS  AWS::S3::BucketPolicy                      WebContentS3Policy                                                                                    Resource creation Initiated
+2020-08-18 09:11:00.978000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                  AppInstanceProfile                                                                                    Resource creation Initiated
+2020-08-18 09:10:59.774000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                  AppInstanceProfile
+2020-08-18 09:10:59.748000+00:00  CREATE_IN_PROGRESS  AWS::S3::BucketPolicy                      WebContentS3Policy
+2020-08-18 09:10:58.065000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                  WebInstanceProfile                                                                                    Resource creation Initiated
+2020-08-18 09:10:57.855000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                  PostProcInstanceProfile                                                                               Resource creation Initiated
+2020-08-18 09:10:56.854000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                  WebInstanceProfile
+2020-08-18 09:10:56.595000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile                  PostProcInstanceProfile
+2020-08-18 09:10:56.197000+00:00  CREATE_COMPLETE     AWS::IAM::Role                             AppInstanceRole
+2020-08-18 09:10:56.089000+00:00  CREATE_COMPLETE     AWS::S3::Bucket                            WebContentBucket
+2020-08-18 09:10:53.363000+00:00  CREATE_COMPLETE     AWS::IAM::Role                             WebInstanceRole
+2020-08-18 09:10:53.064000+00:00  CREATE_COMPLETE     AWS::IAM::Role                             PostProcInstanceRole
+2020-08-18 09:10:42.132000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::LoadBalancer  ELBApp                                                                                                Resource creation Initiated
+2020-08-18 09:10:41.698000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::LoadBalancer  ELBWeb                                                                                                Resource creation Initiated
+2020-08-18 09:10:41.298000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::LoadBalancer  ELBApp
+2020-08-18 09:10:40.749000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::LoadBalancer  ELBWeb
+2020-08-18 09:10:37.877000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                    SecurityGroupWebInstance
+2020-08-18 09:10:37.859000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                    SecurityGroupApp
+2020-08-18 09:10:37.834000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                    SecurityGroupWeb
+2020-08-18 09:10:37.801000+00:00  CREATE_COMPLETE     AWS::EC2::SecurityGroup                    SecurityGroupAppInstance
+2020-08-18 09:10:36.735000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupWebInstance                                                                              Resource creation Initiated
+2020-08-18 09:10:36.660000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupApp                                                                                      Resource creation Initiated
+2020-08-18 09:10:36.569000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupWeb                                                                                      Resource creation Initiated
+2020-08-18 09:10:36.539000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupAppInstance                                                                              Resource creation Initiated
+2020-08-18 09:10:33.001000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                            WebContentBucket                                                                                      Resource creation Initiated
+2020-08-18 09:10:32.923000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                             PostProcInstanceRole                                                                                  Resource creation Initiated
+2020-08-18 09:10:32.705000+00:00  CREATE_COMPLETE     AWS::ElasticLoadBalancingV2::TargetGroup   AppTargetGroup
+2020-08-18 09:10:32.696000+00:00  CREATE_COMPLETE     AWS::ElasticLoadBalancingV2::TargetGroup   WebTargetGroup
+2020-08-18 09:10:32.690000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                             AppInstanceRole                                                                                       Resource creation Initiated
+2020-08-18 09:10:32.402000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                             WebInstanceRole                                                                                       Resource creation Initiated
+2020-08-18 09:10:32.345000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::TargetGroup   WebTargetGroup                                                                                        Resource creation Initiated
+2020-08-18 09:10:32.290000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::TargetGroup   AppTargetGroup                                                                                        Resource creation Initiated
+2020-08-18 09:10:32.238000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                             AppInstanceRole
+2020-08-18 09:10:32.120000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupWebInstance
+2020-08-18 09:10:31.959000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupAppInstance
+2020-08-18 09:10:31.933000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupWeb
+2020-08-18 09:10:31.918000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                             WebInstanceRole
+2020-08-18 09:10:31.899000+00:00  CREATE_IN_PROGRESS  AWS::EC2::SecurityGroup                    SecurityGroupApp
+2020-08-18 09:10:31.834000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                             PostProcInstanceRole
+2020-08-18 09:10:31.822000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                            WebContentBucket
+2020-08-18 09:10:31.789000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::TargetGroup   WebTargetGroup
+2020-08-18 09:10:31.662000+00:00  CREATE_IN_PROGRESS  AWS::ElasticLoadBalancingV2::TargetGroup   AppTargetGroup
+2020-08-18 09:10:25.434000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack                 tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf-ApplicationTemplate-13KB8OX88V7FA  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-Data-AuroraStack-D3R1ZZOZD4MQ
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                                 LogicalResourceId                                                                                    ResourceStatusReason
+--------------------------------  ------------------  -------------------------------------------  ---------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 09:06:28.963000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack                   tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-Data-AuroraStack-D3R1ZZOZD4MQ
+2020-08-18 09:06:26.091000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeableMemoryAlarm2
+2020-08-18 09:06:25.768000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm2                                                                                 Resource creation Initiated
+2020-08-18 09:06:25.416000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm2
+2020-08-18 09:06:25.368000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm2
+2020-08-18 09:06:25.057000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm2                                                                               Resource creation Initiated
+2020-08-18 09:06:25.053000+00:00  CREATE_COMPLETE     AWS::RDS::EventSubscription                  DatabaseInstanceEventSubscription
+2020-08-18 09:06:25.019000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       CPUUtilizationAlarm2
+2020-08-18 09:06:24.729000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm2                                                                                 Resource creation Initiated
+2020-08-18 09:06:24.705000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm2
+2020-08-18 09:06:24.625000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseInstanceEventSubscription                                                                    Resource creation Initiated
+2020-08-18 09:06:24.386000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm2
+2020-08-18 09:06:24.239000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseInstanceEventSubscription
+2020-08-18 09:06:20.960000+00:00  CREATE_COMPLETE     AWS::RDS::DBInstance                         AuroraDB2
+2020-08-18 08:58:15.680000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm1
+2020-08-18 08:58:15.603000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       FreeableMemoryAlarm1
+2020-08-18 08:58:15.416000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm1                                                                               Resource creation Initiated
+2020-08-18 08:58:15.338000+00:00  CREATE_COMPLETE     AWS::CloudWatch::Alarm                       CPUUtilizationAlarm1
+2020-08-18 08:58:15.327000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm1                                                                                 Resource creation Initiated
+2020-08-18 08:58:15.097000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeLocalStorageAlarm1
+2020-08-18 08:58:15.038000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm1                                                                                 Resource creation Initiated
+2020-08-18 08:58:15+00:00         CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       FreeableMemoryAlarm1
+2020-08-18 08:58:14.712000+00:00  CREATE_IN_PROGRESS  AWS::CloudWatch::Alarm                       CPUUtilizationAlarm1
+2020-08-18 08:58:11.423000+00:00  CREATE_COMPLETE     AWS::RDS::DBInstance                         AuroraDB1
+2020-08-18 08:49:41.666000+00:00  CREATE_COMPLETE     AWS::SecretsManager::RotationSchedule        RDSSecretRotationSchedule
+2020-08-18 08:49:41.536000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::RotationSchedule        RDSSecretRotationSchedule                                                                            Resource creation Initiated
+2020-08-18 08:49:40.090000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::RotationSchedule        RDSSecretRotationSchedule
+2020-08-18 08:49:37.241000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB2                                                                                            Resource creation Initiated
+2020-08-18 08:49:36.585000+00:00  CREATE_COMPLETE     AWS::SecretsManager::SecretTargetAttachment  SecretRDSInstanceAttachment
+2020-08-18 08:49:36.585000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB1                                                                                            Resource creation Initiated
+2020-08-18 08:49:36.434000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::SecretTargetAttachment  SecretRDSInstanceAttachment                                                                          Resource creation Initiated
+2020-08-18 08:49:35.702000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB2
+2020-08-18 08:49:35.680000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBInstance                         AuroraDB1
+2020-08-18 08:49:35.498000+00:00  CREATE_COMPLETE     AWS::RDS::EventSubscription                  DatabaseClusterEventSubscription
+2020-08-18 08:49:35.078000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseClusterEventSubscription                                                                     Resource creation Initiated
+2020-08-18 08:49:34.820000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::SecretTargetAttachment  SecretRDSInstanceAttachment
+2020-08-18 08:49:34.740000+00:00  CREATE_IN_PROGRESS  AWS::RDS::EventSubscription                  DatabaseClusterEventSubscription
+2020-08-18 08:49:31.418000+00:00  CREATE_COMPLETE     AWS::RDS::DBCluster                          AuroraDBCluster
+2020-08-18 08:48:29.891000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBCluster                          AuroraDBCluster                                                                                      Resource creation Initiated
+2020-08-18 08:48:28.130000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBCluster                          AuroraDBCluster
+2020-08-18 08:48:24.233000+00:00  CREATE_COMPLETE     AWS::RDS::DBClusterParameterGroup            RDSDBClusterParameterGroup
+2020-08-18 08:46:46.346000+00:00  CREATE_COMPLETE     AWS::Lambda::Permission                      LambdaInvokePermission
+2020-08-18 08:46:36.157000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Permission                      LambdaInvokePermission                                                                               Resource creation Initiated
+2020-08-18 08:46:35.892000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Permission                      LambdaInvokePermission
+2020-08-18 08:46:32.285000+00:00  CREATE_COMPLETE     AWS::Lambda::Function                        RDSRotationLambda
+2020-08-18 08:45:29.101000+00:00  CREATE_COMPLETE     AWS::KMS::Alias                              EncryptionKeyAlias
+2020-08-18 08:45:28.794000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Alias                              EncryptionKeyAlias                                                                                   Resource creation Initiated
+2020-08-18 08:44:29.129000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        RDSRotationLambda                                                                                    Resource creation Initiated
+2020-08-18 08:44:28.357000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Alias                              EncryptionKeyAlias
+2020-08-18 08:44:28.016000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        RDSRotationLambda
+2020-08-18 08:44:24.618000+00:00  CREATE_COMPLETE     AWS::KMS::Key                                EncryptionKey
+2020-08-18 08:44:23.969000+00:00  CREATE_COMPLETE     Custom::CopyZips                             CopyZips
+2020-08-18 08:44:23.701000+00:00  CREATE_IN_PROGRESS  Custom::CopyZips                             CopyZips                                                                                             Resource creation Initiated
+2020-08-18 08:44:18.883000+00:00  CREATE_IN_PROGRESS  Custom::CopyZips                             CopyZips
+2020-08-18 08:44:15.250000+00:00  CREATE_COMPLETE     AWS::Lambda::Function                        CopyZipsFunction
+2020-08-18 08:44:14.770000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        CopyZipsFunction                                                                                     Resource creation Initiated
+2020-08-18 08:44:14.436000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                        CopyZipsFunction
+2020-08-18 08:44:10.250000+00:00  CREATE_COMPLETE     AWS::IAM::Role                               CopyZipsRole
+2020-08-18 08:43:50.701000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               CopyZipsRole                                                                                         Resource creation Initiated
+2020-08-18 08:43:49.533000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               CopyZipsRole
+2020-08-18 08:43:46.456000+00:00  CREATE_COMPLETE     AWS::S3::Bucket                              LambdaZipsBucket
+2020-08-18 08:43:44.570000+00:00  CREATE_COMPLETE     AWS::IAM::Role                               LambdaExecutionRole
+2020-08-18 08:43:41.800000+00:00  CREATE_COMPLETE     AWS::IAM::Role                               MonitoringIAMRole
+2020-08-18 08:43:35.002000+00:00  CREATE_COMPLETE     AWS::SNS::Topic                              DBSNSTopic
+2020-08-18 08:43:26.314000+00:00  CREATE_COMPLETE     AWS::RDS::DBParameterGroup                   DBParamGroup
+2020-08-18 08:43:25.255000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                              LambdaZipsBucket                                                                                     Resource creation Initiated
+2020-08-18 08:43:25.037000+00:00  CREATE_COMPLETE     AWS::RDS::DBSubnetGroup                      AuroraDBSubnetGroup
+2020-08-18 08:43:24.718000+00:00  CREATE_COMPLETE     AWS::SecretsManager::Secret                  RDSInstanceRotationSecret
+2020-08-18 08:43:24.582000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret                  RDSInstanceRotationSecret                                                                            Resource creation Initiated
+2020-08-18 08:43:24.483000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               LambdaExecutionRole                                                                                  Resource creation Initiated
+2020-08-18 08:43:24.183000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBSubnetGroup                      AuroraDBSubnetGroup                                                                                  Resource creation Initiated
+2020-08-18 08:43:24.075000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                              LambdaZipsBucket
+2020-08-18 08:43:24.021000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                                EncryptionKey                                                                                        Resource creation Initiated
+2020-08-18 08:43:23.867000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBClusterParameterGroup            RDSDBClusterParameterGroup                                                                           Resource creation Initiated
+2020-08-18 08:43:23.799000+00:00  CREATE_IN_PROGRESS  AWS::SNS::Topic                              DBSNSTopic                                                                                           Resource creation Initiated
+2020-08-18 08:43:23.753000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBParameterGroup                   DBParamGroup                                                                                         Resource creation Initiated
+2020-08-18 08:43:23.637000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                                EncryptionKey
+2020-08-18 08:43:23.553000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBSubnetGroup                      AuroraDBSubnetGroup
+2020-08-18 08:43:23.538000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               MonitoringIAMRole                                                                                    Resource creation Initiated
+2020-08-18 08:43:23.484000+00:00  CREATE_IN_PROGRESS  AWS::SNS::Topic                              DBSNSTopic
+2020-08-18 08:43:23.388000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               LambdaExecutionRole
+2020-08-18 08:43:23.235000+00:00  CREATE_IN_PROGRESS  AWS::SecretsManager::Secret                  RDSInstanceRotationSecret
+2020-08-18 08:43:23.079000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                               MonitoringIAMRole
+2020-08-18 08:43:23.024000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBParameterGroup                   DBParamGroup
+2020-08-18 08:43:22.812000+00:00  CREATE_IN_PROGRESS  AWS::RDS::DBClusterParameterGroup            RDSDBClusterParameterGroup
+2020-08-18 08:43:15.224000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack                   tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-Data-AuroraStack-D3R1ZZOZD4MQ  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-CopyZipsTemplate-13Q1BOSMGWR5M
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                         LogicalResourceId                                                                                     ResourceStatusReason
+--------------------------------  ------------------  -----------------------------------  ----------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-18 08:44:06.180000+00:00  CREATE_COMPLETE     AWS::CloudFormation::Stack           tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-CopyZipsTemplate-13Q1BOSMGWR5M
+2020-08-18 08:44:04.675000+00:00  CREATE_COMPLETE     AWS::CloudFormation::CustomResource  CopyZips
+2020-08-18 08:44:04.404000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::CustomResource  CopyZips                                                                                              Resource creation Initiated
+2020-08-18 08:44:00.621000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::CustomResource  CopyZips
+2020-08-18 08:43:58.751000+00:00  CREATE_COMPLETE     AWS::Lambda::Function                CopyZipsFunction
+2020-08-18 08:43:58.227000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                CopyZipsFunction                                                                                      Resource creation Initiated
+2020-08-18 08:43:57.865000+00:00  CREATE_IN_PROGRESS  AWS::Lambda::Function                CopyZipsFunction
+2020-08-18 08:43:54.977000+00:00  CREATE_COMPLETE     AWS::IAM::Role                       CopyRole
+2020-08-18 08:43:35.659000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       CopyRole                                                                                              Resource creation Initiated
+2020-08-18 08:43:34.543000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role                       CopyRole
+2020-08-18 08:43:32.981000+00:00  CREATE_COMPLETE     AWS::S3::Bucket                      LambdaZipsBucket
+2020-08-18 08:43:11.842000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                      LambdaZipsBucket                                                                                      Resource creation Initiated
+2020-08-18 08:43:10.634000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket                      LambdaZipsBucket
+2020-08-18 08:43:07.170000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack           tCaT-quickstart-korea-isms-p-default-cf7d147b20bc494784bbb5ee7d6cf0a0-CopyZipsTemplate-13Q1BOSMGWR5M  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Tuesday, 18. August 2020 06:16PM
+-----------------------------------------------------------------------------
+

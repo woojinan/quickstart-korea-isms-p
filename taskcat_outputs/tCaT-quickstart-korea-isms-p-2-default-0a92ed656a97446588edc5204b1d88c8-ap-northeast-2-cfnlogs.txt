@@ -1,0 +1,114 @@
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204b1d88c8
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [IamTemplate, ProductionVpcTemplate].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                        ResourceStatusReason
+--------------------------------  ------------------  --------------------------  -----------------------------------------------------------------------  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2020-08-26 00:42:57.795000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204b1d88c8  The following resource(s) failed to create: [IamTemplate, ProductionVpcTemplate].
+2020-08-26 00:42:57.139000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  IamTemplate                                                              Resource creation cancelled
+2020-08-26 00:42:56.812000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  ProductionVpcTemplate                                                    Embedded stack arn:aws:cloudformation:ap-northeast-2:125492839279:stack/tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204-ProductionVpcTemplate-ZEMPM63E6AE5/0e985a50-e735-11ea-8244-0a998cc92c36 was not successfully created: The following resource(s) failed to create: [rEIPProdNatB, rVPCProduction, rEIPProdNatA, rIGWProd].
+2020-08-26 00:42:46.157000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate                                                    Resource creation Initiated
+2020-08-26 00:42:45.916000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  IamTemplate                                                              Resource creation Initiated
+2020-08-26 00:42:45.181000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  IamTemplate
+2020-08-26 00:42:44.861000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate
+2020-08-26 00:42:40.711000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204b1d88c8  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Wednesday, 26. August 2020 09:43AM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204b1d88c8-IamTemplate-1PM2XNCBF7VVU
+*****************************************************************************
+ResourceStatusReason:  
+Stack launch was successful
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                                                  ResourceStatusReason
+--------------------------------  ------------------  --------------------------  -------------------------------------------------------------------------------------------------  ---------------------------
+2020-08-26 00:43:47.791000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rInstanceOpsPolicy
+2020-08-26 00:43:47.583000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rSysAdminPolicy
+2020-08-26 00:43:46.526000+00:00  CREATE_COMPLETE     AWS::IAM::ManagedPolicy     rReadOnlyBillingPolicy
+2020-08-26 00:43:27.828000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rInstanceOpsPolicy                                                                                 Resource creation Initiated
+2020-08-26 00:43:27.802000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rSysAdminPolicy                                                                                    Resource creation Initiated
+2020-08-26 00:43:27.644000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rIAMAdminPolicy                                                                                    Resource creation Initiated
+2020-08-26 00:43:27.338000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rSysAdminPolicy
+2020-08-26 00:43:26.847000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rReadOnlyBillingPolicy                                                                             Resource creation Initiated
+2020-08-26 00:43:26.539000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rInstanceOpsPolicy
+2020-08-26 00:43:26.423000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rIAMAdminPolicy
+2020-08-26 00:43:26.345000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy     rReadOnlyBillingPolicy
+2020-08-26 00:43:25.754000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rSysAdmin
+2020-08-26 00:43:25.525000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rReadOnlyAdminGroup
+2020-08-26 00:43:24.786000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rIAMAdminGroup
+2020-08-26 00:43:24.669000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rReadOnlyBillingGroup
+2020-08-26 00:43:24.607000+00:00  CREATE_COMPLETE     AWS::IAM::Group             rInstanceOpsGroup
+2020-08-26 00:43:12.965000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rInstanceOpsProfile                                                                                Resource creation Initiated
+2020-08-26 00:43:12.882000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rReadOnlyAdminProfile                                                                              Resource creation Initiated
+2020-08-26 00:43:12.071000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rSysAdminProfile                                                                                   Resource creation Initiated
+2020-08-26 00:43:11.744000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rInstanceOpsProfile
+2020-08-26 00:43:11.679000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rReadOnlyAdminProfile
+2020-08-26 00:43:11.462000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rIAMAdminProfile                                                                                   Resource creation Initiated
+2020-08-26 00:43:10.990000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rIAMAdminProfile
+2020-08-26 00:43:10.877000+00:00  CREATE_IN_PROGRESS  AWS::IAM::InstanceProfile   rSysAdminProfile
+2020-08-26 00:43:09.812000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rReadOnlyAdminRole
+2020-08-26 00:43:09.708000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rInstanceOpsRole
+2020-08-26 00:43:09.303000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rIAMAdminRole
+2020-08-26 00:43:09.054000+00:00  CREATE_COMPLETE     AWS::IAM::Role              rSysAdminRole
+2020-08-26 00:42:50.378000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rSysAdmin                                                                                          Resource creation Initiated
+2020-08-26 00:42:50.197000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyAdminGroup                                                                                Resource creation Initiated
+2020-08-26 00:42:50.089000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rSysAdminRole                                                                                      Resource creation Initiated
+2020-08-26 00:42:49.861000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rReadOnlyAdminRole                                                                                 Resource creation Initiated
+2020-08-26 00:42:49.604000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rInstanceOpsRole                                                                                   Resource creation Initiated
+2020-08-26 00:42:49.468000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rIAMAdminGroup                                                                                     Resource creation Initiated
+2020-08-26 00:42:49.400000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rIAMAdminRole                                                                                      Resource creation Initiated
+2020-08-26 00:42:49.346000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyBillingGroup                                                                              Resource creation Initiated
+2020-08-26 00:42:49.282000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rInstanceOpsGroup                                                                                  Resource creation Initiated
+2020-08-26 00:42:49.255000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rReadOnlyAdminRole
+2020-08-26 00:42:49.146000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rSysAdmin
+2020-08-26 00:42:49.052000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rInstanceOpsRole
+2020-08-26 00:42:48.990000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rSysAdminRole
+2020-08-26 00:42:48.990000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyAdminGroup
+2020-08-26 00:42:48.980000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rIAMAdminGroup
+2020-08-26 00:42:48.941000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rReadOnlyBillingGroup
+2020-08-26 00:42:48.881000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Role              rIAMAdminRole
+2020-08-26 00:42:48.872000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group             rInstanceOpsGroup
+2020-08-26 00:42:45.753000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204b1d88c8-IamTemplate-1PM2XNCBF7VVU  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Wednesday, 26. August 2020 09:43AM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204-ProductionVpcTemplate-ZEMPM63E6AE5
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [rEIPProdNatB, rVPCProduction,
+rEIPProdNatA, rIGWProd].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                                                    ResourceStatusReason
+--------------------------------  ------------------  --------------------------  ---------------------------------------------------------------------------------------------------  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2020-08-26 00:42:52.986000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204-ProductionVpcTemplate-ZEMPM63E6AE5  The following resource(s) failed to create: [rEIPProdNatB, rVPCProduction, rEIPProdNatA, rIGWProd].
+2020-08-26 00:42:52.257000+00:00  CREATE_FAILED       AWS::EC2::EIP               rEIPProdNatB                                                                                         The maximum number of addresses has been reached. (Service: AmazonEC2; Status Code: 400; Error Code: AddressLimitExceeded; Request ID: 184f250e-f6c1-4cab-b0bb-ef9cdeb527af)
+2020-08-26 00:42:52.211000+00:00  CREATE_FAILED       AWS::EC2::VPC               rVPCProduction                                                                                       Resource creation cancelled
+2020-08-26 00:42:52.208000+00:00  CREATE_FAILED       AWS::EC2::InternetGateway   rIGWProd                                                                                             Resource creation cancelled
+2020-08-26 00:42:51.896000+00:00  CREATE_IN_PROGRESS  AWS::EC2::InternetGateway   rIGWProd
+2020-08-26 00:42:51.873000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP               rEIPProdNatB
+2020-08-26 00:42:51.869000+00:00  CREATE_IN_PROGRESS  AWS::EC2::VPC               rVPCProduction
+2020-08-26 00:42:51.735000+00:00  CREATE_FAILED       AWS::EC2::EIP               rEIPProdNatA                                                                                         The maximum number of addresses has been reached. (Service: AmazonEC2; Status Code: 400; Error Code: AddressLimitExceeded; Request ID: 2a2653ba-0855-41a2-8f38-426283556ce1)
+2020-08-26 00:42:51.354000+00:00  CREATE_IN_PROGRESS  AWS::EC2::EIP               rEIPProdNatA
+2020-08-26 00:42:45.607000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-2-default-0a92ed656a97446588edc5204-ProductionVpcTemplate-ZEMPM63E6AE5  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Wednesday, 26. August 2020 09:43AM
+-----------------------------------------------------------------------------
+

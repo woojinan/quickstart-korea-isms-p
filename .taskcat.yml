@@ -15,6 +15,7 @@ tests:
 #      - ap-southeast-1
     s3_regional_buckets: true
     parameters:
+<<<<<<< HEAD
       EC2KeyPairBastion: isms_key
       EC2KeyPair: isms_key
 
@@ -22,6 +23,13 @@ tests:
       AvailabilityZoneB: $[taskcat_getsingleaz_2]
       QSS3BucketName: $[taskcat_autobucket]
       QSS3BucketRegion: $[taskcat_current_region]
+=======
+      EC2KeyPairBastion: stage.seoul
+      EC2KeyPair: stage.seoul
+      AvailabilityZoneA: ap-northeast-2b
+      AvailabilityZoneB: ap-northeast-2d
+      QSS3BucketName: ks-isms-configuration
+>>>>>>> 60fef2d... 	modified:   .taskcat.yml
       QSS3KeyPrefix: quickstart-korea-isms-p/
       DBPassword: P!$[taskcat_genpass_12A]
       CloudWatchLogsGroupName: $[taskcat_random-string]

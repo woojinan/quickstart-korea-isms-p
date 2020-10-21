@@ -1,0 +1,64 @@
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-308d856b7bee46298ca2d900dd118b89
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [SecBaselineTemplate,
+ProductionVpcTemplate].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                      ResourceStatusReason
+--------------------------------  ------------------  --------------------------  ---------------------------------------------------------------------  ---------------------------------------------------------------------------------------------
+2020-09-18 07:06:49.190000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-308d856b7bee46298ca2d900dd118b89  The following resource(s) failed to create: [SecBaselineTemplate, ProductionVpcTemplate].
+2020-09-18 07:06:48.526000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  SecBaselineTemplate                                                    Resource creation cancelled
+2020-09-18 07:06:47.677000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  ProductionVpcTemplate                                                  S3 error: Access Denied
+                                                                                                                                                         For more information check http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
+2020-09-18 07:06:47.407000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  SecBaselineTemplate
+2020-09-18 07:06:47.116000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate
+2020-09-18 07:06:43.023000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-308d856b7bee46298ca2d900dd118b89  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Friday, 18. September 2020 04:07PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-308d856b7bee46298ca2d900dd118-SecBaselineTemplate-1H0U3QU3ISZNU
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [ReadOnlyAdminGroup,
+ReadOnlyBillingGroup, CloudTrailKey, S3CloudTrailKey, GuardDuty, IAMAdminGroup,
+S3UploadBucket, ConformanceServiceLinkedRole, InstanceOpsGroup, SysAdminGroup].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                 LogicalResourceId                                                                                     ResourceStatusReason
+--------------------------------  ------------------  ---------------------------  ----------------------------------------------------------------------------------------------------  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2020-09-18 07:06:55.894000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack   tCaT-quickstart-korea-isms-p-default-308d856b7bee46298ca2d900dd118-SecBaselineTemplate-1H0U3QU3ISZNU  The following resource(s) failed to create: [ReadOnlyAdminGroup, ReadOnlyBillingGroup, CloudTrailKey, S3CloudTrailKey, GuardDuty, IAMAdminGroup, S3UploadBucket, ConformanceServiceLinkedRole, InstanceOpsGroup, SysAdminGroup].
+2020-09-18 07:06:55.295000+00:00  CREATE_FAILED       AWS::IAM::Group              ReadOnlyAdminGroup                                                                                    Resource creation cancelled
+2020-09-18 07:06:55.054000+00:00  CREATE_FAILED       AWS::IAM::Group              IAMAdminGroup                                                                                         Resource creation cancelled
+2020-09-18 07:06:54.603000+00:00  CREATE_FAILED       AWS::IAM::Group              SysAdminGroup                                                                                         Resource creation cancelled
+2020-09-18 07:06:54.574000+00:00  CREATE_FAILED       AWS::GuardDuty::Detector     GuardDuty                                                                                             Resource creation cancelled
+2020-09-18 07:06:54.447000+00:00  CREATE_FAILED       AWS::IAM::Group              ReadOnlyBillingGroup                                                                                  Resource creation cancelled
+2020-09-18 07:06:54.405000+00:00  CREATE_FAILED       AWS::KMS::Key                S3CloudTrailKey                                                                                       Resource creation cancelled
+2020-09-18 07:06:54.371000+00:00  CREATE_FAILED       AWS::KMS::Key                CloudTrailKey                                                                                         Resource creation cancelled
+2020-09-18 07:06:54.310000+00:00  CREATE_FAILED       AWS::IAM::ServiceLinkedRole  ConformanceServiceLinkedRole                                                                          Resource creation cancelled
+2020-09-18 07:06:54.277000+00:00  CREATE_FAILED       AWS::IAM::Group              InstanceOpsGroup                                                                                      Resource creation cancelled
+2020-09-18 07:06:53.954000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ServiceLinkedRole  ConformanceServiceLinkedRole
+2020-09-18 07:06:53.952000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group              ReadOnlyBillingGroup
+2020-09-18 07:06:53.881000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                CloudTrailKey
+2020-09-18 07:06:53.861000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group              SysAdminGroup
+2020-09-18 07:06:53.846000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                S3CloudTrailKey
+2020-09-18 07:06:53.813000+00:00  CREATE_FAILED       AWS::S3::Bucket              S3UploadBucket                                                                                        isms-conformance-delivery-ap-northeast-2-125492839279 already exists in stack arn:aws:cloudformation:ap-northeast-2:125492839279:stack/tCaT-quickstart-korea-isms-p-default-3a14c98db2294c7586a2f473160fd-SecBaselineTemplate-P9R076GXRTAL/54dd76f0-f89f-11ea-bb63-0a38d52c53b8
+2020-09-18 07:06:53.766000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group              IAMAdminGroup
+2020-09-18 07:06:53.641000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket              S3UploadBucket
+2020-09-18 07:06:53.615000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group              InstanceOpsGroup
+2020-09-18 07:06:53.545000+00:00  CREATE_IN_PROGRESS  AWS::GuardDuty::Detector     GuardDuty
+2020-09-18 07:06:53.490000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group              ReadOnlyAdminGroup
+2020-09-18 07:06:48.102000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack   tCaT-quickstart-korea-isms-p-default-308d856b7bee46298ca2d900dd118-SecBaselineTemplate-1H0U3QU3ISZNU  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Friday, 18. September 2020 04:07PM
+-----------------------------------------------------------------------------
+

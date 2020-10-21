@@ -1,0 +1,25 @@
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-f8c306a3ad0b474b91d46e7dd33e05cf
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [SecBaselineTemplate,
+ProductionVpcTemplate].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                      ResourceStatusReason
+--------------------------------  ------------------  --------------------------  ---------------------------------------------------------------------  ---------------------------------------------------------------------------------------------
+2020-09-24 08:40:34.382000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-f8c306a3ad0b474b91d46e7dd33e05cf  The following resource(s) failed to create: [SecBaselineTemplate, ProductionVpcTemplate].
+2020-09-24 08:40:33.504000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  ProductionVpcTemplate                                                  S3 error: The specified bucket does not exist
+                                                                                                                                                         For more information check http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
+2020-09-24 08:40:33.339000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  SecBaselineTemplate                                                    S3 error: The specified bucket does not exist
+                                                                                                                                                         For more information check http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
+2020-09-24 08:40:31.244000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate
+2020-09-24 08:40:31.034000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  SecBaselineTemplate
+2020-09-24 08:40:27.071000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-f8c306a3ad0b474b91d46e7dd33e05cf  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 24. September 2020 05:41PM
+-----------------------------------------------------------------------------
+

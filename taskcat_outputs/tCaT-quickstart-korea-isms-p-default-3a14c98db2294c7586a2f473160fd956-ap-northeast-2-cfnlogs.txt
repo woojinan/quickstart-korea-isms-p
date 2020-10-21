@@ -1,0 +1,84 @@
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-3a14c98db2294c7586a2f473160fd956
+*****************************************************************************
+ResourceStatusReason:  
+The following resource(s) failed to create: [SecBaselineTemplate,
+ProductionVpcTemplate].
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                LogicalResourceId                                                      ResourceStatusReason
+--------------------------------  ------------------  --------------------------  ---------------------------------------------------------------------  ---------------------------------------------------------------------------------------------
+2020-09-17 04:36:20.909000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-3a14c98db2294c7586a2f473160fd956  The following resource(s) failed to create: [SecBaselineTemplate, ProductionVpcTemplate].
+2020-09-17 04:36:20.255000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  SecBaselineTemplate                                                    Resource creation cancelled
+2020-09-17 04:36:19.603000+00:00  CREATE_FAILED       AWS::CloudFormation::Stack  ProductionVpcTemplate                                                  S3 error: Access Denied
+                                                                                                                                                         For more information check http://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
+2020-09-17 04:36:19.113000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  ProductionVpcTemplate
+2020-09-17 04:36:19.070000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  SecBaselineTemplate
+2020-09-17 04:36:15.056000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack  tCaT-quickstart-korea-isms-p-default-3a14c98db2294c7586a2f473160fd956  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 17. September 2020 01:37PM
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Region: ap-northeast-2
+StackName: tCaT-quickstart-korea-isms-p-default-3a14c98db2294c7586a2f473160fd-SecBaselineTemplate-P9R076GXRTAL
+*****************************************************************************
+ResourceStatusReason:  
+Resource creation Initiated
+*****************************************************************************
+*****************************************************************************
+Events:  
+TimeStamp                         ResourceStatus      ResourceType                  LogicalResourceId                                                                                    ResourceStatusReason
+--------------------------------  ------------------  ----------------------------  ---------------------------------------------------------------------------------------------------  ---------------------------
+2020-09-17 04:37:05.471000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       ReadOnlyAdminPolicy                                                                                  Resource creation Initiated
+2020-09-17 04:37:05.346000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       InstanceOpsPolicy                                                                                    Resource creation Initiated
+2020-09-17 04:37:05.024000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       ReadOnlyBillingPolicy                                                                                Resource creation Initiated
+2020-09-17 04:37:04.858000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       SysAdminPolicy                                                                                       Resource creation Initiated
+2020-09-17 04:37:04.510000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       ReadOnlyBillingPolicy
+2020-09-17 04:37:04.003000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       InstanceOpsPolicy
+2020-09-17 04:37:03.791000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       IAMAdminPolicy                                                                                       Resource creation Initiated
+2020-09-17 04:37:03.689000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       ReadOnlyAdminPolicy
+2020-09-17 04:37:03.319000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       IAMAdminPolicy
+2020-09-17 04:37:03.225000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ManagedPolicy       SysAdminPolicy
+2020-09-17 04:37:02.110000+00:00  CREATE_COMPLETE     AWS::IAM::Group               ReadOnlyBillingGroup
+2020-09-17 04:37:01.715000+00:00  CREATE_COMPLETE     AWS::IAM::Group               InstanceOpsGroup
+2020-09-17 04:37:01.333000+00:00  CREATE_COMPLETE     AWS::IAM::Group               ReadOnlyAdminGroup
+2020-09-17 04:37:01.232000+00:00  CREATE_COMPLETE     AWS::IAM::Group               SysAdminGroup
+2020-09-17 04:37:01.093000+00:00  CREATE_COMPLETE     AWS::IAM::Group               IAMAdminGroup
+2020-09-17 04:36:57.905000+00:00  CREATE_IN_PROGRESS  AWS::Config::ConformancePack  ISMSConformancePack                                                                                  Resource creation Initiated
+2020-09-17 04:36:55.813000+00:00  CREATE_IN_PROGRESS  AWS::Config::ConformancePack  ISMSConformancePack
+2020-09-17 04:36:54.100000+00:00  CREATE_COMPLETE     AWS::S3::BucketPolicy         S3UploadBucketPolicy
+2020-09-17 04:36:53.959000+00:00  CREATE_IN_PROGRESS  AWS::S3::BucketPolicy         S3UploadBucketPolicy                                                                                 Resource creation Initiated
+2020-09-17 04:36:51.709000+00:00  CREATE_IN_PROGRESS  AWS::S3::BucketPolicy         S3UploadBucketPolicy
+2020-09-17 04:36:49.982000+00:00  CREATE_COMPLETE     AWS::S3::Bucket               S3UploadBucket
+2020-09-17 04:36:38.731000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                 CloudTrailKey                                                                                        Resource creation Initiated
+2020-09-17 04:36:27.989000+00:00  CREATE_COMPLETE     AWS::IAM::ServiceLinkedRole   ConformanceServiceLinkedRole
+2020-09-17 04:36:27.815000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ServiceLinkedRole   ConformanceServiceLinkedRole                                                                         Resource creation Initiated
+2020-09-17 04:36:27.783000+00:00  CREATE_COMPLETE     AWS::GuardDuty::Detector      GuardDuty
+2020-09-17 04:36:27.597000+00:00  CREATE_IN_PROGRESS  AWS::GuardDuty::Detector      GuardDuty                                                                                            Resource creation Initiated
+2020-09-17 04:36:26.898000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                 S3CloudTrailKey                                                                                      Resource creation Initiated
+2020-09-17 04:36:26.887000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket               S3UploadBucket                                                                                       Resource creation Initiated
+2020-09-17 04:36:26.774000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               ReadOnlyBillingGroup                                                                                 Resource creation Initiated
+2020-09-17 04:36:26.347000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               InstanceOpsGroup                                                                                     Resource creation Initiated
+2020-09-17 04:36:26.017000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               ReadOnlyAdminGroup                                                                                   Resource creation Initiated
+2020-09-17 04:36:25.917000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               SysAdminGroup                                                                                        Resource creation Initiated
+2020-09-17 04:36:25.740000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               IAMAdminGroup                                                                                        Resource creation Initiated
+2020-09-17 04:36:25.660000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                 CloudTrailKey
+2020-09-17 04:36:25.581000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               ReadOnlyAdminGroup
+2020-09-17 04:36:25.498000+00:00  CREATE_IN_PROGRESS  AWS::KMS::Key                 S3CloudTrailKey
+2020-09-17 04:36:25.469000+00:00  CREATE_IN_PROGRESS  AWS::S3::Bucket               S3UploadBucket
+2020-09-17 04:36:25.335000+00:00  CREATE_IN_PROGRESS  AWS::GuardDuty::Detector      GuardDuty
+2020-09-17 04:36:25.296000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               IAMAdminGroup
+2020-09-17 04:36:25.226000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               ReadOnlyBillingGroup
+2020-09-17 04:36:25.202000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               SysAdminGroup
+2020-09-17 04:36:25.193000+00:00  CREATE_IN_PROGRESS  AWS::IAM::ServiceLinkedRole   ConformanceServiceLinkedRole
+2020-09-17 04:36:25.090000+00:00  CREATE_IN_PROGRESS  AWS::IAM::Group               InstanceOpsGroup
+2020-09-17 04:36:19.893000+00:00  CREATE_IN_PROGRESS  AWS::CloudFormation::Stack    tCaT-quickstart-korea-isms-p-default-3a14c98db2294c7586a2f473160fd-SecBaselineTemplate-P9R076GXRTAL  User Initiated
+*****************************************************************************
+-----------------------------------------------------------------------------
+Tested on: Thursday, 17. September 2020 01:37PM
+-----------------------------------------------------------------------------
+

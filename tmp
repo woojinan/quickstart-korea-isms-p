@@ -1,0 +1,12 @@
+{
+    "ServerCertificateMetadataList": [
+        {
+            "Path": "/",
+            "ServerCertificateName": "non-production-testing-server-cert",
+            "ServerCertificateId": "ASCAR2N7UYNX5S3DCGOVH",
+            "Arn": "arn:aws:iam::125492839279:server-certificate/non-production-testing-server-cert",
+            "UploadDate": "2020-08-05T07:56:11+00:00",
+            "Expiration": "2021-08-05T07:56:10+00:00"
+        }
+    ]
+}
