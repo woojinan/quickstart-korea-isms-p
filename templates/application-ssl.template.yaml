@@ -161,11 +161,11 @@ Parameters:
   WebInstanceType:
     Description: Instance type for the webservers
     Type: String
-    Default: m4.large
+    Default: m5.large
   AppInstanceType:
     Description: Instance type for the app webservers
     Type: String
-    Default: m4.large
+    Default: m5.large
   AvailabilityZoneA:
     Description: rDBPrivateSubnetB
     Type: AWS::EC2::AvailabilityZone::Name
