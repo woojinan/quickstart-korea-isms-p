@@ -7,11 +7,12 @@ project:
 tests:
   default:
     template: templates/isms-entrypoint-new-vpc.template.yaml
+#    template: ./templates/master.template
     regions:
-#      - ap-northeast-2
+      - ap-northeast-2
 #      - us-east-1
 #      - us-west-2
-      - ap-southeast-1
+#      - ap-southeast-1
     s3_regional_buckets: true
     parameters:
       EC2KeyPairBastion: isms_key
