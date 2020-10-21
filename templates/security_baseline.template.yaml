@@ -502,9 +502,9 @@ Resources:
         - Id: GlacierRule
           Prefix: glacier
           Status: Enabled
-          ExpirationInDays: '365'
+          ExpirationInDays: 365
           Transitions:
-            - TransitionInDays: '180'
+            - TransitionInDays: 180
               StorageClass: GLACIER
               
   CloudTrailBucketPolicy:
