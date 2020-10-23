@@ -615,7 +615,7 @@ Resources:
     Type: AWS::Config::ConformancePack
     DependsOn: S3UploadBucketPolicy
     Properties:
-      ConformancePackName: ISMS-ConformancePackName
+      ConformancePackName: !Sub ISMS-ConformancePackName-${AWS::StackName}
       DeliveryS3Bucket: !Ref S3UploadBucket
       TemplateS3Uri: !Sub s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/config-rules.template.yaml
    
