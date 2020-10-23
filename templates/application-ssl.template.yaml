@@ -17,7 +17,7 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
-        default: Availability Zone selection
+        default: Availability Zone selection for AutoScaling Group
       Parameters:
       - AvailabilityZoneA
       - AvailabilityZoneB
@@ -56,7 +56,7 @@ Metadata:
       - DBHost
       - DBName
       - DBUser
-      - DBPassword
+      - SecretKeyName
     - Label:
         default: AWS Quick Start Configuration
       Parameters:
@@ -65,9 +65,9 @@ Metadata:
       - QSS3KeyPrefix
     ParameterLabels:
       AvailabilityZoneA:
-        default: ID of first availability zone
+        default: ID of first availability zone for AutoScaling Group
       AvailabilityZoneB:
-        default: ID of second availability zone
+        default: ID of second availability zone for AutoScaling Group
       ProductionCIDR:
         default: CIDR block of production VPC
       ManagementCIDR:
@@ -108,8 +108,6 @@ Metadata:
         default: Database name
       DBUser:
         default: Database user
-      DBPassword:
-        default: Database password
       QSS3BucketName:
         default: Quick Start S3 bucket name
       QSS3BucketRegion:
@@ -153,10 +151,10 @@ Parameters:
     Description: DMZ Subnet B
     Type: AWS::EC2::Subnet::Id
   AppPrivateSubnetA:
-    Description: WebApp Subnet A
+    Description: AppPrivateSubnetA
     Type: AWS::EC2::Subnet::Id
   AppPrivateSubnetB:
-    Description: WebApp Subnet A
+    Description: AppPrivateSubnetB
     Type: AWS::EC2::Subnet::Id
   WebInstanceType:
     Description: Instance type for the webservers
@@ -167,10 +165,10 @@ Parameters:
     Type: String
     Default: m5.large
   AvailabilityZoneA:
-    Description: rDBPrivateSubnetB
+    Description: AvailabilityZone A for AutoScaling Group
     Type: AWS::EC2::AvailabilityZone::Name
   AvailabilityZoneB:
-    Description: rDBPrivateSubnetB
+    Description: AvailabilityZone B for AutoScaling Group
     Type: AWS::EC2::AvailabilityZone::Name
   WebServerAMI:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
@@ -189,8 +187,8 @@ Parameters:
     Description: Username of DB Instance
     Type: String
     Default: admin
-  DBPassword:
-    Description: DB Secret Key Name
+  SecretKeyName:
+    Description: Secret Key Name for DB Password
     Type: String
   Environment:
     Description: Environment type (development, test, or production)
@@ -223,9 +221,6 @@ Parameters:
     Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
       can include numbers, lowercase letters, uppercase letters, hyphens (-), and
       forward slash (/).
-    Type: String
-  SecretKeyName:
-    Description: DB Secret Key Name
     Type: String
 Mappings:
   elbMap:
@@ -1092,7 +1087,7 @@ Resources:
                 define( 'DB_USER', '${DBUser}' );
 
                 /** MySQL database password */
-                define( 'DB_PASSWORD', '${DBPassword}' );
+                define( 'DB_PASSWORD', $password );
 
                 /** MySQL hostname */
                 define( 'DB_HOST', '${DBHost}' );
@@ -1352,14 +1347,49 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
 
+          echo Force S3 to use Sigv4
+          aws configure set default.s3.signature_version s3v4
+
           echo Configure the region, necessary especially for GovCloud
           aws configure set region ${AWS::Region}
+
+          echo Generating private certificate...
+          sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/common.key -out /tmp/common.crt -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
+
+          echo Determine whether a certificate needs to be generated
+          cert_arn=$(aws iam list-server-certificates --query 'ServerCertificateMetadataList[?ServerCertificateName==`non-production-testing-server-cert`].Arn' --output text)
+          if [[ $(echo "$cert_arn" | grep "non-production-testing-server-cert") != *"non-production-testing-server-cert"* ]]; then
+            cert_arn=$(aws iam upload-server-certificate --server-certificate-name non-production-testing-server-cert --query 'ServerCertificateMetadata.Arn' --output text --certificate-body file:///tmp/common.crt --private-key file:///tmp/common.key)
+            #webTG_arn=$(aws elbv2 describe-target-groups --name WebTGroup --query 'TargetGroups[].TargetGroupArn' --region ${AWS::Region} --output text)
+            #appTG_arn=$(aws elbv2 describe-target-groups --name AppTGroup --query 'TargetGroups[].TargetGroupArn' --region ${AWS::Region} --output text)
+            echo Sleeping so IAM can propogate the certificate...
+            sleep 10
+            echo Removing key files...
+            rm /tmp/*.pem
+          fi
+          ### temporary comment
+          ###webTG_arn=$(aws elbv2 describe-target-groups --name WebTGroup --query 'TargetGroups[].TargetGroupArn' --output text)
+          ###appTG_arn=$(aws elbv2 describe-target-groups --name AppTGroup --query 'TargetGroups[].TargetGroupArn' --output text)
+          ###echo Creating ELB HTTPS listener using the cert stored in the environment variable...
+          ###aws elbv2 create-listener --load-balancer-arn ${ELBWeb} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=$webTG_arn --region ${AWS::Region}
+          ###aws elbv2 create-listener --load-balancer-arn ${ELBApp} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=$appTG_arn --region ${AWS::Region}
+
+          echo Sleeping for 1.5 minutes to allow CloudFormation to catch up
+          #sleep 90
+          #webACL_id=$(aws waf-regional list-web-acls --query 'WebACLs[].WebACLId' --output text)
+          #aws waf-regional put-logging-configuration --logging-configuration ResourceArn=arn:aws:waf-regional:${AWS::Region}:${AWS::AccountId}:webacl/$webACL_id,LogDestinationConfigs=arn:aws:firehose:${AWS::Region}:${AWS::AccountId}:deliverystream/aws-waf-logs-analytics,RedactedFields=[] --region ${AWS::Region}
+          #sleep 10
+
+
+          echo Signal for success
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PostProcInstance --region ${AWS::Region}
 
           echo Sleeping for 2 minutes to allow CloudFormation to catch up
           sleep 120
 
+
           echo Self-destruct!
-          aws ec2 terminate-instances --instance-id $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
+          #aws ec2 terminate-instances --instance-id $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
       Tags:
       - Key: Name
         Value: PostProcessor
