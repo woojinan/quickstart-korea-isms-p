@@ -15,7 +15,6 @@ Metadata:
           - EC2KeyPairBastion
           - EC2KeyPair
           - DBUsername
-          - DBPassword
           - BastionCIDR
           - EnableGuardDuty
       - Label:
@@ -41,8 +40,6 @@ Metadata:
         default: Key Pair Name for Bastion Host
       EC2KeyPair:
         default: Key Pair Name for production instances
-      DBPassword:
-        default: Database password
       EnableGuardDuty:
         default: Enable Guard Duty
       CloudWatchLogsGroupName:
@@ -94,12 +91,6 @@ Parameters:
     Default: 'admin'
     Description: User name for connecting to the database instance.
     Type: String
-  DBPassword:
-    AllowedPattern: ^(?=^.{8,255}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])(?!.*[@/"']).*$
-    ConstraintDescription: "Min 8 chars. Must include 1 uppercase, 1 lowercase, 1 number, 1 (non / @ \" ') symbol"
-    Description: Password for connecting to the database instance.
-    Type: String
-    NoEcho: True
   NotificationList:
     Type: String
     Default: 'db-ops@domain.com'
@@ -224,7 +215,7 @@ Resources:
         DBAccessCIDR: 10.100.0.0/16
         DBName: examplewordpress
         DBMasterUsername: !Ref DBUsername
-        DBMasterUserPassword: !Ref DBPassword
+        DBMasterUserPassword: "DontUse12**ThisOne"
         RotateDBPassword: 'true'
         DBAutoMinorVersionUpgrade: 'true'
         NotificationList: !Ref NotificationList

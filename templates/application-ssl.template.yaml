@@ -367,6 +367,11 @@ Resources:
         FromPort: 443
         ToPort: 443
         CidrIp: !Ref ProductionCIDR
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: !Ref ProductionCIDR
+
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: 443
@@ -487,11 +492,14 @@ Resources:
     Properties: 
       LoadBalancerAttributes: 
         - Key: access_logs.s3.enabled
-          Value: true
+          Value: "true"
         - Key: access_logs.s3.bucket
           Value: !Ref S3ELBAccessLogs
         - Key: access_logs.s3.prefix
           Value: Logs
+        - Key: routing.http2.enabled
+          Value: "false"
+
       Name: ProxyALB
       Scheme: internal
       SecurityGroups:
@@ -535,11 +543,13 @@ Resources:
       - !Ref DMZSubnetB
       LoadBalancerAttributes: 
         - Key: access_logs.s3.enabled
-          Value: true
+          Value: "true"
         - Key: access_logs.s3.bucket
           Value: !Ref S3ELBAccessLogs
         - Key: access_logs.s3.prefix
           Value: Logs
+        - Key: routing.http2.enabled
+          Value: "false"
       SecurityGroups:
       - !Ref SecurityGroupWeb
       Type: application
@@ -825,13 +835,12 @@ Resources:
     Properties:
       VpcId: !Ref ProductionVPC
       TargetType: instance
-      Name: WebTGroup
-      Port: 80
-      Protocol: HTTP
+      Port: 443
+      Protocol: HTTPS
       Matcher:
-        HttpCode: 200,302,403
-      HealthCheckPath: /wordpress/wp-admin/install.php
-      #HealthCheckPath: /landing/index.html
+        HttpCode: 200,302,403,301
+      #HealthCheckPath: /wordpress/wp-admin/install.php
+      HealthCheckPath: /landing/index.html
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
     DependsOn: AutoScalingConfigWeb
@@ -1220,11 +1229,10 @@ Resources:
     Properties:
       VpcId: !Ref ProductionVPC
       TargetType: instance
-      Name: AppTGroup
-      Port: 80
-      Protocol: HTTP
+      Port: 443
+      Protocol: HTTPS
       Matcher:
-        HttpCode: 200,302,403
+        HttpCode: 200,302,403,301
       #HealthCheckPath: /wordpress/wp-admin/install.php
       HealthCheckPath: /landing/index.html
   AutoScalingGroupApp:
@@ -1326,6 +1334,8 @@ Resources:
             - iam:ListServerCertificates
             - iam:UploadServerCertificate
             - iam:CreateServiceLinkedRole
+            - s3:PutObject
+            - s3:GetObject
             Resource:
             - '*'
           - Sid: ELBListnerAndWAF
@@ -1349,14 +1359,15 @@ Resources:
       Path: /
       Roles:
       - !Ref PostProcInstanceRole
-  PostProcInstance:
+  PostProcInstance4:
     Type: AWS::EC2::Instance
     DependsOn:
     - AutoScalingGroupApp
     - AutoScalingGroupWeb
     Properties:
       ImageId: !Ref WebServerAMI
-      InstanceType: !Ref AppInstanceType
+      #InstanceType: !Ref AppInstanceType
+      InstanceType: t3.large
       IamInstanceProfile: !Ref PostProcInstanceProfile
       SubnetId: !Ref AppPrivateSubnetA
       SecurityGroupIds:
@@ -1388,12 +1399,10 @@ Resources:
             echo Removing key files...
             rm /tmp/*.pem
           fi
-          webTG_arn=$(aws elbv2 describe-target-groups --name WebTGroup --query 'TargetGroups[].TargetGroupArn' --output text)
-          appTG_arn=$(aws elbv2 describe-target-groups --name AppTGroup --query 'TargetGroups[].TargetGroupArn' --output text)
-
+          
           echo Creating ALB HTTPS listener using the cert stored in the environment variable...
-          aws elbv2 create-listener --load-balancer-arn ${ALBWeb} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=$webTG_arn --region ${AWS::Region}
-          aws elbv2 create-listener --load-balancer-arn ${ALBApp} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=$appTG_arn --region ${AWS::Region}
+          aws elbv2 create-listener --load-balancer-arn ${ALBWeb} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=${WebTargetGroup} --region ${AWS::Region}
+          aws elbv2 create-listener --load-balancer-arn ${ALBApp} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=${AppTargetGroup} --region ${AWS::Region}
 
           echo Sleeping for 1.5 minutes to allow CloudFormation to catch up
           sleep 90
@@ -1402,11 +1411,10 @@ Resources:
           #sleep 10
 
 
-          echo Signal for success
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PostProcInstance --region ${AWS::Region}
+          #echo Signal for success
 
           echo Self-destruct!
-          #aws ec2 terminate-instances --instance-id $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
+          aws ec2 terminate-instances --instance-id $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
       Tags:
       - Key: Name
         Value: PostProcessor
