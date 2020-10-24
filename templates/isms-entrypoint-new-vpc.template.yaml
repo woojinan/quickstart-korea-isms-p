@@ -100,7 +100,7 @@ Parameters:
     Description: Password for connecting to the database instance.
     Type: String
     NoEcho: True
-   NotificationList:
+  NotificationList:
     Type: String
     Default: 'db-ops@domain.com'
     Description: The email notification used to configure an SNS topic for sending CloudWatch alarm and RDS event notifications.
@@ -258,7 +258,7 @@ Resources:
         DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
         DBName: examplewordpress
         DBUser: !Ref DBUsername
-        SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraEncryptionKey 
+        SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret 
 Outputs:
   TemplateType:
       Value: Standard Multi-Tier Web Application
