@@ -211,7 +211,7 @@ Resources:
           !GetAtt
            - ProductionVpcTemplate
            - Outputs.rVPCProduction
-        DBEngineVersion: 'Aurora-MySQL5.7-2.04.6'
+        DBEngineVersion: 'Aurora-MySQL5.7-2.09.0'
         DBAccessCIDR: 10.100.0.0/16
         DBName: examplewordpress
         DBMasterUsername: !Ref DBUsername
