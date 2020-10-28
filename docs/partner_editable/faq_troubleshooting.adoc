@@ -15,7 +15,22 @@ For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/la
 
 *A.* We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS CloudFormation quotas] on the AWS website.
 
+*Q.* A warning message is displayed when accessing the landing page.
 
-== Troubleshooting
+*A.* Different browsers may display different warning windows because of the adoption of the HTTPS protocols using private certificates. Upon recognizing the warning, you can choose to access the landing page via the Accept or Advanced pages.
 
-<Steps for troubleshooting the deployment go here.>
+*Q.* I failed to create the stack because a GuardDuty detector already exists in my AWS account.
+
+*A.* Disable Amazon GuardDuty in a region where you want to deploy the Quick Start or delete the GuardDuty detector from the CloudFormation template.
+
+*Q.* I failed to create the stack because AWS Config was disabled in my AWS account.
+
+*A.* https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/gs-console.html[Enable AWS Config] in a region where you want to deploy the Quick Start.
+
+*Q.* I wanted to set up notifications but didn’t receive a SNS subscription notice email.
+
+*A.* Confirm if you entered the email address correctly in NotificationList from stack details when asked to provide one when deploying the Quick Start. If wrong address, select the *Update* tab of the stack, replace it with the correct one, and deploy the stack again following the Deployment steps.
+
+*Q.* I deleted the CloudFormation stack deployed but some resources remain undeleted.
+
+*A.* Either a) choose the stack and check the messaged displayed on the *Events* tab, or b) identify the resources created as a result of the Quick Start template deployment and delete them following the applewebdata://0A124541-6BAA-480E-8D52-6D465FB7C4F9/#_Technical_requirements[Technical requirements] section.
