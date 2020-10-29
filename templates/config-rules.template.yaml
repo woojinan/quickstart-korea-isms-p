@@ -1,9 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Config Rules to check resource's compliance status (qs-1r6f0fdcm)
-Metadata:
-  QuickStartDocumentation:
-    EntrypointName: "Configuration Rules"
-    Order: 3
 Parameters:
   RequiredTagKey:
     Type: String

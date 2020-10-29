@@ -1,10 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides the base security, IAM, and access configuration for the AWS account (qs-1r6f0fdc6)
-Metadata:
-  QuickStartDocumentation:
-    EntrypointName: "Security Baseline"
-    Order: 2
 Parameters:
   EnableLogFileValidation:
     Type: String
