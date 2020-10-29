@@ -514,12 +514,13 @@ Resources:
                 "s3:x-amz-acl": "bucket-owner-full-control"
   S3UploadBucket:
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Type: AWS::S3::Bucket
     Properties:
       BucketName:
         !Sub
           - 'isms-conformance-delivery-${AWS::Region}-${X}'
-          - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
+          - X: '!Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]'
       AccessControl: Private
       # Block Public Access Policy
       PublicAccessBlockConfiguration:
