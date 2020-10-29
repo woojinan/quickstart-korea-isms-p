@@ -4,6 +4,7 @@ Description: Provides nesting for required stacks to deploy a baseline architecu
 Metadata:
   QuickStartDocumentation:
     EntrypointName: "Launch into a new VPC"
+    Order: 1
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:

@@ -1,6 +1,10 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides the base security, IAM, and access configuration for the AWS account (qs-1r6f0fdc6)
+Metadata:
+  QuickStartDocumentation:
+    EntrypointName: "Security Baseline"
+    Order: 2
 Parameters:
   EnableLogFileValidation:
     Type: String
@@ -292,7 +296,6 @@ Resources:
           Resource: '*'
       Groups:
       - !Ref ReadOnlyBillingGroup
-
   CloudTrail:
     DependsOn:
       - CloudTrailBucketPolicy
@@ -315,14 +318,12 @@ Resources:
         - IsPublishToCloudWatchLogs
         - !GetAtt TrailLogGroupRole.Arn
         - !Ref AWS::NoValue
-
   TrailLogGroup:
     Type: 'AWS::Logs::LogGroup'
     Condition: IsPublishToCloudWatchLogs
     Properties:
       LogGroupName: !Ref CloudWatchLogsGroupName
       RetentionInDays: !Ref LogsRetentionInDays
-
   TrailLogGroupRole:
      Type: 'AWS::IAM::Role'
      Condition: IsPublishToCloudWatchLogs
@@ -348,7 +349,6 @@ Resources:
              Effect: Allow
              Action: 'logs:PutLogEvents'
              Resource: !GetAtt 'TrailLogGroup.Arn'
-
   # Enable GuardDuty
   GuardDuty:
     Condition: GuardDutyEnabled
@@ -356,7 +356,6 @@ Resources:
     Properties:
       Enable: true
       FindingPublishingFrequency: FIFTEEN_MINUTES
-
   # Create KMS CloudTrail encryption key
   CloudTrailKey:
     Type: AWS::KMS::Key
@@ -428,14 +427,12 @@ Resources:
                 "kms:CallerAccount": !Sub "${AWS::AccountId}"
               StringLike:
                 "kms:EncryptionContext:aws:cloudtrail:arn": !Sub "arn:aws:cloudtrail:*:${AWS::AccountId}:trail/*"
-
   CloudTrailKeyAlias:
     Type: AWS::KMS::Alias
     Properties:
       AliasName: alias/cloudtrail
       TargetKeyId:
         Ref: CloudTrailKey
-
   # # Create KMS CloudTrail S3 bucket encryption key
   # S3CloudTrailKey:
   #   Type: AWS::KMS::Key
@@ -519,7 +516,6 @@ Resources:
             Condition:
               StringEquals:
                 "s3:x-amz-acl": "bucket-owner-full-control"
-  
   S3UploadBucket:
     DeletionPolicy: Retain
     Type: AWS::S3::Bucket
@@ -542,13 +538,11 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-
   ConformanceServiceLinkedRole:
     Type: AWS::IAM::ServiceLinkedRole
     Properties: 
       AWSServiceName: config-conforms.amazonaws.com
       Description: my service linked role for config-conforms
-
   S3UploadBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -600,15 +594,16 @@ Resources:
               !Sub
                 - arn:aws:s3:::isms-conformance-delivery-${AWS::Region}-${X}/AWSLogs/${AWS::AccountId}/Config/*
                 - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
-
   ISMSConformancePack:
     Type: AWS::Config::ConformancePack
     DependsOn: S3UploadBucketPolicy
     Properties:
       ConformancePackName: ISMS-ConformancePackName
       DeliveryS3Bucket: !Ref S3UploadBucket
-      TemplateS3Uri: !Sub s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/config-rules.template.yaml
-   
+      TemplateS3Uri: !Sub
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/config-rules.template.yaml
+        - S3Region: !If [ UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion ]
+          S3Bucket: !If [ UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName ]
 Outputs:
   SysAdmin:
     Value: !Ref SysAdminGroup
@@ -640,4 +635,4 @@ Outputs:
     Description: "CloudTrail"
     Value:
       Ref: "CloudTrail"
-...
+
