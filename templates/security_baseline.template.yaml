@@ -452,7 +452,7 @@ Resources:
           - id: W28
             reason: "The alarm name is defined to identify K-ISMS Quick Start resources."
     Properties:
-      AlarmName: CloudTrailSecurityGroupChanges
+      #AlarmName: CloudTrailSecurityGroupChanges
       AlarmDescription: Alarms when an API call is made to create, update or delete
         a Security Group.
       MetricName: SecurityGroupEventCount
@@ -486,7 +486,7 @@ Resources:
             reason: "The alarm name is defined to identify K-ISMS Quick Start resources."
     DependsOn: SecurityGroupChangesAlarm
     Properties:
-      AlarmName: CloudTrailNetworkAclChanges
+      #AlarmName: CloudTrailNetworkAclChanges
       AlarmDescription: Alarms when an API call is made to create, update or delete
         a Network ACL.
       MetricName: NetworkAclEventCount
@@ -520,7 +520,7 @@ Resources:
             reason: "The alarm name is defined to identify K-ISMS Quick Start resources."
     DependsOn: NetworkAclChangesAlarm
     Properties:
-      AlarmName: CloudTrailGatewayChanges
+      #AlarmName: CloudTrailGatewayChanges
       AlarmDescription: Alarms when an API call is made to create, update or delete
         a Customer or Internet Gateway.
       MetricName: GatewayEventCount
@@ -556,7 +556,7 @@ Resources:
             reason: "The alarm name is defined to identify K-ISMS Quick Start resources."
     DependsOn: GatewayChangesAlarm
     Properties:
-      AlarmName: CloudTrailVpcChanges
+      #AlarmName: CloudTrailVpcChanges
       AlarmDescription: Alarms when an API call is made to create, update or delete
         a VPC, VPC peering connection or VPC connection to classic.
       MetricName: VpcEventCount
@@ -589,7 +589,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: VpcChangesAlarm
     Properties:
-      AlarmName: CloudTrailEC2InstanceChanges
+      #AlarmName: CloudTrailEC2InstanceChanges
       AlarmDescription: Alarms when an API call is made to create, terminate, start,
         stop or reboot an EC2 instance.
       MetricName: EC2InstanceEventCount
@@ -630,7 +630,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: EC2InstanceChangesAlarm
     Properties:
-      AlarmName: CloudTrailEC2LargeInstanceChanges
+      #AlarmName: CloudTrailEC2LargeInstanceChanges
       AlarmDescription: Alarms when an API call is made to create, terminate, start,
         stop or reboot a 4x, 8x, 9x, 10x, 12x, 16x, 18x, 24x, 32x-large EC2 instance.
       MetricName: EC2LargeInstanceEventCount
@@ -663,7 +663,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: EC2LargeInstanceChangesAlarm
     Properties:
-      AlarmName: CloudTrailChanges
+      #AlarmName: CloudTrailChanges
       AlarmDescription: Alarms when an API call is made to create, update or delete
         a CloudTrail trail, or to start or stop logging to a trail.
       MetricName: CloudTrailEventCount
@@ -695,7 +695,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: CloudTrailChangesAlarm
     Properties:
-      AlarmName: CloudTrailConsoleSignInFailures
+      #AlarmName: CloudTrailConsoleSignInFailures
       AlarmDescription: Alarms when an unauthenticated API call is made to sign into
         the console.
       MetricName: ConsoleSignInFailureCount
@@ -727,7 +727,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: ConsoleSignInFailuresAlarm
     Properties:
-      AlarmName: CloudTrailAuthorizationFailures
+      #AlarmName: CloudTrailAuthorizationFailures
       AlarmDescription: Alarms when an unauthorized API call is made.
       MetricName: AuthorizationFailureCount
       Namespace: CloudTrailMetrics
@@ -757,7 +757,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: AuthorizationFailuresAlarm
     Properties:
-      AlarmName: IAMPolicyChanges
+      #AlarmName: IAMPolicyChanges
       AlarmDescription: Alarms when IAM policy changs are made.
       MetricName: IAMPolicyEventCount
       Namespace: CloudTrailMetrics
@@ -787,7 +787,7 @@ Resources:
             reason: "The alarm name is defined to identify AWS Landing Zone resources."
     DependsOn: IAMPolicyChangesAlarm
     Properties:
-      AlarmName: RootLogin
+      #AlarmName: RootLogin
       AlarmDescription: Alarms when the root user logs in.
       MetricName: RootLoginEventCount
       Namespace: CloudTrailMetrics
@@ -899,7 +899,7 @@ Resources:
       BucketName:
         !Sub
           - isms-conformance-delivery-${AWS::Region}-${X}
-          - X: '!Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]'
+          - X: !Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]
       AccessControl: Private
       # Block Public Access Policy
       PublicAccessBlockConfiguration:
@@ -976,10 +976,11 @@ Resources:
     Properties:
       ConformancePackName: !Sub ISMS-ConformancePackName-${AWS::StackName}
       DeliveryS3Bucket: !Ref S3UploadBucket
-      TemplateS3Uri: !Sub
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/config-rules.template.yaml
-        - S3Region: !If [ UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion ]
-          S3Bucket: !If [ UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName ]
+      TemplateS3Uri: !Sub s3://${QSS3BucketName}/${QSS3KeyPrefix}templates/config-rules.template.yaml
+      # TemplateS3Uri: !Sub
+      #   - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/config-rules.template.yaml
+      #   - S3Region: !If [ UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion ]
+      #     S3Bucket: !If [ UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName ]
 Outputs:
   SysAdmin:
     Value: !Ref SysAdminGroup

@@ -1397,7 +1397,7 @@ Resources:
             sleep 10
 
             echo Removing key files...
-            rm /tmp/*.pem
+            #rm /tmp/*.pem
           fi
           
           echo Creating ALB HTTPS listener using the cert stored in the environment variable...
@@ -1406,12 +1406,9 @@ Resources:
 
           echo Sleeping for 1.5 minutes to allow CloudFormation to catch up
           sleep 90
-          #webACL_id=$(aws waf-regional list-web-acls --query 'WebACLs[].WebACLId' --output text)
-          #aws waf-regional put-logging-configuration --logging-configuration ResourceArn=arn:aws:waf-regional:${AWS::Region}:${AWS::AccountId}:webacl/$webACL_id,LogDestinationConfigs=arn:aws:firehose:${AWS::Region}:${AWS::AccountId}:deliverystream/aws-waf-logs-analytics,RedactedFields=[] --region ${AWS::Region}
-          #sleep 10
-
-
+          
           #echo Signal for success
+          
 
           echo Self-destruct!
           aws ec2 terminate-instances --instance-id $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
