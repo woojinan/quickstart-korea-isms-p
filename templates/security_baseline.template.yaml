@@ -898,7 +898,7 @@ Resources:
     Properties:
       BucketName:
         !Sub
-          - 'isms-conformance-delivery-${AWS::Region}-${X}'
+          - isms-conformance-delivery-${AWS::Region}-${X}
           - X: '!Select [0, !Split [-, !Select [2, !Split [/, !Ref AWS::StackId ]]]]'
       AccessControl: Private
       # Block Public Access Policy
