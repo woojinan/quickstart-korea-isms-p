@@ -274,6 +274,30 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256  
+      LifecycleConfiguration:
+        Rules:
+        - Id: Transition90daysRetain7yrs
+          Status: Enabled
+          ExpirationInDays: 365
+          Transition:
+            TransitionInDays: 90
+            StorageClass:
+              !If
+              - SupportsGlacier
+              - GLACIER
+              - STANDARD_IA
+      VersioningConfiguration:
+        Status: Enabled
+    
   S3AccessLogsPolicy:
     Type: AWS::S3::BucketPolicy
     DeletionPolicy: Retain
@@ -445,11 +469,20 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256  
       LifecycleConfiguration:
         Rules:
         - Id: Transition90daysRetain7yrs
           Status: Enabled
-          ExpirationInDays: 2555
+          ExpirationInDays: 365
           Transition:
             TransitionInDays: 90
             StorageClass:
@@ -594,6 +627,38 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256  
+  S3AssetsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: S3AssetsBucket
+    Properties:
+      Bucket: !Ref S3AssetsBucket
+      PolicyDocument:
+        Statement:
+        - Sid: EnforceSecureTransport
+          Action: s3:*
+          Effect: Deny
+          Principal: '*'
+          Resource: !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}
+          Condition:
+            Bool:
+              aws:SecureTransport: 'false'
+        - Sid: EnforceEncryptionOnPut
+          Effect: Deny
+          Principal: '*'
+          Action: s3:PutObject
+          Resource: !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}/*
+          Condition:
+            StringNotEquals:
+              s3:x-amz-server-side-encryption: AES256
   PreProcInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -653,10 +718,10 @@ Resources:
           sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/common.key -out /tmp/common.crt -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
 
           echo Uploading key to assets bucket...
-          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.key --body /tmp/common.key
+          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.key --body /tmp/common.key --server-side-encryption AES256
 
           echo Uploading cert to assets bucket...
-          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.crt --body /tmp/common.crt
+          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.crt --body /tmp/common.crt --server-side-encryption AES256
 
           echo Signal for success
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PreProcInstance --region ${AWS::Region}
@@ -815,8 +880,8 @@ Resources:
           yum -y install mod_ssl
 
           aws configure set default.s3.signature_version s3v4
-          aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
-          aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}        
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region} 
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}       
           
           EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
 
@@ -1336,6 +1401,7 @@ Resources:
             - iam:CreateServiceLinkedRole
             - s3:PutObject
             - s3:GetObject
+            - s3:DeleteObject
             Resource:
             - '*'
           - Sid: ELBListnerAndWAF
@@ -1344,7 +1410,7 @@ Resources:
             - elasticloadbalancing:CreateLoadBalancerListeners
             - elasticloadbalancing:DescribeTargetGroups
             - elasticloadbalancing:CreateListener
-            - waf-regional:ListWebACLs
+            #- waf-regional:ListWebACLs
             Resource:
             - '*'
           - Sid: SelfDestruct
@@ -1399,6 +1465,9 @@ Resources:
             echo Removing key files...
             #rm /tmp/*.pem
           fi
+
+          aws s3 rm s3://${S3AssetsBucket}/ssl/common.crt
+          aws s3 rm s3://${S3AssetsBucket}/ssl/common.key
           
           echo Creating ALB HTTPS listener using the cert stored in the environment variable...
           aws elbv2 create-listener --load-balancer-arn ${ALBWeb} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=${WebTargetGroup} --region ${AWS::Region}
