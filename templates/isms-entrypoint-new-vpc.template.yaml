@@ -102,7 +102,7 @@ Parameters:
     ConstraintDescription: Provide a valid email address.
   EnableGuardDuty:
     Type: String
-    Default: disable
+    Default: enable
     AllowedValues: [ enable, disable ]
     Description: If you do not currently have Guard Duty enabled in your account.
   CloudWatchLogsGroupName:
@@ -172,6 +172,10 @@ Resources:
           !GetAtt
           - ProductionVpcTemplate
           - Outputs.rRouteTableProdPrivate
+        pRouteTableProdPrivateB:
+          !GetAtt
+          - ProductionVpcTemplate
+          - Outputs.rRouteTableProdPrivateB
         pRouteTableProdPublic:
           !GetAtt
           - ProductionVpcTemplate
