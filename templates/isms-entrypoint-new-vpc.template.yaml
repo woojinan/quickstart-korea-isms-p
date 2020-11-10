@@ -18,7 +18,6 @@ Metadata:
           - EC2KeyPairBastion
           - EC2KeyPair
           - DBUsername
-          - DBPassword
           - BastionCIDR
           - EnableGuardDuty
       - Label:
@@ -44,8 +43,6 @@ Metadata:
         default: Key Pair Name for Bastion Host
       EC2KeyPair:
         default: Key Pair Name for production instances
-      DBPassword:
-        default: Database password
       EnableGuardDuty:
         default: Enable Guard Duty
       CloudWatchLogsGroupName:
@@ -97,12 +94,6 @@ Parameters:
     Default: 'admin'
     Description: User name for connecting to the database instance.
     Type: String
-  DBPassword:
-    AllowedPattern: ^(?=^.{8,255}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])(?!.*[@/"']).*$
-    ConstraintDescription: "Min 8 chars. Must include 1 uppercase, 1 lowercase, 1 number, 1 (non / @ \" ') symbol"
-    Description: Password for connecting to the database instance.
-    Type: String
-    NoEcho: True
   NotificationList:
     Type: String
     Default: 'db-ops@domain.com'
@@ -111,7 +102,7 @@ Parameters:
     ConstraintDescription: Provide a valid email address.
   EnableGuardDuty:
     Type: String
-    Default: disable
+    Default: enable
     AllowedValues: [ enable, disable ]
     Description: If you do not currently have Guard Duty enabled in your account.
   CloudWatchLogsGroupName:
@@ -181,6 +172,10 @@ Resources:
           !GetAtt
           - ProductionVpcTemplate
           - Outputs.rRouteTableProdPrivate
+        pRouteTableProdPrivateB:
+          !GetAtt
+          - ProductionVpcTemplate
+          - Outputs.rRouteTableProdPrivateB
         pRouteTableProdPublic:
           !GetAtt
           - ProductionVpcTemplate
@@ -223,12 +218,13 @@ Resources:
           !GetAtt
            - ProductionVpcTemplate
            - Outputs.rVPCProduction
-        DBEngineVersion: 'Aurora-MySQL5.7.12'
+        DBEngineVersion: 'Aurora-MySQL5.7-2.09.0'
         DBAccessCIDR: 10.100.0.0/16
         DBName: examplewordpress
         DBMasterUsername: !Ref DBUsername
-        DBMasterUserPassword: !Ref DBPassword
-        RotateDBPassword: 'false'
+        DBMasterUserPassword: "DontUse12**ThisOne"
+        RotateDBPassword: 'true'
+        DBAutoMinorVersionUpgrade: 'true'
         NotificationList: !Ref NotificationList
         #CustomDBSecurityGroup: !Ref SecurityGroupRDS
         QSS3BucketName: aws-quickstart
@@ -260,7 +256,7 @@ Resources:
         DBHost: !GetAtt DatabaseTemplate.Outputs.AuroraClusterEndpoint
         DBName: examplewordpress
         DBUser: !Ref DBUsername
-        DBPassword: !Ref DBPassword
+        SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret 
 Outputs:
   TemplateType:
       Value: Standard Multi-Tier Web Application

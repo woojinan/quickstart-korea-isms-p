@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Provides nesting for required stacks to deploy a full sample web application
-  with reverse proxy, ELBs, IAM, and other resources (for demonstration/POC/testing) (qs-1r6f0fdce)
+  with reverse proxy, ALBs, IAM, and other resources (for demonstration/POC/testing) (qs-1r6f0fdce)
 Metadata:
   Stack:
     Value: 3
@@ -17,7 +17,7 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
     - Label:
-        default: Availability Zone selection
+        default: Availability Zone selection for AutoScaling Group
       Parameters:
       - AvailabilityZoneA
       - AvailabilityZoneB
@@ -56,7 +56,7 @@ Metadata:
       - DBHost
       - DBName
       - DBUser
-      - DBPassword
+      - SecretKeyName
     - Label:
         default: AWS Quick Start Configuration
       Parameters:
@@ -65,9 +65,9 @@ Metadata:
       - QSS3KeyPrefix
     ParameterLabels:
       AvailabilityZoneA:
-        default: ID of first availability zone
+        default: ID of first availability zone for AutoScaling Group
       AvailabilityZoneB:
-        default: ID of second availability zone
+        default: ID of second availability zone for AutoScaling Group
       ProductionCIDR:
         default: CIDR block of production VPC
       ManagementCIDR:
@@ -108,8 +108,6 @@ Metadata:
         default: Database name
       DBUser:
         default: Database user
-      DBPassword:
-        default: Database password
       QSS3BucketName:
         default: Quick Start S3 bucket name
       QSS3BucketRegion:
@@ -124,6 +122,13 @@ Parameters:
 #      - Amazon Elasticsearch_S3
 #      - Amazon S3 Only
 #    Default: Amazon S3 Only
+  ruleAction:
+    Type: String
+    Description: The type of action you want to iplement for the rules in this set. Valid options are COUNT or BLOCK.
+    AllowedValues:
+      - BLOCK
+      - COUNT
+    Default: COUNT 
   CentralLogBucket:
     Type: String
     Description: The S3 bucket to send AWS WAF logs to. This bucket should already exist.
@@ -153,24 +158,24 @@ Parameters:
     Description: DMZ Subnet B
     Type: AWS::EC2::Subnet::Id
   AppPrivateSubnetA:
-    Description: WebApp Subnet A
+    Description: AppPrivateSubnetA
     Type: AWS::EC2::Subnet::Id
   AppPrivateSubnetB:
-    Description: WebApp Subnet A
+    Description: AppPrivateSubnetB
     Type: AWS::EC2::Subnet::Id
   WebInstanceType:
     Description: Instance type for the webservers
     Type: String
-    Default: m4.large
+    Default: m5.large
   AppInstanceType:
     Description: Instance type for the app webservers
     Type: String
-    Default: m4.large
+    Default: m5.large
   AvailabilityZoneA:
-    Description: rDBPrivateSubnetB
+    Description: AvailabilityZone A for AutoScaling Group
     Type: AWS::EC2::AvailabilityZone::Name
   AvailabilityZoneB:
-    Description: rDBPrivateSubnetB
+    Description: AvailabilityZone B for AutoScaling Group
     Type: AWS::EC2::AvailabilityZone::Name
   WebServerAMI:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
@@ -189,8 +194,8 @@ Parameters:
     Description: Username of DB Instance
     Type: String
     Default: admin
-  DBPassword:
-    Description: DB Secret Key Name
+  SecretKeyName:
+    Description: Secret Key Name for DB Password
     Type: String
   Environment:
     Description: Environment type (development, test, or production)
@@ -257,6 +262,7 @@ Mappings:
     us-west-2:
       ELB: '797873946194'
 Conditions:
+  ActionCondition: !Equals [!Ref ruleAction, 'BLOCK']
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
   SupportsGlacier:
     !Equals
@@ -268,6 +274,30 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256  
+      LifecycleConfiguration:
+        Rules:
+        - Id: Transition90daysRetain7yrs
+          Status: Enabled
+          ExpirationInDays: 365
+          Transition:
+            TransitionInDays: 90
+            StorageClass:
+              !If
+              - SupportsGlacier
+              - GLACIER
+              - STANDARD_IA
+      VersioningConfiguration:
+        Status: Enabled
+    
   S3AccessLogsPolicy:
     Type: AWS::S3::BucketPolicy
     DeletionPolicy: Retain
@@ -296,6 +326,10 @@ Resources:
       - IpProtocol: tcp
         FromPort: 443
         ToPort: 443
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
         CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
       - IpProtocol: tcp
@@ -350,13 +384,18 @@ Resources:
   SecurityGroupApp:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Security group for Appservers ELB
+      GroupDescription: Security group for Appservers ALB
       VpcId: !Ref ProductionVPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 443
         ToPort: 443
         CidrIp: !Ref ProductionCIDR
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: !Ref ProductionCIDR
+
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: 443
@@ -430,11 +469,20 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256  
       LifecycleConfiguration:
         Rules:
         - Id: Transition90daysRetain7yrs
           Status: Enabled
-          ExpirationInDays: 2555
+          ExpirationInDays: 365
           Transition:
             TransitionInDays: 90
             StorageClass:
@@ -468,86 +516,149 @@ Resources:
           Condition:
             StringNotEquals:
               s3:x-amz-server-side-encryption: AES256
-  ELBApp:
-    Type: AWS::ElasticLoadBalancing::LoadBalancer
+  ALBApp:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     DependsOn:
-    - S3ELBAccessLogs
-    - SecurityGroupApp
-    - S3AccessLogsPolicy
-    Properties:
-      Subnets:
-      - !Ref AppPrivateSubnetA
-      - !Ref AppPrivateSubnetB
-      HealthCheck:
-        HealthyThreshold: "2"
-        Interval: "15"
-        Target: TCP:443
-        Timeout: "5"
-        UnhealthyThreshold: "3"
-      AccessLoggingPolicy:
-        S3BucketName: !Ref S3ELBAccessLogs
-        S3BucketPrefix: Logs
-        Enabled: true
-        EmitInterval: 60
-      SecurityGroups:
-      - !Ref SecurityGroupApp
-      Listeners:
-      - InstancePort: "80"
-        LoadBalancerPort: "80"
-        Protocol: TCP
-        InstanceProtocol: TCP
-      - InstancePort: "443"
-        LoadBalancerPort: "443"
-        Protocol: TCP
-        InstanceProtocol: TCP
+      - S3ELBAccessLogs
+      - SecurityGroupApp
+      - S3AccessLogsPolicy
+    Properties: 
+      LoadBalancerAttributes: 
+        - Key: access_logs.s3.enabled
+          Value: "true"
+        - Key: access_logs.s3.bucket
+          Value: !Ref S3ELBAccessLogs
+        - Key: access_logs.s3.prefix
+          Value: Logs
+        - Key: routing.http2.enabled
+          Value: "false"
+
+      Name: ProxyALB
       Scheme: internal
+      SecurityGroups:
+        - !Ref SecurityGroupApp
+      Subnets:
+        - !Ref AppPrivateSubnetA
+        - !Ref AppPrivateSubnetB
       Tags:
-      - Key: Name
-        Value: ProxyELB
-      - Key: Environment
-        Value: !Ref Environment
-  ELBWeb:
-    Type: AWS::ElasticLoadBalancing::LoadBalancer
-    DependsOn:
-    - S3ELBAccessLogs
-    - SecurityGroupWeb
-    - S3AccessLogsPolicy
+        - Key: Name
+          Value: ProxyALB
+        - Key: Environment
+          Value: !Ref Environment        
+      Type: application
+
+  ALBappHTTPlistener:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
     Properties:
+      Port: 80
+      Protocol: "HTTP"
+      LoadBalancerArn: !Ref ALBApp
+      DefaultActions:
+        - Type: "redirect"
+          RedirectConfig:
+            Protocol: "HTTPS"
+            Port: "443"
+            Host: "#{host}"
+            Path: "/#{path}"
+            Query: "#{query}"
+            StatusCode: "HTTP_301"
+  
+  ALBWeb:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    DependsOn:
+      - S3ELBAccessLogs
+      - SecurityGroupWeb
+      - S3AccessLogsPolicy
+    Properties:
+      Name: ProxyWeb
       Subnets:
       - !Ref DMZSubnetA
       - !Ref DMZSubnetB
-      HealthCheck:
-        HealthyThreshold: "2"
-        Interval: "30"
-        Target: TCP:443
-        Timeout: "5"
-        UnhealthyThreshold: "5"
-      AccessLoggingPolicy:
-        S3BucketName: !Ref S3ELBAccessLogs
-        S3BucketPrefix: Logs
-        Enabled: true
-        EmitInterval: 60
+      LoadBalancerAttributes: 
+        - Key: access_logs.s3.enabled
+          Value: "true"
+        - Key: access_logs.s3.bucket
+          Value: !Ref S3ELBAccessLogs
+        - Key: access_logs.s3.prefix
+          Value: Logs
+        - Key: routing.http2.enabled
+          Value: "false"
       SecurityGroups:
       - !Ref SecurityGroupWeb
-      Listeners:
-      - InstancePort: "80"
-        LoadBalancerPort: "80"
-        Protocol: TCP
-        InstanceProtocol: TCP
-      - InstancePort: "443"
-        LoadBalancerPort: "443"
-        Protocol: TCP
-        InstanceProtocol: TCP
+      Type: application
       Tags:
       - Key: Name
-        Value: Proxy ELB
+        Value: ProxyWeb
       - Key: Environment
         Value: !Ref Environment
+  ALBwebHTTPlistener:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      Port: 80
+      Protocol: "HTTP"
+      LoadBalancerArn: !Ref ALBWeb
+      DefaultActions:
+        - Type: "redirect"
+          RedirectConfig:
+            Protocol: "HTTPS"
+            Port: "443"
+            Host: "#{host}"
+            Path: "/#{path}"
+            Query: "#{query}"
+            StatusCode: "HTTP_301"
+#  ALBwebHTTPSlistener:
+#    Type: AWS::ElasticLoadBalancingV2::Listener
+#    Properties: 
+#      DefaultActions:
+#        - Type: forward
+#          TargetGroupArn: !Ref WebTargetGroup
+#      AlpnPolicy: 
+#        - String
+#      Certificates: 
+#        - WebTargetGroup
+#      LoadBalancerArn: !Ref ALBWeb
+#      Port: 443
+#      Protocol: HTTPS
+#      SslPolicy: ELBSecurityPolicy-2016-08
+
+
   S3AssetsBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
       AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256  
+  S3AssetsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: S3AssetsBucket
+    Properties:
+      Bucket: !Ref S3AssetsBucket
+      PolicyDocument:
+        Statement:
+        - Sid: EnforceSecureTransport
+          Action: s3:*
+          Effect: Deny
+          Principal: '*'
+          Resource: !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}
+          Condition:
+            Bool:
+              aws:SecureTransport: 'false'
+        - Sid: EnforceEncryptionOnPut
+          Effect: Deny
+          Principal: '*'
+          Action: s3:PutObject
+          Resource: !Sub arn:${AWS::Partition}:s3:::${S3AssetsBucket}/*
+          Condition:
+            StringNotEquals:
+              s3:x-amz-server-side-encryption: AES256
   PreProcInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -607,10 +718,10 @@ Resources:
           sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/common.key -out /tmp/common.crt -subj "/C=US/ST=Washington/L=Seattle/O=NonProductionTestCert/CN=NonProductionTestCert"
 
           echo Uploading key to assets bucket...
-          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.key --body /tmp/common.key
+          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.key --body /tmp/common.key --server-side-encryption AES256
 
           echo Uploading cert to assets bucket...
-          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.crt --body /tmp/common.crt
+          aws s3api put-object --bucket ${S3AssetsBucket} --key ssl/common.crt --body /tmp/common.crt --server-side-encryption AES256
 
           echo Signal for success
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PreProcInstance --region ${AWS::Region}
@@ -668,6 +779,8 @@ Resources:
               - arn:${AWS::Partition}:s3:::${S3Bucket}/${QSS3KeyPrefix}*
               - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
             Effect: Allow
+      ManagedPolicyArns:
+       - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
   WebInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
@@ -677,7 +790,7 @@ Resources:
   AutoScalingConfigWeb:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
-    - ELBApp
+    - ALBApp
     - AutoScalingGroupApp
     - PreProcInstance
     Metadata:
@@ -709,7 +822,7 @@ Resources:
                     listen [::]:443 ssl http2 default_server;
                     location / {
                         resolver xxxxx;
-                        set $elb 'https://${ELBApp.DNSName}';
+                        set $elb 'https://${ALBApp.DNSName}';
                         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                         proxy_set_header Host $http_host;
                         proxy_redirect off;
@@ -767,37 +880,11 @@ Resources:
           yum -y install mod_ssl
 
           aws configure set default.s3.signature_version s3v4
-          aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
-          aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}        
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region} 
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}       
           
           EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
 
-          ######################################################################
-          # Volume /dev/sdh (which will get created as /dev/xvdh on Amazon Linux)
-
-          DATA_STATE="unknown"
-          until [ "${!DATA_STATE}" == "attached" ]; do
-            DATA_STATE=$(aws ec2 describe-volumes \
-            --region ${AWS::Region} \
-            --filters \
-                  Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
-                  Name=attachment.device,Values=/dev/sdh \
-            --query Volumes[].Attachments[].State \
-            --output text)
-
-            sleep 5
-          done
-
-          # Format /dev/xvdh if it does not contain a partition yet
-          if [ "$(file -b -s /dev/xvdh)" == "data" ]; then
-            mkfs -t ext4 /dev/xvdh
-          fi
-
-          mkdir -p /data
-          mount /dev/xvdh /data
-
-          # Persist the volume in /etc/fstab so it gets mounted again
-          echo '/dev/xvdh /data ext4 defaults,nofail 0 2' >> /etc/fstab
 
           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigWeb --region ${AWS::Region}
 
@@ -808,6 +895,17 @@ Resources:
           sed -i '/default_server;/d' /etc/nginx/nginx.conf
           sleep 10
           service nginx restart
+  WebTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref ProductionVPC
+      TargetType: instance
+      Port: 443
+      Protocol: HTTPS
+      Matcher:
+        HttpCode: 200,302,403,301
+      #HealthCheckPath: /wordpress/wp-admin/install.php
+      HealthCheckPath: /landing/index.html
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
     DependsOn: AutoScalingConfigWeb
@@ -821,8 +919,8 @@ Resources:
       LaunchConfigurationName: !Ref AutoScalingConfigWeb
       MinSize: "2"
       MaxSize: "4"
-      LoadBalancerNames:
-      - !Ref ELBWeb
+      TargetGroupARNs:
+        - !Ref WebTargetGroup
       HealthCheckType: ELB
       HealthCheckGracePeriod: 300
       Tags:
@@ -918,6 +1016,11 @@ Resources:
             Action:
             - ec2:DescribeVolumes
             Resource: '*'
+          - Sid: getSecret
+            Effect: Allow
+            Action: 
+            - secretsmanager:GetSecretValue
+            Resource: "*"
       - PolicyName: aws-quick-start-s3-policy
         PolicyDocument:
           Version: '2012-10-17'
@@ -932,12 +1035,14 @@ Resources:
                 - arn:${AWS::Partition}:s3:::${S3Bucket}/${QSS3KeyPrefix}*
                 - S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
             Effect: Allow
+      ManagedPolicyArns:
+       - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
   AppInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-        - Ref: 'AppInstanceRole'
+        - !Ref AppInstanceRole
   AutoScalingConfigApp:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
@@ -976,15 +1081,17 @@ Resources:
                 - /etc/cfn/cfn-hup.conf
                 - /etc/cfn/hooks.d/cfn-auto-reloader.conf
         install_wordpress:
-          commands:
-            0_enable_mariadb:
-              command: amazon-linux-extras enable lamp-mariadb10.2-php7.2
-            1_yum_clean:
-              command: yum clean metadata
-            2_php_install:
-             command: yum install -y php-cli php-pdo php-fpm php-json php-mysqlnd mariadb
+          packages:
+            yum:
+              jq: []
+              awslogs: []
+              httpd: []
+              #php: []
+              #php-mysql: []
+              php-mbstring.x86_64: []
           sources:
-            /var/www/html: https://wordpress.org/latest.tar.gz
+            /var/www/html: 'https://wordpress.org/wordpress-5.1.1.tar.gz'
+            /usr/share/php/aws-php: 'https://docs.aws.amazon.com/aws-sdk-php/v3/download/aws.zip'
           files:
             /tmp/httpd/ssl.conf:
               content: |
@@ -1012,6 +1119,7 @@ Resources:
                  * This file contains the following configurations:
                  *
                  * * MySQL settings
+                 * * Secret keys
                  * * Database table prefix
                  * * ABSPATH
                  *
@@ -1019,7 +1127,61 @@ Resources:
                  *
                  * @package WordPress
                  */
-                
+
+                require 'aws-php/aws-autoloader.php';
+                 
+                use Aws\Credentials\AssumeRoleCredentialProvider;
+                use Aws\Credentials\InstanceProfileProvider;
+                use Aws\Credentials\CredentialProvider;
+                use Aws\SecretsManager\SecretsManagerClient;
+                use Aws\Exception\AwsException;
+                 
+                $provider = CredentialProvider::defaultProvider();
+                $profile = new InstanceProfileProvider();
+                $client = new SecretsManagerClient([
+                     'version' => '2017-10-17',
+                     'region' => '${AWS::Region}',
+                     'credentials' => $profile
+                 
+                ]);
+                 
+                $secretName = "${SecretKeyName}";
+                try {
+                    $result = $client->getSecretValue([
+                        'SecretId' => $secretName,
+                    ]);
+                    $secretObject = json_decode($result["SecretString"]);
+                    $password =  $secretObject->{'password'};
+
+                } catch (AwsException $e) {
+                    $error = $e->getAwsErrorCode();
+                    if ($error == 'DecryptionFailureException') {
+                        // Secrets Manager can't decrypt the protected secret text using the provided AWS KMS key.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InternalServiceErrorException') {
+                        // An error occurred on the server side.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InvalidParameterException') {
+                        // You provided an invalid value for a parameter.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'InvalidRequestException') {
+                        // You provided a parameter value that is not valid for the current state of the resource.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                    if ($error == 'ResourceNotFoundException') {
+                        // We can't find the resource that you asked for.
+                        // Handle the exception here, and/or rethrow as needed.
+                        throw $e;
+                    }
+                }
+
                 // ** MySQL settings - You can get this info from your web host ** //
                 /** The name of the database for WordPress */
                 define( 'DB_NAME', '${DBName}' );
@@ -1028,7 +1190,7 @@ Resources:
                 define( 'DB_USER', '${DBUser}' );
 
                 /** MySQL database password */
-                define( 'DB_PASSWORD', '${DBPassword}' );
+                define( 'DB_PASSWORD', $password );
 
                 /** MySQL hostname */
                 define( 'DB_HOST', '${DBHost}' );
@@ -1101,40 +1263,14 @@ Resources:
             #!/bin/bash -x
 
             yum update -y
-            yum -y install mod_ssl
+            amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+            yum -y install php-mbstring.x86_64 mod_ssl
 
             aws configure set default.s3.signature_version s3v4
             aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
             aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}
 
             EC2_INSTANCE_ID=$(curl -s http://instance-data/latest/meta-data/instance-id)
-
-            ######################################################################
-            # Volume /dev/sdh (which will get created as /dev/xvdh on Amazon Linux)
-
-            DATA_STATE="unknown"
-            until [ "${!DATA_STATE}" == "attached" ]; do
-              DATA_STATE=$(aws ec2 describe-volumes \
-              --region ${AWS::Region} \
-              --filters \
-                    Name=attachment.instance-id,Values=${!EC2_INSTANCE_ID} \
-                    Name=attachment.device,Values=/dev/sdh \
-              --query Volumes[].Attachments[].State \
-              --output text)
-
-              sleep 5
-            done
-
-            # Format /dev/xvdh if it does not contain a partition yet
-            if [ "$(file -b -s /dev/xvdh)" == "data" ]; then
-              mkfs -t ext4 /dev/xvdh
-            fi
-
-            mkdir -p /data
-            mount /dev/xvdh /data
-
-            # Persist the volume in /etc/fstab so it gets mounted again
-            echo '/dev/xvdh /data ext4 defaults,nofail 0 2' >> /etc/fstab
 
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource AutoScalingConfigApp --configsets wordpress_install --region ${AWS::Region}
 
@@ -1153,6 +1289,17 @@ Resources:
             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AutoScalingGroupApp --region ${AWS::Region}
           - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
             S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
+  AppTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref ProductionVPC
+      TargetType: instance
+      Port: 443
+      Protocol: HTTPS
+      Matcher:
+        HttpCode: 200,302,403,301
+      #HealthCheckPath: /wordpress/wp-admin/install.php
+      HealthCheckPath: /landing/index.html
   AutoScalingGroupApp:
     Type: AWS::AutoScaling::AutoScalingGroup
     DependsOn: AutoScalingConfigApp
@@ -1166,8 +1313,8 @@ Resources:
       LaunchConfigurationName: !Ref AutoScalingConfigApp
       MinSize: "2"
       MaxSize: "4"
-      LoadBalancerNames:
-      - !Ref ELBApp
+      TargetGroupARNs:
+        - !Ref AppTargetGroup
       HealthCheckType: ELB
       HealthCheckGracePeriod: 300
       Tags:
@@ -1251,12 +1398,19 @@ Resources:
             Action:
             - iam:ListServerCertificates
             - iam:UploadServerCertificate
+            - iam:CreateServiceLinkedRole
+            - s3:PutObject
+            - s3:GetObject
+            - s3:DeleteObject
             Resource:
             - '*'
-          - Sid: CreateLoadBalancerListener
+          - Sid: ELBListnerAndWAF
             Effect: Allow
             Action:
             - elasticloadbalancing:CreateLoadBalancerListeners
+            - elasticloadbalancing:DescribeTargetGroups
+            - elasticloadbalancing:CreateListener
+            #- waf-regional:ListWebACLs
             Resource:
             - '*'
           - Sid: SelfDestruct
@@ -1271,14 +1425,15 @@ Resources:
       Path: /
       Roles:
       - !Ref PostProcInstanceRole
-  PostProcInstance:
+  PostProcInstance4:
     Type: AWS::EC2::Instance
     DependsOn:
     - AutoScalingGroupApp
     - AutoScalingGroupWeb
     Properties:
       ImageId: !Ref WebServerAMI
-      InstanceType: !Ref AppInstanceType
+      #InstanceType: !Ref AppInstanceType
+      InstanceType: t3.large
       IamInstanceProfile: !Ref PostProcInstanceProfile
       SubnetId: !Ref AppPrivateSubnetA
       SecurityGroupIds:
@@ -1287,11 +1442,42 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
 
+          echo Force S3 to use Sigv4
+          aws configure set default.s3.signature_version s3v4
+
           echo Configure the region, necessary especially for GovCloud
           aws configure set region ${AWS::Region}
 
-          echo Sleeping for 2 minutes to allow CloudFormation to catch up
-          sleep 120
+          yum -y install php-mbstring.x86_64 mod_ssl
+
+          aws configure set default.s3.signature_version s3v4
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.crt /etc/ssl/certs/common.crt --region ${AWS::Region}
+          aws s3 cp s3://${S3AssetsBucket}/ssl/common.key /etc/ssl/private/common.key --region ${AWS::Region}
+
+          echo Determine whether a certificate needs to be generated
+          cert_arn=$(aws iam list-server-certificates --query 'ServerCertificateMetadataList[?ServerCertificateName==`non-production-testing-server-cert`].Arn' --output text)
+          if [[ $(echo "$cert_arn" | grep "non-production-testing-server-cert") != *"non-production-testing-server-cert"* ]]; then
+            cert_arn=$(aws iam upload-server-certificate --server-certificate-name non-production-testing-server-cert --query 'ServerCertificateMetadata.Arn' --output text --certificate-body file:///etc/ssl/certs/common.crt --private-key file:///etc/ssl/private/common.key)
+          
+            echo Sleeping so IAM can propogate the certificate...
+            sleep 10
+
+            echo Removing key files...
+            #rm /tmp/*.pem
+          fi
+
+          aws s3 rm s3://${S3AssetsBucket}/ssl/common.crt
+          aws s3 rm s3://${S3AssetsBucket}/ssl/common.key
+          
+          echo Creating ALB HTTPS listener using the cert stored in the environment variable...
+          aws elbv2 create-listener --load-balancer-arn ${ALBWeb} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=${WebTargetGroup} --region ${AWS::Region}
+          aws elbv2 create-listener --load-balancer-arn ${ALBApp} --protocol HTTPS --port 443 --certificates CertificateArn=$cert_arn --default-actions Type=forward,TargetGroupArn=${AppTargetGroup} --region ${AWS::Region}
+
+          echo Sleeping for 1.5 minutes to allow CloudFormation to catch up
+          sleep 90
+          
+          #echo Signal for success
+          
 
           echo Self-destruct!
           aws ec2 terminate-instances --instance-id $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --region ${AWS::Region}
@@ -1308,16 +1494,117 @@ Resources:
 #            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
 #      TimeoutInMinutes: 20
 #      Parameters:
-#        pELBWeb: !Ref ELBWeb
+#        pALBWeb: !Ref ALBWeb
 #        pESClusterARN: !Ref ESClusterARN
 #        pCentralLogBucket: !Ref CentralLogBucket
 #        pWAFLogging: !Ref WAFlogging
+  ## ADD WAFv2
+  rALBWebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: ALBWebACL
+      Scope: REGIONAL
+      Description: This is a Sample WebACL
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: KISMSWebACLMetric
+      Rules:
+        - Name: AWS-AWSManagedRulesAmazonIpReputationList
+          Priority: 0
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRAIRL
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+              ExcludedRules: []
+        - Name: AWS-AWSManagedRulesAdminProtectionRuleSet
+          Priority: 1
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRAPRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAdminProtectionRuleSet
+              ExcludedRules: []
+        - Name: AWS-AWSManagedRulesCommonRuleSet
+          Priority: 2
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRCRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+              ExcludedRules: []
+        - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 3
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRKBIRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+              ExcludedRules: []
+        - Name: AWS-AWSManagedRulesSQLiRuleSet
+          Priority: 4
+          OverrideAction:
+            !If 
+              - ActionCondition
+              - None: {}
+              - Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRSRS
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesSQLiRuleSet
+              ExcludedRules: []
+  rALBACLAssociation:
+    Type: 'AWS::WAFv2::WebACLAssociation'
+    Properties:
+      WebACLArn: !GetAtt 
+        - rALBWebACL
+        - Arn
+      ResourceArn: !Ref ALBWeb
 Outputs:
   LandingPageURL:
-    Value: !Sub https://${ELBWeb.DNSName}/landing/index.html
+    Value: !Sub https://${ALBWeb.DNSName}/landing/index.html
     Description: Landing Page
   WebsiteURL:
-    Value: !Sub https://${ELBWeb.DNSName}/wordpress/wp-admin/install.php
+    Value: !Sub https://${ALBWeb.DNSName}/wordpress/wp-admin/install.php
     Description: WordPress Website (demonstration purposes only)
   SecurityGroupWeb:
     Value: !Ref SecurityGroupWeb

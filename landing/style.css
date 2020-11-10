@@ -61,9 +61,10 @@ input, select, button {
 
 button {
     border: 0;
-    background-color: transparent;
+    background-color: #4CAF50;
     cursor: pointer;
     outline: none;
+    color: white;
 }
 
 table {

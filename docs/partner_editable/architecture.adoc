@@ -22,3 +22,27 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * S3 buckets for centralized logging and AWS WAF.
 * Redundant Amazon Relational Database Service (Amazon RDS) in a multi-AZ configuration.
 * AWS-managed network address translation (NAT) gateways to control public network access by the resources in the private subnets.
+* Create 11 CloudWatch metric filters and alarms with following topics of CloudTrail logs.
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-s3-bucket-activity[Amazon
+S3 Bucket Activity]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-security-group[Security
+Group Configuration Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-network-acl[Network
+Access Control List (ACL) Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-gateway-changes[Network
+Gateway Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-vpc-changes[Amazon
+Virtual Private Cloud (VPC) Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-ec2-instance-changes[Amazon
+EC2 Instance Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-ec2-large-instance-changes[EC2
+Large Instance Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-cloudtrail-changes[CloudTrail
+Changes]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-signin[Console
+Sign-In Failures]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-authorization-failures[Authorization
+Failures]
+** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-iam-policy-changes[IAM
+Policy Changes]
+* Create 4 CloudWatch alarms to conduct maintaining the reliability, availability, and performance of Amazon RDS. CloudWatch Alarm triggers Amazon SNS topic and it notify the email to users.
