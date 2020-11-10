@@ -75,7 +75,7 @@ Conditions:
     - !Ref PublishToCloudWatchLogs
     - 'true'
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
-  GuardDutyEnabled: !Equals [!Ref EnableGuardDuty, 'enabled']
+  GuardDutyEnabled: !Equals [!Ref EnableGuardDuty, 'enable']
 Resources:
   SysAdminGroup:
     Type: AWS::IAM::Group
