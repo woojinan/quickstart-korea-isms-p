@@ -21,18 +21,18 @@ endif::marketplace_subscription[]
 
 === Make sure that at least one Amazon EC2 key pair exists in your AWS account in the Region where you plan to deploy the Quick Start.
 
-|https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Key pair] a|
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Key pair] a|
 Make note of the key pair name. You need it during deployment. To create a key pair, follow the https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[instructions in the AWS documentation].
 
 For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already being used by a production instance.
 
 === Ensure you have the correct IAM permissions
 
-|https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html[IAM permissions] |Before launching the Quick Start, you must log in to the AWS Management Console with IAM permissions for the resources and actions the templates deploy. The _AdministratorAccess managed policy within IAM provides sufficient permissions_, although your organization may choose to use a custom policy with more restrictions.
+https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html[IAM permissions] |Before launching the Quick Start, you must log in to the AWS Management Console with IAM permissions for the resources and actions the templates deploy. The _AdministratorAccess managed policy within IAM provides sufficient permissions_, although your organization may choose to use a custom policy with more restrictions.
 
 === Check the status of Amazon GuardDuty and AWS Config
 
-1.  https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_suspend-disable.html[Disable] Amazon GuardDuty or delete the section from the CloudFormation template if it is enabled in your region. The attempt to deploy a GuardDuty detector to an account with an already configured detector will result in deployment failure.
+1.  https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_suspend-disable.html[Disable] Amazon GuardDuty or set the "EnableGuardDuty" CloudFormation parameter to "Disable" if it is enabled in your region. An attempt to deploy a GuardDuty detector to an account with an already configured detector will result in a deployment failure.
 2.  https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/gs-console.html[Enable] AWS Config if it is disabled in your region to avoid trouble during deployment.
 
 === Launch the Quick Start
