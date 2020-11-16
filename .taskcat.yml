@@ -10,14 +10,14 @@ tests:
 #    template: ./templates/master.template
     regions:
       - ap-northeast-1
-#      - us-east-1
-#      - us-west-2
-#      - ap-southeast-1
+#     - us-east-1
+#     - us-west-2
+#     - ap-southeast-1
     s3_regional_buckets: true
     parameters:
       EC2KeyPairBastion: override
       EC2KeyPair: override
-
+      EnableGuardDuty: disable
       AvailabilityZoneA: $[taskcat_getsingleaz_1]
       AvailabilityZoneB: $[taskcat_getsingleaz_2]
       QSS3BucketName: $[taskcat_autobucket]
