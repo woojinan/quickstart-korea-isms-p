@@ -8,41 +8,42 @@ image::../images/architecture_diagram.png[Architecture,width=100%,height=100%]
 
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
-* A bastion host in a public subnet that enables system administrator access and connection via Secure Shell (SSH) for troubleshooting EC2 instances.
-* Deploying a multi-service Availability Zone (AZ) architecture with the management and production VPC for web and apps consisting of the public (front) and private (back-end) subnets for web, apps, and databases.
+* A multi-service Availability Zone (AZ) architecture with management and production VPCs
+** In the management VPC, a bastion host in a public subnet that enables system administrator access and connection via Secure Shell (SSH) for troubleshooting EC2 instances.
+** In the production VPC, web and application instances with public (front-end) and private (back-end) subnets for web, application, and database layers.
 * Standard security groups for EC2 instances.
 * Default AWS Identity and Access Management configurations that include groups, roles, and instance profiles as well as customizable IAM policies.
 * AWS Key Management Service (KMS) for CloudTrail and RDS key encryption.
 * Rules to examine encryption policies.
 * Amazon GuardDuty to identify external intrusion threats.
 * Notification policies based on SNS topics to capture RDS CPU/Storage alarms.
-* Defining and deploying AWS Config rules to monitor security policies and compliance.
-* AWS WAF that creates response rules (Core Rule, WordPress, Application, SQL database, PHP application) automatically against the vulnerabilities of the Open Web Application Security Project (OWASP) Top Ten.
-* Separate Auto Scaling groups for web and apps to secure high availability, and the three-tier web application (WordPress) that supports Application Load Balancers.
+* AWS Config rules to monitor security policies and compliance.
+* An AWS WAF that creates response rules (Core Rule, WordPress, Application, SQL database, PHP application) automatically against the top tem Open Web Application Security Project (OWASP) vulnerabilities.
+* Separate Auto Scaling groups for web and application instances to secure high availability, and a three-tier web application (WordPress) that supports Application Load Balancers.
 * S3 buckets for centralized logging and AWS WAF.
-* Redundant Amazon Relational Database Service (Amazon RDS) in a multi-AZ configuration.
+* A redundant Amazon Relational Database Service (RDS) database in a multi-AZ configuration.
 * AWS-managed network address translation (NAT) gateways to control public network access by the resources in the private subnets.
-* Create 11 CloudWatch metric filters and alarms with following topics of CloudTrail logs.
+* 11 CloudWatch metric filters and alarms with following topics:
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-s3-bucket-activity[Amazon
-S3 Bucket Activity]
+S3 bucket activity]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-security-group[Security
-Group Configuration Changes]
+Group configuration changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-network-acl[Network
-Access Control List (ACL) Changes]
+Access Control List (ACL) changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-gateway-changes[Network
-Gateway Changes]
+cateway changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-vpc-changes[Amazon
-Virtual Private Cloud (VPC) Changes]
+Virtual Private Cloud (VPC) changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-ec2-instance-changes[Amazon
-EC2 Instance Changes]
+EC2 instance changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-ec2-large-instance-changes[EC2
-Large Instance Changes]
+Large instance changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-cloudtrail-changes[CloudTrail
-Changes]
+changes]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-signin[Console
-Sign-In Failures]
+sign-in failures]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-authorization-failures[Authorization
-Failures]
+failures]
 ** https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-iam-policy-changes[IAM
-Policy Changes]
-* Create 4 CloudWatch alarms to conduct maintaining the reliability, availability, and performance of Amazon RDS. CloudWatch Alarm triggers Amazon SNS topic and it notify the email to users.
+policy changes]
+* 4 CloudWatch alarms to monitor the reliability, availability, and performance of Amazon RDS. CloudWatch alarms trigger Amazon SNS topics and send email notifications.
