@@ -1,0 +1,60 @@
+// We need to work around Step numbers here if we are going to potentially exclude the AMI subscription
+=== Sign in to your AWS account
+
+. Sign in to your AWS account at https://aws.amazon.com with an IAM user role that has the necessary permissions. For details, see link:#_planning_the_deployment[Planning the deployment] earlier in this guide.
+. Make sure that your AWS account is configured correctly, as discussed in the link:#_technical_requirements[Technical requirements] section.
+
+// Optional based on Marketplace listing. Not to be edited
+ifdef::marketplace_subscription[]
+=== Subscribe to the {partner-product-short-name} AMI
+
+This Quick Start requires a subscription to the AMI for {partner-product-short-name} in AWS Marketplace.
+
+. Sign in to your AWS account.
+. {marketplace_listing_url}[Open the page for the {partner-product-short-name} AMI in AWS Marketplace], and then choose *Continue to Subscribe*.
+. Review the terms and conditions for software usage, and then choose *Accept Terms*. +
+  A confirmation page loads, and an email confirmation is sent to the account owner. For detailed subscription instructions, see the https://aws.amazon.com/marketplace/help/200799470[AWS Marketplace documentation^].
+
+. When the subscription process is complete, exit out of AWS Marketplace without further action. *Do not* provision the software from AWS Marketplace—the Quick Start deploys the AMI for you.
+endif::marketplace_subscription[]
+// \Not to be edited
+
+=== Make sure that at least one Amazon EC2 key pair exists in your AWS account in the Region where you plan to deploy the Quick Start.
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Key pair] a|
+Make note of the key pair name. You need it during deployment. To create a key pair, follow the https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[instructions in the AWS documentation].
+
+For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already being used by a production instance.
+
+=== Ensure you have the correct IAM permissions
+
+https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html[IAM permissions] |Before launching the Quick Start, you must log in to the AWS Management Console with IAM permissions for the resources and actions the templates deploy. The _AdministratorAccess managed policy within IAM provides sufficient permissions_, although your organization may choose to use a custom policy with more restrictions.
+
+=== Check the status of Amazon GuardDuty and AWS Config
+
+1.  https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_suspend-disable.html[Disable] Amazon GuardDuty or set the "EnableGuardDuty" CloudFormation parameter to "Disable" if it is enabled in your region. An attempt to deploy a GuardDuty detector to an account with an already configured detector will result in a deployment failure.
+2.  https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/gs-console.html[Enable] AWS Config if it is disabled in your region to avoid trouble during deployment.
+
+=== Launch the Quick Start
+
+NOTE: You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
+
+. Sign in to your AWS account, and choose one of the following options to launch the AWS CloudFormation template. For help with choosing an option, see link:#_deployment_options[Deployment options] earlier in this guide.
+
+[cols=2*]
+|===
+^|http://qs_launch_permalink[Deploy {partner-product-short-name} into a new VPC on AWS^]
+^|http://qs_template_permalink[View template^]
+
+|===
+
+Each deployment takes about {deployment_time} to complete.
+
+[start=2]
+. Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for {partner-product-short-name} will be built. The template is launched in the {default_deployment_region} Region by default.
+
+// *Note:* This deployment includes Amazon EFS, which isn’t currently supported in all AWS Regions. For a current list of supported Regions, see the https://docs.aws.amazon.com/general/latest/gr/elasticfilesystem.html[endpoints and quotas webpage].
+
+[start=3]
+. On the *Create stack* page, keep the default setting for the template URL, and then choose *Next*.
+. On the *Specify stack details* page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the link:#_parameter_reference[Parameter reference] section of this guide. When you finish reviewing and customizing the parameters, choose *Next*.

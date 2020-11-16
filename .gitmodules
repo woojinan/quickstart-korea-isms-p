@@ -1,0 +1,12 @@
+[submodule "submodules/quickstart-amazon-aurora-mysql"]
+	path = submodules/quickstart-amazon-aurora-mysql
+	url = https://github.com/aws-quickstart/quickstart-amazon-aurora-mysql.git
+	branch = main
+[submodule "submodules/quickstart-compliance-common"]
+	path = submodules/quickstart-compliance-common
+	url = https://github.com/aws-quickstart/quickstart-compliance-common.git
+	branch = main
+[submodule "docs/boilerplate"]
+	path = docs/boilerplate
+	url = https://github.com/aws-quickstart/quickstart-documentation-base-common.git
+	branch = main
