@@ -17,11 +17,9 @@ tests:
     parameters:
       EC2KeyPairBastion: override
       EC2KeyPair: override
-
       AvailabilityZoneA: $[taskcat_getsingleaz_1]
       AvailabilityZoneB: $[taskcat_getsingleaz_2]
       QSS3BucketName: $[taskcat_autobucket]
       QSS3BucketRegion: $[taskcat_current_region]
       QSS3KeyPrefix: quickstart-korea-isms-p/
-      DBPassword: P!$[taskcat_genpass_12A]
       CloudWatchLogsGroupName: $[taskcat_random-string]
