@@ -44,8 +44,8 @@ NOTE: You are responsible for the cost of the AWS services used while running th
 
 [cols=2*]
 |===
-^|http://qs_launch_permalink[Deploy {partner-product-short-name} into a new VPC on AWS^]
-^|http://qs_template_permalink[View template^]
+^|https://fwd.aws/6WyGV[Deploy {partner-product-short-name} into a new VPC on AWS^]
+^|https://github.com/aws-quickstart/quickstart-korea-isms-p/blob/main/templates/isms-entrypoint-new-vpc.template.yaml[View template^]
 
 |===
 
