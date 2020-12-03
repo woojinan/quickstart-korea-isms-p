@@ -1,6 +1,8 @@
-# Project README
+## ISMS-P on the AWS Cloud—Quick Start
 
-* Pre-requisite to run the template
+For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://aws-quickstart.github.io/quickstart-korea-isms-p).
 
-1. Create EC2 Key pair
-2. Enable AWS Config
+To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo. 
+
+To submit code for this Quick Start, see the [AWS Quick Start Contributor's Kit](https://aws-quickstart.github.io/).
+
