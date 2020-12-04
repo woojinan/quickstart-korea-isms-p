@@ -8,14 +8,14 @@ Open the links in the URL keys in the *Outputs* tab to navigate to the web pages
 To delete the {partner-product-short-name} Quick Start resources after deployment, do the following steps:
 
 [[step-1.-delete-the-cloudformation-template]]
-=== Step 1. Delete the CloudFormation template
+=== Delete the CloudFormation template
 
 1.  Navigate to the CloudFormation area of the AWS console, and choose the name of the ISMS-P Quick Start stack that you deployed. Note that you must choose the name of the stack you used to deploy the Quick Start, not the duplicate stack generated during the stack creation.
 2.  Open the *Delete* menu at the top of the window and choose *Delete stack* in the confirmation window.
 3.  After the stack is deleted, the state changes from *DELETE_IN_PROGRESS* to *DELETE_COMPLETE*.
 
 [[step-2.-identify-and-cleanse-undeleted-resources]]
-=== Step 2. Identify and cleanse undeleted resources
+=== Identify and remove undeleted resources
 
 Though unlikely, some resources may remain undeleted if they are in use or experience a permission issue. If this happens, you can choose to select the stack and read the message that displays on the *Events* tab, or you can delete the resources manually. 
 
