@@ -4,7 +4,7 @@
 
 *Q.* I encountered a *CREATE_FAILED* error when I launched the Quick Start.
 
-*A.* If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with *Rollback on failure* set to *Disabled*. (This setting is under *Advanced* in the AWS CloudFormation console, *Options* page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
+*A.* If AWS CloudFormation fails to create the stack, relaunch the template with *Rollback on failure* set to *Disabled*. This setting is under *Advanced* in the AWS CloudFormation console on the *Configure stack Options* page. With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
 // If you’re deploying on Linux instances, provide the location for log files on Linux, or omit this sentence.
 
 WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
@@ -13,29 +13,55 @@ For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/la
 
 *Q.* I encountered a size limitation error when I deployed the AWS CloudFormation templates.
 
-*A.* We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS CloudFormation quotas] on the AWS website.
+*A.* Launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS CloudFormation quotas] on the AWS website.
 
 
 *Q.* A warning message is displayed when accessing the landing page.
 
-*A.* Different browsers may display different warning windows because of the adoption of the HTTPS protocols using private certificates. Upon recognizing the warning, you can choose to access the landing page via the Accept or Advanced pages.
+*A.* Different browsers may display different warning messages due to HTTPS protocols that use private certificates. You can bypass the warning by choosing Accept or opening an Advanced page with additional options.
 
 
-*Q.* I failed to create the stack because a GuardDuty detector already exists in my AWS account.
+*Q.* I failed to create the stack because an Amazon GuardDuty detector already exists in my AWS account.
 
-*A.* Disable Amazon GuardDuty in a region where you want to deploy the Quick Start or delete the GuardDuty detector from the CloudFormation template.
+*A.* Disable Amazon GuardDuty in the Region where you want to deploy the Quick Start, or delete the GuardDuty detector from the CloudFormation template.
 
 
 *Q.* I failed to create the stack because AWS Config was disabled in my AWS account.
 
-*A.* https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/gs-console.html[Enable AWS Config] in a region where you want to deploy the Quick Start.
+*A.* Enable AWS Config in a Region where you want to deploy the Quick Start. See https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/gs-console.html[Setting up AWS Config through the console] for more information.
 
 
-*Q.* I wanted to set up notifications but didn’t receive a SNS subscription notice email.
+*Q.* I wanted to set up notifications but didn’t receive an Amazon Simple Notification Service (SNS) subscription notice email.
 
-*A.* Confirm if you entered the email address correctly in NotificationList from stack details when asked to provide one when deploying the Quick Start. If wrong address, select the *Update* tab of the stack, replace it with the correct one, and deploy the stack again following the Deployment steps.
+*A.* When prompted during the Quick Start deployment process, confirm that you entered the email address correctly in the NotificationList field in the stack details. If the address is incorrect, choose the *Update* tab of the stack, replace the address with the correct one, and deploy the stack again.
 
 
-*Q.* I deleted the CloudFormation stack deployed but some resources remain undeleted.
+*Q.* I deleted the CloudFormation stack after deployment but some resources remain undeleted.
 
-*A.* Either a) choose the stack and check the messaged displayed on the *Events* tab, or b) identify the resources created as a result of the Quick Start template deployment and delete them following the applewebdata://0A124541-6BAA-480E-8D52-6D465FB7C4F9/#_Technical_requirements[Technical requirements] section.
+*A.* You can check the messages displayed on the *Events* tab of the stack, or you can identify the resources created with the Quick Start template deployment and delete them manually. See the link:#_technical_requirements[Technical requirements] section for a list of resources used in this deployment.
+
+*Q.* What topics are used for the Amazon CloudWatch metric filters and alarms?
+
+*A.* The following topics are used:
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-s3-bucket-activity[Amazon
+S3 bucket activity]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-security-group[Security
+Group configuration changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-network-acl[Network
+Access Control List (ACL) changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-gateway-changes[Network
+cateway changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-vpc-changes[Amazon
+Virtual Private Cloud (VPC) changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-ec2-instance-changes[Amazon
+EC2 instance changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-ec2-large-instance-changes[EC2
+Large instance changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-cloudtrail-changes[CloudTrail
+changes]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-signin[Console
+sign-in failures]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-authorization-failures[Authorization
+failures]
+* https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-iam-policy-changes[IAM
+policy changes]

@@ -2,54 +2,55 @@
 //Should any sections not be applicable, remove them
 
 == Test the deployment
-Open the links in the URL keys in the Outputs tab to navigate to the web pages that shows whether the deployment was successful. The template uses HTTPS and adopts a private certificate for better security, so you may encounter an alert window regarding the certificate being untrusted when opening the web page.
+Open the links in the URL keys in the *Outputs* tab to navigate to the web pages that shows whether the deployment was successful. The template uses HTTPS and adopts a private certificate for better security, so you may encounter an alert window regarding the certificate being untrusted when opening the web page.
 
-== Deletion
-To delete the ISMS-P Quick Start resources after deployment, perform the following:
+== Delete template and resources
+To delete the {partner-product-short-name} Quick Start resources after deployment, do the following steps:
 
 [[step-1.-delete-the-cloudformation-template]]
-=== Step 1. Delete the CloudFormation template
+=== Delete the CloudFormation template
 
-1.  Navigate to CloudFormation on the AWS console. Select *the name of the ISMS-P Quick Start stack* you deployed. Take note that you must choose the name of stack you used to deploy the Quick Start, instead of the duplicate stack that had been created during the stack creation.
-2.  Select the *Delete* menu on top of the screen and choose *Delete* *stack* when the delete confirmation window pops up.
-3.  After the deletion is complete, the *state* will change from DELETE_IN_PROGRESS to *DELETE_COMPLETE*.
+1.  Navigate to the CloudFormation area of the AWS console, and choose the name of the ISMS-P Quick Start stack that you deployed. Note that you must choose the name of the stack you used to deploy the Quick Start, not the duplicate stack generated during the stack creation.
+2.  Open the *Delete* menu at the top of the window and choose *Delete stack* in the confirmation window.
+3.  After the stack is deleted, the state changes from *DELETE_IN_PROGRESS* to *DELETE_COMPLETE*.
 
 [[step-2.-identify-and-cleanse-undeleted-resources]]
-=== Step 2. Identify and cleanse undeleted resources
+=== Identify and remove undeleted resources
 
-1.  Though unlikely, some resources could be left undeleted if they were in use or due to some issues such as permission restrictions. If that’s the case, you can choose to select the stack and read the message that will display on the *Events* tab or delete the resources manually by identifying the resources that were created as a result of the Quick Start template deployment as described in the Technical requirements section of this deployment guide.
+Though unlikely, some resources may remain undeleted if they are in use or experience a permission issue. If this happens, you can choose to select the stack and read the message that displays on the *Events* tab, or you can delete the resources manually. 
+
+If deleting resources manually, you can identify the resources that were created during the Quick Start template deployment by viewing the list in the link:#_technical_requirements[Technical requirements] section of this deployment guide.
 
 == Best practices for using {partner-product-short-name} on AWS
 
-Change the following before deploying this Quick Start on production workloads:
+Complete the following best practices before deploying this Quick Start on production workloads:
 
-* This architecture uses a single instance and Availability Zone for the implementation of one Auto Scaling group to save costs. For a production deployment, we recommend you have your instances span across two or more Availability Zones for high availability after reviewing your environment and corresponding requirements.
-* The class of CIDR for the VPC subnets is configured as a fixed class of 10.10.x.x or 10.100.x.x. You can change them as needed by modifying the template file before deployment.
-* This Quick Start environment is configured for testing purposes, so some NACLs are set to open and do not have traffic control in place. Make sure you adopt stronger NACL policies to meet your security requirements before deploying the template.
+* To save costs, this architecture uses a single instance and Availability Zone for implementing one Auto Scaling group. For a production deployment, after reviewing your environment and corresponding requirements, configure your instances to span across two or more Availability Zones for high availability.
+* The class of Classless Inter-Domain Routing (CIDR) for the VPC subnets is configured as a fixed class of 10.10.x.x or 10.100.x.x. You can change them as needed by modifying the template file before deployment.
+* This Quick Start environment is configured for testing purposes, so some network access control lists (NACL) are set to open and do not have traffic control in place. Make sure you adopt stronger NACL policies to meet your security requirements before deploying the template.
 * You can build your personal endpoints for AWS services.
 
 == Security
 
-Ensuring security and complying with relative laws are a shared responsibility between AWS and the customer. We recommend that customers become familiar with AWS Shared Responsibility Model before applying this solution to their production workloads.
+Ensuring security and complying with relative laws are a shared responsibility between AWS and customers. Customers should become familiar with the AWS Shared Responsibility Model before applying this solution to their production workloads.
 
-This solution implements some of the summarized control mechanisms from the ISMS-P reference architecture, but not all recommendations to achieve each ISMS-P control are included in this Quick Start. For the guide specific to ISMS-P, see other documents or visit the https://aws.amazon.com/ko/compliance/k-isms/?nc1=h_ls[Korea Information Security Management System] page and follow the instructions.
+This solution implements certain summarized control mechanisms from the {partner-product-short-name} reference architecture, but not all recommendations to achieve each {partner-product-short-name} control are included in this Quick Start. For information that is specific to {partner-product-short-name}, see other documents or follow the instructions provided on the https://aws.amazon.com/ko/compliance/k-isms/?nc1=h_ls[Korea Information Security Management System] page.
 
-We recommend to always seek the latest version for the source files and deployment guide for possible updates on the ISMS-P Quick Start features and guide.
+Always seek the latest version for the source files and deployment guide for possible updates on the {partner-product-short-name} Quick Start features and guide.
 
-The following is the controls that are not included in this solution or need additional description:
+The following list describes the controls that are either not included in this solution or need additional information:
 
-* This ISMS-P Quick Start provides internet gateways for internet connectivity, which simplifies the deployment to the level of a PoC. If you’re planning to store sensitive information in the solution, ensure that you review the ISMS-P package guidelines and comply with controls. Also, consider adopting data-in-transit encryption and AWS Direct Connect (DX) along with VPN or HTTP.
-* To simplify the build, this architecture uses a DNS provided by Amazon VPC. You may consider using an EC2 based or your own in-house developed DNS service.
-* The root volume of Amazon EC2 instances is not encrypted. See the New – Encrypted EBS Boot Volumes page before storing sensitive information.
-* No remediation has been applied for non-compliant AWS resources by AWS Config rules in this Quick Start. Visit the https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/remediation.html[Remediating Noncompliant AWS Resources by AWS Config Rules] page for more information.
-* Consider adopting AWS KMS or a 3^rd^ party solution to minimize the exposure of critical data to the outside world. See the https://docs.aws.amazon.com/ko_kr/kms/?id=docs_gateway[AWS KMS] and https://docs.aws.amazon.com/ko_kr/aws-crypto-tools/?id=docs_gateway[Crypto Tools] pages for details.
-* AWS WAF is designed to apply five rules as a priority so that they would be considered starting points rather than a comprehensive set of rules prepared for a production environment. We recommend you determine if these rules fit your environment and security policies and apply only the rules you feel necessary for your production environment. Also, the AWS WAF action is set to Count by default to prevent tasks from being blocked. For more information, see https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html[AWS WAF rule action].
+* This {partner-product-short-name} Quick Start provides internet gateways for internet connectivity, which simplifies the deployment to the level of proof of concept. If you’re planning to store sensitive information in the solution, ensure that you review the {partner-product-short-name} package guidelines and comply with controls. Also, consider adopting data-in-transit encryption and AWS Direct Connect (DX) along with a VPN or HTTP protocol.
+* To simplify the build, this architecture uses a Domain Name System (DNS) provided by Amazon VPC. You may consider using Amazon EC2 based or your own in-house DNS service.
+* The root volume of Amazon EC2 instances is not encrypted. See the *New – Encrypted EBS Boot Volumes* page before storing sensitive information.
+* Remediation has not been applied for non-compliant AWS resources by AWS Config rules in this Quick Start. See https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/remediation.html[Remediating Noncompliant AWS Resources by AWS Config Rules] for more information.
+* Consider adopting AWS KMS or a third-party solution to minimize the exposure of critical data to the outside world. See https://docs.aws.amazon.com/ko_kr/kms/?id=docs_gateway[AWS Key Management Service] and https://docs.aws.amazon.com/ko_kr/aws-crypto-tools/?id=docs_gateway[AWS Crypto Tools] for details.
+* AWS WAF is designed to apply five rules as a priority. These rules are considered to be starting points rather than a comprehensive set of rules prepared for a production environment. Determine if these rules fit your environment and security policies and apply only the rules that are necessary for your production environment. Also, the AWS WAF action is set to Count by default to prevent tasks from being blocked. For more information, see https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html[AWS WAF rule action].
 
 
 == Other useful information
 
-* If you’re considering expanding the use of AWS Organizations and single sign-on (SSO) to operate a multi-account environment or to manage IAM users effectively, visit the https://docs.aws.amazon.com/ko_kr/organizations/latest/userguide/services-that-can-integrate-peregrine.html[AWS Single Sign-On and AWS Organizations] page.
-
-* Review the logging and analysis features using AWS CloudTrail and AWS CloudWatch to track the creation, modification or deletion of AWS IAM user activities, infrastructure and AWS services. For more information, see the https://docs.aws.amazon.com/ko_kr/cloudtrail/index.html[AWS CloudTrail] and https://aws.amazon.com/ko/cloudwatch/features/[Amazon CloudWatch] pages.
-* If you’re planning to run applications or services on this infrastructure created as a result of this Quick Start deployment, find ways to securely store and manage database credentials, API keys and other security information against exposure. For details, visit the https://aws.amazon.com/ko/secrets-manager/[AWS Secret Manager] and AWS Systems Manager https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/systems-manager-parameter-store.html[Parameter Store] pages.
-* Consider using AWS Config and AWS Config rules to continuously monitor, evaluate, and remediate security vulnerabilities. For details, see the https://aws.amazon.com/ko/config/[AWS Config] page.
+* If you’re considering expanding the use of AWS Organizations and single sign-on (SSO) to operate a multi-account environment or to manage IAM users effectively, see https://docs.aws.amazon.com/ko_kr/organizations/latest/userguide/services-that-can-integrate-peregrine.html[AWS Organizations].
+* Review the logging and analysis features using AWS CloudTrail and Amazon CloudWatch to track the creation, modification, or deletion of AWS IAM user activities, infrastructure, and AWS services. For more information, see  https://docs.aws.amazon.com/ko_kr/cloudtrail/index.html[AWS CloudTrail] and https://aws.amazon.com/ko/cloudwatch/features/[Amazon CloudWatch].
+* If you’re planning to run applications or services on the infrastructure created by this Quick Start deployment, find ways to securely store and manage database credentials, API keys, and other security information against exposure. For details, see https://aws.amazon.com/ko/secrets-manager/[AWS Secrets Manager] and https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/systems-manager-parameter-store.html[AWS Systems Manager Parameter Store].
+* Consider using AWS Config and AWS Config rules to continuously monitor, evaluate, and remediate security vulnerabilities. For details, see https://aws.amazon.com/ko/config/[AWS Config].

@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Provides nesting for required stacks to deploy a baseline architecure to support Korean ISMS-P compliance. (qs-1r6f0fd9j)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Launch into a new VPC"
+    EntrypointName: "Parameters for launch into a new VPC"
     Order: 1
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -13,7 +13,7 @@ Metadata:
           - AvailabilityZoneA
           - AvailabilityZoneB
       - Label:
-          default: ISMS Configuration
+          default: ISMS configuration
         Parameters:
           - EC2KeyPairBastion
           - EC2KeyPair
@@ -21,18 +21,18 @@ Metadata:
           - BastionCIDR
           - EnableGuardDuty
       - Label:
-          default: Quick Start configuration
+          default: AWS Quick Start configuration
         Parameters:
           - QSS3BucketName
           - QSS3BucketRegion
           - QSS3KeyPrefix
     ParameterLabels:
       AvailabilityZoneA:
-        default: The First Availability zone
+        default: The first Availability Zone
       AvailabilityZoneB:
-        default: The Second Availability zone
+        default: The second Availability Zone
       BastionCIDR:
-        default: CIDR for access bastion host
+        default: CIDR for accessing bastion host
       QSS3BucketName:
         default: Quick Start S3 bucket name
       QSS3BucketRegion:
@@ -40,13 +40,13 @@ Metadata:
       QSS3KeyPrefix:
         default: Quick Start S3 key prefix
       EC2KeyPairBastion:
-        default: Key Pair Name for Bastion Host
+        default: Key pair name for bastion host
       EC2KeyPair:
-        default: Key Pair Name for production instances
+        default: Key pair name for production instances
       EnableGuardDuty:
-        default: Enable Guard Duty
+        default: Enable Amazon GuardDuty
       CloudWatchLogsGroupName:
-        default: CloudWatch Log group name for CloudTrail
+        default: Amazon CloudWatch log group name for AWS CloudTrail
 Parameters:
   EC2KeyPairBastion:
     Description: The SSH key pair in your account to use for the bastion host login. This is one of the keys that you created in the pre-deployment steps.
@@ -57,7 +57,7 @@ Parameters:
     Type: AWS::EC2::KeyPair::KeyName
   BastionCIDR: 
     AllowedPattern: "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$"
-    ConstraintDescription: "CIDR block parameter must be in the form x.x.x.x/x"
+    ConstraintDescription: "CIDR block parameter must be in the form x.x.x.x/x."
     Description: "Allowed CIDR block for external access (use VPC CIDR)."
     Type: String
     Default: 0.0.0.0/0
@@ -65,30 +65,27 @@ Parameters:
     Description: The name of Availability Zone 1.
     Type: AWS::EC2::AvailabilityZone::Name
   AvailabilityZoneB:
-    Description: The name of Availability Zone 2. This must be different from the name of the first Availability Zone.
+    Description: The name of Availability Zone 2. Name must be different from the name of the first Availability Zone.
     Type: AWS::EC2::AvailabilityZone::Name
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-.]*[0-9a-zA-Z])*$
-    ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, periods (.), and hyphens (-). It cannot start or
-      end with a hyphen (-). If you are unsure, do not change this value.
+    ConstraintDescription: The Quick Start bucket name can include numbers, lowercase
+      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+      (-).
     Default: aws-quickstart
-    Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
-      It cannot start or end with a hyphen (-). If you are unsure, do not change this value.
+    Description: Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See https://aws-quickstart.github.io/option1.html.
+    Type: String
     Type: String
   QSS3BucketRegion:
     Default: 'us-east-1'
-    Description: AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.
+    Description: 'AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. Keep the default Region unless you are customizing the template. Changing this Region updates code references to point to a new Quick Start location. When using your own bucket, specify the Region. See https://aws-quickstart.github.io/option1.html.'
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
-      uppercase letters, hyphens (-), and forward slash (/). If you are unsure, do not change this value.
+    ConstraintDescription: The Quick Start S3 key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slash (/).
     Default: quickstart-korea-isms-p/
-    Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
-      forward slash (/). If you are unsure, do not change this value.
+    Description: S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html and https://aws-quickstart.github.io/option1.html.
     Type: String
   DBUsername:
     Default: 'admin'
@@ -104,7 +101,7 @@ Parameters:
     Type: String
     Default: enable
     AllowedValues: [ enable, disable ]
-    Description: If you do not currently have Guard Duty enabled in your account.
+    Description: Enable GuardDuty, if it is currently diabled in your account. 
   CloudWatchLogsGroupName:
     Type: String
     Default: 'CloudTrail/K-ISMS-Logs'
@@ -259,11 +256,11 @@ Resources:
         SecretKeyName: !GetAtt DatabaseTemplate.Outputs.AuroraMasterUserSecret 
 Outputs:
   TemplateType:
-      Value: Standard Multi-Tier Web Application
+      Value: Standard multi-tier web application
   TemplateVersion:
       Value: 1.0
   BastionIP:
-      Description: Use this IP via SSH to connect to Bastion Instance
+      Description: Use this IP via SSH to connect to bastion instance
       Value:
         !GetAtt
         - ManagementVpcTemplate
