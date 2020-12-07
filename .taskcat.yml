@@ -17,7 +17,7 @@ tests:
     parameters:
       EC2KeyPairBastion: $[taskcat_getkeypair]
       EC2KeyPair: $[taskcat_getkeypair]
-      EnableGuardDuty: disable
+      EnableGuardDuty: enable
       AvailabilityZoneA: $[taskcat_getsingleaz_1]
       AvailabilityZoneB: $[taskcat_getsingleaz_2]
       QSS3BucketName: $[taskcat_autobucket]
