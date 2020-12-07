@@ -1,0 +1,2 @@
+EC2KeyPairBastion: cikey
+EC2KeyPair: cikey
