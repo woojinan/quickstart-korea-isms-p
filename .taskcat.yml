@@ -15,8 +15,8 @@ tests:
 #     - ap-southeast-1
     s3_regional_buckets: true
     parameters:
-      EC2KeyPairBastion: cikey
-      EC2KeyPair: cikey
+      EC2KeyPairBastion: $[taskcat_getkeypair]
+      EC2KeyPair: $[taskcat_getkeypair]
       EnableGuardDuty: disable
       AvailabilityZoneA: $[taskcat_getsingleaz_1]
       AvailabilityZoneB: $[taskcat_getsingleaz_2]
