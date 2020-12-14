@@ -40,9 +40,9 @@ For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/la
 
 *A.* You can check the messages displayed on the *Events* tab of the stack, or you can identify the resources created with the Quick Start template deployment and delete them manually. See the link:#_technical_requirements[Technical requirements] section for a list of resources used in this deployment.
 
-*Q.* What topics are used for the Amazon CloudWatch metric filters and alarms?
+*Q.* Which topics are available to learn more about Amazon CloudWatch metric filters and alarms?
 
-*A.* The following topics are used:
+*A.* The following topics are available:
 
 * https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail.html#cloudwatch-alarms-for-cloudtrail-s3-bucket-activity[Amazon
 S3 bucket activity]
