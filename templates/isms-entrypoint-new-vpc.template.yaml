@@ -45,6 +45,8 @@ Metadata:
         default: Key pair name for production instances
       EnableGuardDuty:
         default: Enable Amazon GuardDuty
+      DBUsername:
+        default: Database user name
       CloudWatchLogsGroupName:
         default: Amazon CloudWatch log group name for AWS CloudTrail
 Parameters:
