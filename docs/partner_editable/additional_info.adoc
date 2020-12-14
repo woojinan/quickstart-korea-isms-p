@@ -2,7 +2,7 @@
 //Should any sections not be applicable, remove them
 
 == Test the deployment
-Open the links in the URL keys in the *Outputs* tab to navigate to the web pages that shows whether the deployment was successful. The template uses HTTPS and adopts a private certificate for better security, so you may encounter an alert window regarding the certificate being untrusted when opening the web page.
+Open the URL links in the *Outputs* tab to navigate to the web pages that shows whether the deployment was successful. The template uses HTTPS and adopts a private certificate for better security, so a window about an untrusted certificate might appear when opening the web page.
 
 == Delete template and resources
 To delete the {partner-product-short-name} Quick Start resources after deployment, do the following steps:
