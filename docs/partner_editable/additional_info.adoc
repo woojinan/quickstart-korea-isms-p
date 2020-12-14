@@ -27,7 +27,7 @@ Complete the following best practices before deploying this Quick Start on produ
 * To save costs, this architecture uses a single instance and Availability Zone for implementing one Auto Scaling group. For a production deployment, after reviewing your environment and corresponding requirements, configure your instances to span across two or more Availability Zones for high availability.
 * The class of Classless Inter-Domain Routing (CIDR) for the VPC subnets is configured as a fixed class of 10.10.x.x or 10.100.x.x. You can change them as needed by modifying the template file before deployment.
 * This Quick Start environment is configured for testing purposes, so some network access control lists (NACL) are set to open and do not have traffic control in place. Make sure you adopt stronger NACL policies to meet your security requirements before deploying the template.
-* You can build your personal endpoints for AWS services.
+* Build your personal endpoints for AWS services.
 
 == Security
 
@@ -40,11 +40,11 @@ Always seek the latest version for the source files and deployment guide for pos
 The following list describes the controls that are either not included in this solution or need additional information:
 
 * This {partner-product-short-name} Quick Start provides internet gateways for internet connectivity, which simplifies the deployment to the level of proof of concept. If you’re planning to store sensitive information in the solution, ensure that you review the {partner-product-short-name} package guidelines and comply with controls. Also, consider adopting data-in-transit encryption and AWS Direct Connect (DX) along with a VPN or HTTP protocol.
-* To simplify the build, this architecture uses a Domain Name System (DNS) provided by Amazon VPC. You may consider using Amazon EC2 based or your own in-house DNS service.
+* To simplify the build, this architecture uses a Domain Name System (DNS) provided by Amazon VPC. You may consider using Amazon EC2 or your own in-house DNS service.
 * The root volume of Amazon EC2 instances is not encrypted. See the *New – Encrypted EBS Boot Volumes* page before storing sensitive information.
 * Remediation has not been applied for non-compliant AWS resources by AWS Config rules in this Quick Start. See https://docs.aws.amazon.com/ko_kr/config/latest/developerguide/remediation.html[Remediating Noncompliant AWS Resources by AWS Config Rules] for more information.
 * Consider adopting AWS KMS or a third-party solution to minimize the exposure of critical data to the outside world. See https://docs.aws.amazon.com/ko_kr/kms/?id=docs_gateway[AWS Key Management Service] and https://docs.aws.amazon.com/ko_kr/aws-crypto-tools/?id=docs_gateway[AWS Crypto Tools] for details.
-* AWS WAF is designed to apply five rules as a priority. These rules are considered to be starting points rather than a comprehensive set of rules prepared for a production environment. Determine if these rules fit your environment and security policies and apply only the rules that are necessary for your production environment. Also, the AWS WAF action is set to Count by default to prevent tasks from being blocked. For more information, see https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html[AWS WAF rule action].
+* AWS WAF is designed to apply five rules as a priority. These rules are considered to be starting points rather than a comprehensive set of rules prepared for a production environment. Determine if these rules fit your environment and security policies and apply only the rules that are necessary for your production environment. Also, the AWS WAF action is set to *Count* by default to prevent tasks from being blocked. For more information, see https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html[AWS WAF rule action].
 
 
 == Other useful information
