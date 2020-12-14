@@ -4,6 +4,6 @@
 
 This Quick Start deployment guide provides step-by-step instructions for deploying Personal Information and Information Security Management System ({partner-product-name}), an architecture-based environment and resources, on the AWS Cloud. For details, see https://aws.amazon.com/ko/compliance/k-isms/?nc1=h_ls[ISMS-P].
 
-This Quick Start is for organizations and users who need to create a cloud-based security infrastructure and services that comply with the Personal Information and Information Security Management System ({partner-product-name}), as required by the Personal Information Protection Act and Act on Promotion of Information and Communications Network Utilization and Information Protection, etc.
+This Quick Start is for organizations and users who need to create a cloud-based security infrastructure and services that comply with {partner-product-name}, as required by the Personal Information Protection Act and Act on Promotion of Information and Communications Network Utilization and Information Protection, etc.
 
 This Quick Start solution is designed to implement as many {partner-product-name} package controls as possible, but may not include all solutions that are recommended.
