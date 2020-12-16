@@ -1,0 +1,22 @@
+// Replace the <n> in each row to specify the number of resources used in this deployment. Remove the rows for resources that aren’t used.
+|===
+|Resource |This deployment uses
+
+// Space needed to maintain table headers
+|VPCs |2
+|Internet Gateways |2
+|Elastic IP addresses |5
+|Lambda functions |3
+|Identity and Access Management (IAM) groups |5
+|IAM roles |11
+|Auto Scaling groups |2
+|Application Load Balancers |2
+|t3.small instances |1
+|m5.large instance |4
+|db.r4 large instances |2
+|CloudWatch Log Group |1
+|CloudWatch Alarm |15
+|Config Conformance Pack |1
+|WAF network access control lists (ACLs) |1
+|Amazon GuardDuty subscriptions |1
+|===
