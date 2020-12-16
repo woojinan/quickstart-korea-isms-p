@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Provides nesting for required stacks to deploy a baseline architecure to support Korean ISMS-P compliance. (qs-1r6f0fd9j)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Parameters for launch into a new VPC"
+    EntrypointName: "Parameters for launching into a new VPC"
     Order: 1
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -45,6 +45,8 @@ Metadata:
         default: Key pair name for production instances
       EnableGuardDuty:
         default: Enable Amazon GuardDuty
+      DBUsername:
+        default: Database user name
       CloudWatchLogsGroupName:
         default: Amazon CloudWatch log group name for AWS CloudTrail
 Parameters:

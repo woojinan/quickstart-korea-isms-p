@@ -13,7 +13,7 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 ** AWS-managed network address translation (NAT) gateways to control public network access by the resources in the private subnets.
 ** A bastion host in a public subnet that provides system administrator access and connection via Secure Shell (SSH) for troubleshooting Amazon Elastic Compute Cloud (Amazon EC2) instances. The bastion host is assigned an Elastic IP address (EIP).
 * In the production VPC:
-** AWS-managed network address translation (NAT) gateways to control public network access by the resources in the private subnets.
+** AWS-managed NAT gateways to control public network access by the resources in the private subnets.
 ** Web and application instances with public (front-end) and private (back-end) subnets for web, application, and database layers.
 ** A redundant Amazon Relational Database Service (Amazon RDS) database in a multi-AZ configuration.
 ** Separate Auto Scaling groups for web and application instances to secure high availability, and a three-tier web application (WordPress) that supports load balancing with Application Load Balancer.
@@ -24,8 +24,8 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * Notification policies based on Amazon Simple Notification Service (Amazon SNS) topics to capture Amazon RDS CPU and storage alarms.
 * AWS Config rules to monitor security policies and compliance.
 * An AWS WAF that creates response rules (Core Rule, WordPress, Application, SQL database, PHP application) automatically against the top 10 Open Web Application Security Project (OWASP) vulnerabilities.
-* Amazon Simple Storage Service (Amazon S3) buckets for centralized logging and AWS WAF.
+* Amazon S3 buckets for centralized logging and AWS WAF.
 * Amazon CloudWatch metric filters and alarms to monitor various aspects of the infrastructure, including the reliability, availability, and performance of Amazon RDS.
 * Amazon CloudWatch alarms to trigger Amazon SNS topics and send email notifications.
 * AWS Systems Manager for managing Amazon Machine Images (AMI) and keeping them current.  
-* The AWS Secrets Manager for creating and rotating the database password. 
+* AWS Secrets Manager for creating and rotating the database password. 
