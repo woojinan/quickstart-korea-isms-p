@@ -2,7 +2,7 @@
 :includedir: boilerplate
 :specificdir: partner_editable
 :generateddir: generated
-:langdir: docs-KR
+:langdir: docs-kr
 :icons: font
 :toc2: left
 :toc-title: 
