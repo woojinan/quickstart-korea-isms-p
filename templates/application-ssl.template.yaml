@@ -904,7 +904,6 @@ Resources:
       Protocol: HTTPS
       Matcher:
         HttpCode: 200,302,403,301
-      #HealthCheckPath: /wordpress/wp-admin/install.php
       HealthCheckPath: /landing/index.html
   AutoScalingGroupWeb:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -1298,7 +1297,6 @@ Resources:
       Protocol: HTTPS
       Matcher:
         HttpCode: 200,302,403,301
-      #HealthCheckPath: /wordpress/wp-admin/install.php
       HealthCheckPath: /landing/index.html
   AutoScalingGroupApp:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -1484,21 +1482,6 @@ Resources:
       Tags:
       - Key: Name
         Value: PostProcessor
-#  WAFtemplateOWASP:
-#    Type: AWS::CloudFormation::Stack
-#    Properties:
-#      TemplateURL:
-#        !Sub
-#          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/waf_owasp.template.yaml'
-#          - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
-#            S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref QSS3BucketName]
-#      TimeoutInMinutes: 20
-#      Parameters:
-#        pALBWeb: !Ref ALBWeb
-#        pESClusterARN: !Ref ESClusterARN
-#        pCentralLogBucket: !Ref CentralLogBucket
-#        pWAFLogging: !Ref WAFlogging
-  ## ADD WAFv2
   rALBWebACL:
     Type: AWS::WAFv2::WebACL
     Properties:

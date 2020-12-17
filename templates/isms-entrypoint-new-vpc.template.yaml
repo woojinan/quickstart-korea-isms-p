@@ -224,7 +224,6 @@ Resources:
         RotateDBPassword: 'true'
         DBAutoMinorVersionUpgrade: 'true'
         NotificationList: !Ref NotificationList
-        #CustomDBSecurityGroup: !Ref SecurityGroupRDS
         QSS3BucketName: aws-quickstart
         QSS3BucketRegion: !Ref QSS3BucketRegion
         QSS3KeyPrefix: quickstart-amazon-aurora-mysql/
