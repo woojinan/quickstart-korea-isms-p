@@ -24,7 +24,7 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * Notification policies based on Amazon Simple Notification Service (Amazon SNS) topics to capture Amazon RDS CPU and storage alarms.
 * AWS Config rules to monitor security policies and compliance.
 * An AWS WAF that creates response rules (Core Rule, WordPress, Application, SQL database, PHP application) automatically against the top 10 Open Web Application Security Project (OWASP) vulnerabilities.
-* Amazon S3 buckets for centralized logging and AWS WAF.
+* Amazon S3 buckets for centralized logging.
 * Amazon CloudWatch metric filters and alarms to monitor various aspects of the infrastructure, including the reliability, availability, and performance of Amazon RDS.
 * Amazon CloudWatch alarms to trigger Amazon SNS topics and send email notifications.
 * AWS Systems Manager for managing Amazon Machine Images (AMI) and keeping them current.  
