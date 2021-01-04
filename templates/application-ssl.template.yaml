@@ -1283,7 +1283,7 @@ Resources:
             ######################################################################
 
             # Download the landing page.
-            sudo aws s3 cp --region=${AWS::Region} s3://${QSS3BucketName}/${QSS3KeyPrefix}landing /var/www/html/landing --recursive
+            sudo aws s3 cp --region=${S3Region} s3://${S3Bucket}/${QSS3KeyPrefix}landing /var/www/html/landing --recursive
 
             /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AutoScalingGroupApp --region ${AWS::Region}
           - S3Region: !If [UsingDefaultBucket, !Ref 'AWS::Region', !Ref QSS3BucketRegion]
